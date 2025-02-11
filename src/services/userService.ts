@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 import { BaseService } from './baseService';
 
 class UserService extends BaseService {
-  protected endpoint: string = 'users';
+  protected endpoint: string = 'user';
 
   async createUser(user: User) {
     try {

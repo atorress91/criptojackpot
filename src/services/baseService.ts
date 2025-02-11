@@ -1,5 +1,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
-import { Response } from '../interfaces/response';
+
+import { Response } from '@/interfaces/response';
+import { TokenService } from './tokenService';
 
 export abstract class BaseService {
   protected apiClient: AxiosInstance;
@@ -15,13 +17,35 @@ export abstract class BaseService {
       }
     });
 
-    this.apiClient.interceptors.request.use((config) => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+    this.setupInterceptors();
+  }
+
+  private setupInterceptors(): void {
+    this.apiClient.interceptors.request.use(
+      (config) => {
+        const token = TokenService.getToken();
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
       }
-      return config;
-    });
+    );
+
+    this.apiClient.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        if (error.response?.status === 401) {
+          TokenService.clearSession();
+          if (typeof window !== 'undefined') {
+            window.location.href = '/login?error=session_expired';
+          }
+        }
+        return Promise.reject(error);
+      }
+    );
   }
 
   protected async handleResponse<T>(response: AxiosResponse<Response<T>>): Promise<T> {
@@ -36,11 +60,16 @@ export abstract class BaseService {
 
   protected handleError(error: AxiosError<Response<any>>): never {
     if (error.response?.status === 401) {
-      localStorage.removeItem('token');
+      TokenService.clearSession();
       throw new Error("The session has expired");
     }
 
-    throw new Error(error.response?.data?.message || 'Error communicating with the server');
+    const errorMessage = error.response?.data?.message ||
+      error.message ||
+      'An error occurred';
+
+    console.log('Error Response:', error.response?.data);
+    throw new Error(errorMessage);
   }
 
   async getAll<T>(): Promise<T[]> {

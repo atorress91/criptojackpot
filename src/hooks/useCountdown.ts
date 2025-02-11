@@ -1,4 +1,3 @@
-// useCountdown.ts
 import { useState, useEffect } from 'react';
 
 interface TimeLeft {

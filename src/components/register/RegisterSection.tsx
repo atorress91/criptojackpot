@@ -1,41 +1,24 @@
 "use client";
 import registerImage from "@/../public/images/background/back-register.png";
 import logo from "@/../public/images/logo/cripto-jackpot-logo.png";
-import { Country } from "@/interfaces/country";
-import { countryService } from "@/services/countryService";
+import { useRegisterForm } from "@/hooks/useRegisterForm";
 import { CaretRight, Eye, EyeSlash } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 const RegisterSection = () => {
-  const [isPasswordShow, setIsPasswordShow] = useState(false);
-  const [countries, setCountries] = useState<Country[]>([]);
-  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
-  const [phoneNumber, setPhoneNumber] = useState('');
-
-  useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        const countriesData = await countryService.getAllCountries();
-        setCountries(countriesData);
-      } catch (error) {
-        console.error('Error fetching countries:', error);
-      }
-    };
-
-    fetchCountries();
-  }, []);
-
-  const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const country = countries.find(c => c.id === parseInt(event.target.value));
-    setSelectedCountry(country || null);
-  };
-
-  const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const cleaned = event.target.value.replace(/\D/g, '');
-    setPhoneNumber(cleaned);
-  };
+  const {
+    formData,
+    countries,
+    selectedCountry,
+    isPasswordShow,
+    isLoading,
+    error,
+    handleInputChange,
+    handleCountryChange,
+    togglePasswordVisibility,
+    handleSubmit
+  } = useRegisterForm();
 
   return (
     <section className="login-section position-relative min-vh-100 d-flex align-items-center">
@@ -65,21 +48,47 @@ const RegisterSection = () => {
                     </Link>
                   </span>
                 </div>
-                <form className="form-cmn-action">
+                {error && (
+                  <div className="alert alert-danger" role="alert">
+                    {error}
+                  </div>
+                )}
+                <form className="form-cmn-action" onSubmit={handleSubmit}>
                   <div className="row g-3">
                     <div className="col-sm-6">
                       <div className="form-cmn">
-                        <input type="text" placeholder="First name" className="py-2" />
+                        <input
+                          type="text"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleInputChange}
+                          placeholder="Name"
+                          className="py-2"
+                        />
                       </div>
                     </div>
                     <div className="col-sm-6">
                       <div className="form-cmn">
-                        <input type="text" placeholder="Last name" className="py-2" />
+                        <input
+                          type="text"
+                          name="lastName"
+                          value={formData.lastName}
+                          onChange={handleInputChange}
+                          placeholder="Last name"
+                          className="py-2"
+                        />
                       </div>
                     </div>
                     <div className="col-12">
                       <div className="form-cmn">
-                        <input type="email" placeholder="Email address" className="py-2" />
+                        <input
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          placeholder="Email address"
+                          className="py-2"
+                        />
                       </div>
                     </div>
                     <div className="col-12">
@@ -87,13 +96,16 @@ const RegisterSection = () => {
                         <div className="ps-grp position-relative">
                           <input
                             type={isPasswordShow ? "text" : "password"}
+                            name="password"
+                            value={formData.password}
+                            onChange={handleInputChange}
                             className="password-field py-2"
                             placeholder="Enter Your Password..."
                           />
                           <span
-                            className="position-absolute top-50 end-2 translate-middle-y"
+                            className="position-absolute top-50 end-0 translate-middle-y"
                             style={{ cursor: 'pointer' }}
-                            onClick={() => setIsPasswordShow(!isPasswordShow)}
+                            onClick={togglePasswordVisibility}
                           >
                             {!isPasswordShow ? <EyeSlash size={18} /> : <Eye size={18} />}
                           </span>
@@ -119,7 +131,14 @@ const RegisterSection = () => {
                     </div>
                     <div className="col-sm-6">
                       <div className="form-cmn">
-                        <input type="text" placeholder="Identification" className="py-2" />
+                        <input
+                          type="text"
+                          name="identification"
+                          value={formData.identification}
+                          onChange={handleInputChange}
+                          placeholder="Identification"
+                          className="py-2"
+                        />
                       </div>
                     </div>
                     <div className="col-sm-6">
@@ -130,35 +149,58 @@ const RegisterSection = () => {
                           </span>
                           <input
                             type="tel"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleInputChange}
                             placeholder="Phone"
                             className="form-control"
-                            value={phoneNumber}
-                            onChange={handlePhoneChange}
                           />
                         </div>
                       </div>
                     </div>
                     <div className="col-sm-6">
                       <div className="form-cmn">
-                        <input type="text" placeholder="State" className="py-2" />
+                        <input
+                          type="text"
+                          name="state"
+                          value={formData.state}
+                          onChange={handleInputChange}
+                          placeholder="State"
+                          className="py-2"
+                        />
                       </div>
                     </div>
                     <div className="col-sm-6">
                       <div className="form-cmn">
-                        <input type="text" placeholder="City" className="py-2" />
+                        <input
+                          type="text"
+                          name="city"
+                          value={formData.city}
+                          onChange={handleInputChange}
+                          placeholder="City"
+                          className="py-2"
+                        />
                       </div>
                     </div>
                     <div className="col-12">
                       <div className="form-cmn">
-                        <input type="text" placeholder="Address" className="py-2" />
+                        <input
+                          type="text"
+                          name="address"
+                          value={formData.address}
+                          onChange={handleInputChange}
+                          placeholder="Address"
+                          className="py-2"
+                        />
                       </div>
                     </div>
                     <div className="col-12 mt-2">
                       <button
-                        type="button"
+                        type="submit"
                         className="w-100 radius12 s1-bg fw_600 nw1-clr d-flex align-items-center justify-content-between py-2 px-3"
+                        disabled={isLoading}
                       >
-                        Create account
+                        {isLoading ? 'Creating account...' : 'Create account'}
                         <CaretRight size={18} />
                       </button>
                     </div>

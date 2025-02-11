@@ -1,9 +1,9 @@
-export interface RegisterFormInputs {
-  firstName: string;
+export interface RegisterFormData {
+  name: string;
   lastName: string;
   email: string;
   password: string;
-  country: string;
+  countryId: number;
   identification: string;
   phone: string;
   state: string;

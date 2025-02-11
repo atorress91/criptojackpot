@@ -2,7 +2,7 @@ import { Country } from "./country";
 import { Role } from "./role";
 
 export interface User {
-  id: number;
+  id?: number;
   name: string;
   lastName: string;
   email: string;
@@ -17,8 +17,9 @@ export interface User {
   imagePath?: string;
   googleAccessToken?: string;
   googleRefreshToken?: string;
+  token?: string;
 
   roleId: number;
-  role: Role
-  country: Country
+  role?: Role
+  country?: Country
 }
