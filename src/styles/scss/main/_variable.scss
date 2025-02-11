@@ -1,0 +1,37 @@
+// default root
+:root {
+  --body-font: var(--body-font);
+  --transition: all 0.5s ease-in-out;
+
+  /* Color styles */
+  --p1: rgba(174, 254, 58, 1);
+  --p1-border: rgba(223, 255, 94, 0.3);
+
+  --s1: rgba(85, 74, 255, 1);
+  --act1: rgba(254, 68, 69, 1);
+  --act2: rgba(19, 19, 19, 1);
+  --act3: rgba(254, 201, 47, 1);
+  --act4: rgba(255, 101, 14, 1);
+  --act5: rgba(14, 14, 14, 1);
+
+  --nw1: rgba(255, 255, 255, 1);
+  --nw2: rgba(244, 244, 244, 1);
+  --nw3: rgba(239, 239, 239, 1);
+  --nw4: rgba(218, 218, 218, 1);
+
+  --n0: #ffffff;
+  --n1: rgba(29, 29, 29, 1);
+  --n2: rgba(26, 26, 26, 1);
+  --n3: rgba(78, 78, 78, 1);
+  --n4: rgba(0, 0, 0, 1);
+  --n5: #0e0e0e;
+
+  --bg1: #1c1d20;
+  --bg2: #262629;
+
+  --borderd: #dadada;
+
+  --box-shadow: 0px 5.12694px 25.6347px 0px rgba(0, 0, 0, 0.08);
+
+  // Example understanding hexa codes for rgba values
+}

@@ -1,0 +1,34 @@
+/*============================================ 
+# Template Name: Lottovibe
+# Version: 1.0
+# Date: 
+# Author: pixelaxis
+# Author URI: https://themeforest.net/user/pixelaxis
+# Description: Lottovibe - Multipurpose HTML Template
+============================================*/
+
+/*============================================ 
+======== Table of Css Content =========
+# Typography
+# Normalize 
+# Global style
+# Header Area
+# Banner Area
+# Section Area
+# Footer Area
+============================================*/
+
+// CSS Plugin import
+
+@import "./bootstrap.min.css";
+// Scss main
+@import "main/variable";
+@import "main/mixins";
+@import "main/typography";
+@import "main/global";
+@import "main/banner";
+
+// Scss Pages
+@import "pages/navbar";
+@import "pages/footer";
+@import "pages/section";
