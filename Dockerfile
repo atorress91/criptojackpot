@@ -1,20 +1,34 @@
-# Imagen base
-FROM node:18-alpine
+# Etapa 1: Construcción
+FROM node:18-alpine AS builder
 
-# Directorio de trabajo
 WORKDIR /app
 
-# Copiar package.json y package-lock.json
 COPY package*.json ./
 
-# Instalar dependencias (usando install en lugar de ci para desarrollo)
-RUN npm install
+# Instalamos TODAS las dependencias para poder compilar
+RUN npm ci
 
 # Copiar el resto del código
 COPY . .
 
-# Exponer puerto
+# Compilamos la app de Next.js
+RUN npm run build
+
+# Etapa 2: Producción
+FROM node:18-alpine AS runner
+
+WORKDIR /app
+
+# Solo copiamos dependencias necesarias
+COPY --from=builder /app/node_modules ./node_modules
+
+# Copiamos solo los archivos necesarios para producción
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/package.json ./package.json
+
+# Exponemos el puerto que usa Next.js
 EXPOSE 3000
 
-# Comando para ejecutar en modo desarrollo
-CMD ["npm", "run", "dev"]
+# Comando para producción
+CMD ["npm", "start"]

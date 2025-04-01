@@ -7,11 +7,11 @@ import win from "@/../public/images/banner/win.png";
 import Counter from "@/components/Counter";
 
 import ScrollToTop from "@/components/ScrollToTop";
-import BannerOneSlider from "@/components/home-one/BannerOneSlider";
+// import BannerOneSlider from "@/components/home-one/BannerOneSlider";
 import { ArrowRight, Star } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import Link from "next/link";
-import HomeOneBannerVideo from "./home-one/HomeOneBannerVideo";
+// import HomeOneBannerVideo from "./home-one/HomeOneBannerVideo";
 import MotionFadeDownToTop from "./motionEffect/MotionFadeDownToTop";
 import MotionFadeLeft from "./motionEffect/MotionFadeLeft";
 import MotionFadeRight from "./motionEffect/MotionFadeRight";
@@ -75,7 +75,7 @@ export default function HomeOneBanner() {
                         </svg>
                       </span>
                     </span>
-                    <HomeOneBannerVideo />
+                    {/* <HomeOneBannerVideo /> */}
                     {/* =========== */}
                   </div>
                 </MotionFadeTopToDown>
@@ -173,7 +173,7 @@ export default function HomeOneBanner() {
 
         <Image src={win} alt="img" className="shape-win" />
         <MotionFadeRight>
-          <BannerOneSlider />
+          {/* <BannerOneSlider /> */}
         </MotionFadeRight>
 
         {/* <!--Scroll Top --> */}

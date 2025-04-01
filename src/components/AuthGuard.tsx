@@ -20,7 +20,7 @@ export const AuthGuard = ({ children, requireAuth }: AuthGuardProps) => {
             if (requireAuth && !token) {
                 router.push('/login')
             } else if (!requireAuth && token) {
-                router.push('/app')
+                router.push('/user-panel')
             } else {
                 setIsChecking(false)
             }

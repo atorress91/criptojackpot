@@ -1,5 +1,5 @@
 "use client";
-import loginImage from "@/../public/images/background/back-login.png";
+import loginImage from "@/../public/images/background/back-register.png";
 import logoBlack from "@/../public/images/logo/cripto-jackpot-logo.png";
 import { useLoginForm } from "@/hooks/useLoginForm";
 import { Eye, EyeSlash } from "@phosphor-icons/react/dist/ssr";
@@ -21,16 +21,15 @@ const LoginSection = () => {
     <section className="login-section position-relative">
       <div className="container">
         <div className="row justify-content-center align-items-center">
-          <div className="col-lg-4">
+          <div className="col-lg-4 col-md-8 col-11">
             <div className="left-logwrap d-center">
               <div className="authentication-cmn">
                 <div className="container">
-                  <Link href="/" className="pb-50 mb-xxl-10 d-block">
+                  <Link href="/" className="text-center mb-xxl-10 d-block">
                     <Image src={logoBlack} alt="img" />
                   </Link>
                 </div>
                 <div className="log-title mb-xxl-10 mb-xl-7 mb-6">
-                  <h3 className="mb-xxl-6 mb-4">Sign in to Minimal</h3>
                   <span className="n3-clr">
                     New user?{" "}
                     <Link href="/register" className="s1-clr s1-texthover">
@@ -94,7 +93,7 @@ const LoginSection = () => {
                         disabled={isLoading}
                       >
                         <span className="fw_600 n0-clr">
-                          {isLoading ? 'Iniciando sesión...' : 'Login'}
+                          {isLoading ? 'Loading...' : 'Login'}
                         </span>
                       </button>
                     </div>
@@ -111,8 +110,8 @@ const LoginSection = () => {
                   alt="img"
                   style={{
                     width: '100%',
-                    height: '100%', 
-                    objectFit: 'cover'
+                    height: '100%',
+                    objectFit: 'contain'
                   }}
                 />
               </div>

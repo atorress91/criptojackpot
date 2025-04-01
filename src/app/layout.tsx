@@ -1,7 +1,7 @@
 import "@/../node_modules/react-modal-video/scss/modal-video.scss";
 import Bootstrap from "@/components/Bootstrap";
 import Cursor from "@/components/Cursor";
-import { bodyFont } from "@/utils/fonts";
+// import { bodyFont } from "@/utils/fonts";
 import type { Metadata } from "next";
 import "swiper/css";
 import "../styles/scss/style.scss";
@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${bodyFont.variable} ${bodyFont.className}`}>
+    <html lang="en">
       <Bootstrap>
         <body>
           <Cursor />

@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 
 import { AuthRequest } from '@/interfaces/authRequest';
 import { authService } from '@/services/authService';
-import { TokenService } from '@/services/tokenService';
 
 interface LoginFormData {
   email: string;
@@ -23,6 +22,16 @@ interface UseLoginFormReturn {
 const initialFormData: LoginFormData = {
   email: '',
   password: ''
+};
+
+// Simulación temporal de servicio de tokens
+const TokenService = {
+  setToken: (token: string) => {
+    localStorage.setItem('auth_token', token);
+  },
+  setUser: (user: any) => {
+    localStorage.setItem('user', JSON.stringify(user));
+  }
 };
 
 export const useLoginForm = (): UseLoginFormReturn => {
@@ -53,32 +62,6 @@ export const useLoginForm = (): UseLoginFormReturn => {
       return false;
     }
 
-    const password = formData.password;
-    if (password.length < 8) {
-      setError('Password must be at least 8 characters long');
-      return false;
-    }
-    if (password.length > 16) {
-      setError('Password must not exceed 16 characters');
-      return false;
-    }
-    if (!/[A-Z]/.test(password)) {
-      setError('Password must contain at least one uppercase letter');
-      return false;
-    }
-    if (!/[a-z]/.test(password)) {
-      setError('Password must contain at least one lowercase letter');
-      return false;
-    }
-    if (!/[0-9]/.test(password)) {
-      setError('Password must contain at least one number');
-      return false;
-    }
-    if (!/[^a-zA-Z0-9]/.test(password)) {
-      setError('Password must contain at least one special character');
-      return false;
-    }
-
     return true;
   };
 
@@ -92,6 +75,35 @@ export const useLoginForm = (): UseLoginFormReturn => {
 
     setIsLoading(true);
 
+    // MODO SIMULACIÓN - Establece a true para omitir la llamada al backend
+    const SIMULATION_MODE = true;
+
+    if (SIMULATION_MODE) {
+      // Simulamos un pequeño retraso para dar sensación de carga real
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
+      // Crear un usuario simulado con los datos introducidos
+      const mockUser = {
+        email: formData.email,
+        name: formData.email.split('@')[0],
+        token: "mock-jwt-token-" + Math.random().toString(36).substring(2, 10),
+        role: "user"
+      };
+      
+      // Guardar los datos en localStorage como lo haría la aplicación real
+      TokenService.setToken(mockUser.token);
+      TokenService.setUser(mockUser);
+      
+      // Dejamos de mostrar el estado de carga
+      setIsLoading(false);
+      
+      // Navegamos a la página que normalmente se mostraría tras un inicio de sesión exitoso
+      window.location.href = '/user-panel';
+      
+      return;
+    } 
+    
+    // CÓDIGO ORIGINAL - Se ejecuta cuando SIMULATION_MODE es false
     try {
       const credentials: AuthRequest = {
         email: formData.email,
@@ -100,11 +112,11 @@ export const useLoginForm = (): UseLoginFormReturn => {
 
       const user = await authService.authenticate(credentials);
 
-      if (user.token) {
-        TokenService.setToken(user.token);
-        TokenService.setUser(user);
-      }
-      router.push('/app');
+      // if (user.token) {
+      //   TokenService.setToken(user.token);
+      //   TokenService.setUser(user);
+      // }
+      router.push('/user-panel');
 
     } catch (error: any) {
       console.log('Login Error:', error);
