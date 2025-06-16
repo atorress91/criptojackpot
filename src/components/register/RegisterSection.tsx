@@ -1,10 +1,10 @@
-"use client";
-import registerImage from "@/../public/images/background/back-register.png";
-import logo from "@/../public/images/logo/cripto-jackpot-logo.png";
-import { useRegisterForm } from "@/hooks/useRegisterForm";
-import { CaretRight, Eye, EyeSlash } from "@phosphor-icons/react/dist/ssr";
-import Image from "next/image";
-import Link from "next/link";
+'use client';
+import registerImage from '@/../public/images/background/back-register.png';
+import logo from '@/../public/images/logo/cripto-jackpot-logo.png';
+import { useRegisterForm } from '@/hooks/useRegisterForm';
+import { CaretRight, Eye, EyeSlash } from '@phosphor-icons/react/dist/ssr';
+import Image from 'next/image';
+import Link from 'next/link';
 
 const RegisterSection = () => {
   const {
@@ -17,7 +17,7 @@ const RegisterSection = () => {
     handleInputChange,
     handleCountryChange,
     togglePasswordVisibility,
-    handleSubmit
+    handleSubmit,
   } = useRegisterForm();
 
   return (
@@ -35,24 +35,19 @@ const RegisterSection = () => {
                     style={{
                       maxWidth: '180px',
                       height: 'auto',
-                      width: '100%'
+                      width: '100%',
                     }}
                   />
                 </Link>
                 <div className="log-title mb-3">
                   <h3 className="mb-2 text-center fs-4">Get started absolutely free</h3>
                   <span className="n3-clr d-block text-center">
-                    Already have an account?{" "}
+                    Already have an account?{' '}
                     <Link href="login" className="s1-clr fw_500 s1-texthover">
                       Sign in
                     </Link>
                   </span>
                 </div>
-                {error && (
-                  <div className="alert alert-danger" role="alert">
-                    {error}
-                  </div>
-                )}
                 <form className="form-cmn-action" onSubmit={handleSubmit}>
                   <div className="row g-3">
                     <div className="col-sm-6">
@@ -95,7 +90,7 @@ const RegisterSection = () => {
                       <div className="form-cmn">
                         <div className="ps-grp position-relative">
                           <input
-                            type={isPasswordShow ? "text" : "password"}
+                            type={isPasswordShow ? 'text' : 'password'}
                             name="password"
                             value={formData.password}
                             onChange={handleInputChange}
@@ -120,8 +115,10 @@ const RegisterSection = () => {
                           onChange={handleCountryChange}
                           value={selectedCountry?.id || ''}
                         >
-                          <option value="" disabled>Select Country</option>
-                          {countries.map((country) => (
+                          <option value="" disabled>
+                            Select Country
+                          </option>
+                          {countries.map(country => (
                             <option key={country.id} value={country.id}>
                               {country.name}
                             </option>
@@ -144,9 +141,7 @@ const RegisterSection = () => {
                     <div className="col-sm-6">
                       <div className="form-cmn">
                         <div className="input-group">
-                          <span className="input-group-text">
-                            +{selectedCountry?.phoneCode || ''}
-                          </span>
+                          <span className="input-group-text">+{selectedCountry?.phoneCode || ''}</span>
                           <input
                             type="tel"
                             name="phone"
@@ -206,7 +201,10 @@ const RegisterSection = () => {
                     </div>
                     <div className="col-12">
                       <span className="n3-clr fs-eight d-block text-center">
-                        By signup, I agree to <Link href="#" className="n4-clr text-decoration-none">Terms of service and Privacy Policy.</Link>
+                        By signup, I agree to{' '}
+                        <Link href="#" className="n4-clr text-decoration-none">
+                          Terms of service and Privacy Policy.
+                        </Link>
                       </span>
                     </div>
                   </div>
@@ -223,7 +221,7 @@ const RegisterSection = () => {
                   style={{
                     width: '100%',
                     height: '100vh',
-                    objectFit: 'contain'
+                    objectFit: 'contain',
                   }}
                 />
               </div>

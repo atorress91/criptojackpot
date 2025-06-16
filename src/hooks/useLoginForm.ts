@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import { AuthRequest } from '@/interfaces/authRequest';
 import { authService } from '@/services/authService';
+import { useNotification } from '@/providers/NotificationProvider';
 
 interface LoginFormData {
   email: string;
@@ -21,7 +22,7 @@ interface UseLoginFormReturn {
 
 const initialFormData: LoginFormData = {
   email: '',
-  password: ''
+  password: '',
 };
 
 // Simulación temporal de servicio de tokens
@@ -31,7 +32,7 @@ const TokenService = {
   },
   setUser: (user: any) => {
     localStorage.setItem('user', JSON.stringify(user));
-  }
+  },
 };
 
 export const useLoginForm = (): UseLoginFormReturn => {
@@ -40,6 +41,7 @@ export const useLoginForm = (): UseLoginFormReturn => {
   const [isPasswordShow, setIsPasswordShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const showNotification = useNotification();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -52,13 +54,13 @@ export const useLoginForm = (): UseLoginFormReturn => {
 
   const validateForm = (): boolean => {
     if (!formData.email || !formData.password) {
-      setError('Please complete all fields');
+      showNotification('error', 'Faltan campos requeridos', 'Por favor, complete todos los campos requeridos');
       return false;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      setError('Invalid email format');
+      showNotification('error', 'Formato de correo inválido', 'Por favor, introduzca un correo válido');
       return false;
     }
 
@@ -76,51 +78,50 @@ export const useLoginForm = (): UseLoginFormReturn => {
     setIsLoading(true);
 
     // MODO SIMULACIÓN - Establece a true para omitir la llamada al backend
-    const SIMULATION_MODE = true;
+    const SIMULATION_MODE = false;
 
     if (SIMULATION_MODE) {
       // Simulamos un pequeño retraso para dar sensación de carga real
       await new Promise(resolve => setTimeout(resolve, 800));
-      
+
       // Crear un usuario simulado con los datos introducidos
       const mockUser = {
         email: formData.email,
         name: formData.email.split('@')[0],
-        token: "mock-jwt-token-" + Math.random().toString(36).substring(2, 10),
-        role: "user"
+        token: 'mock-jwt-token-' + Math.random().toString(36).substring(2, 10),
+        role: 'user',
       };
-      
+
       // Guardar los datos en localStorage como lo haría la aplicación real
       TokenService.setToken(mockUser.token);
       TokenService.setUser(mockUser);
-      
+
       // Dejamos de mostrar el estado de carga
       setIsLoading(false);
-      
+
       // Navegamos a la página que normalmente se mostraría tras un inicio de sesión exitoso
       window.location.href = '/user-panel';
-      
+
       return;
-    } 
-    
+    }
+
     // CÓDIGO ORIGINAL - Se ejecuta cuando SIMULATION_MODE es false
     try {
       const credentials: AuthRequest = {
         email: formData.email,
-        password: formData.password
+        password: formData.password,
       };
 
       const user = await authService.authenticate(credentials);
 
-      // if (user.token) {
-      //   TokenService.setToken(user.token);
-      //   TokenService.setUser(user);
-      // }
+      if (user.token) {
+        TokenService.setToken(user.token);
+        TokenService.setUser(user);
+      }
       router.push('/user-panel');
-
     } catch (error: any) {
-      console.log('Login Error:', error);
-      setError(error.message || 'Error al iniciar sesión');
+      console.error('Login Error:', error);
+      showNotification('error', 'Error al iniciar sesión', 'Error al iniciar sesión');
     } finally {
       setIsLoading(false);
     }
@@ -133,6 +134,6 @@ export const useLoginForm = (): UseLoginFormReturn => {
     error,
     handleInputChange,
     togglePasswordVisibility,
-    handleSubmit
+    handleSubmit,
   };
 };
