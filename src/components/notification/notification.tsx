@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { CheckCircle, AlertTriangle, Info, X as CloseIcon } from 'lucide-react';
@@ -28,13 +28,17 @@ const iconMap = {
 };
 
 const NotificationComponent: React.FC<Props> = ({ notifications, removeNotification }) => {
+  const [mounted, setMounted] = useState(false);
+
   // Auto-dismiss tras 5s
   useEffect(() => {
+    setMounted(true);
     notifications.forEach(n => {
       setTimeout(() => removeNotification(n.id), 5000);
     });
   }, [notifications, removeNotification]);
 
+  if (!mounted) return null;
   // Renderizar en portal
   return createPortal(
     <div className={styles.container} role="alert" aria-live="assertive">
