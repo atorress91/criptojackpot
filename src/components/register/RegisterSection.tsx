@@ -59,6 +59,7 @@ const RegisterSection = () => {
                           onChange={handleInputChange}
                           placeholder="Name"
                           className="py-2"
+                          required
                         />
                       </div>
                     </div>
@@ -71,6 +72,7 @@ const RegisterSection = () => {
                           onChange={handleInputChange}
                           placeholder="Last name"
                           className="py-2"
+                          required
                         />
                       </div>
                     </div>
@@ -83,6 +85,7 @@ const RegisterSection = () => {
                           onChange={handleInputChange}
                           placeholder="Email address"
                           className="py-2"
+                          required
                         />
                       </div>
                     </div>
@@ -96,6 +99,7 @@ const RegisterSection = () => {
                             onChange={handleInputChange}
                             className="password-field py-2"
                             placeholder="Enter Your Password..."
+                            required
                           />
                           <span
                             className="position-absolute top-50 end-0 translate-middle-y"
@@ -114,6 +118,7 @@ const RegisterSection = () => {
                           className="form-select py-2"
                           onChange={handleCountryChange}
                           value={selectedCountry?.id || ''}
+                          required
                         >
                           <option value="" disabled>
                             Select Country
@@ -135,6 +140,7 @@ const RegisterSection = () => {
                           onChange={handleInputChange}
                           placeholder="Identification"
                           className="py-2"
+                          required
                         />
                       </div>
                     </div>
@@ -162,6 +168,7 @@ const RegisterSection = () => {
                           onChange={handleInputChange}
                           placeholder="State"
                           className="py-2"
+                          required
                         />
                       </div>
                     </div>
@@ -174,6 +181,7 @@ const RegisterSection = () => {
                           onChange={handleInputChange}
                           placeholder="City"
                           className="py-2"
+                          required
                         />
                       </div>
                     </div>
@@ -186,6 +194,7 @@ const RegisterSection = () => {
                           onChange={handleInputChange}
                           placeholder="Address"
                           className="py-2"
+                          required
                         />
                       </div>
                     </div>
