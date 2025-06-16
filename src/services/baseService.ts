@@ -13,8 +13,8 @@ export abstract class BaseService {
     this.apiClient = axios.create({
       baseURL: `${API_URL}/api/v1`,
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     });
 
     this.setupInterceptors();
@@ -22,21 +22,21 @@ export abstract class BaseService {
 
   private setupInterceptors(): void {
     this.apiClient.interceptors.request.use(
-      (config) => {
+      config => {
         const token = TokenService.getToken();
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
       },
-      (error) => {
+      error => {
         return Promise.reject(error);
       }
     );
 
     this.apiClient.interceptors.response.use(
-      (response) => response,
-      async (error) => {
+      response => response,
+      async error => {
         if (error.response?.status === 401) {
           TokenService.clearSession();
           if (typeof window !== 'undefined') {
@@ -61,12 +61,10 @@ export abstract class BaseService {
   protected handleError(error: AxiosError<Response<any>>): never {
     if (error.response?.status === 401) {
       TokenService.clearSession();
-      throw new Error("The session has expired");
+      throw new Error('The session has expired');
     }
 
-    const errorMessage = error.response?.data?.message ||
-      error.message ||
-      'An error occurred';
+    const errorMessage = error.response?.data?.message || error.message || 'An error occurred';
 
     console.log('Error Response:', error.response?.data);
     throw new Error(errorMessage);
