@@ -1,9 +1,12 @@
 {
-  "welcome": "Bienvenido a LottoVibe",
-  "play_now": "Jugar Ahora",
-  "how_it_works": "¿Cómo funciona?",
-  "prizes": "Premios",
-  "winners": "Ganadores",
-  "contact": "Contacto",
-  "select_language": "Seleccionar idioma"
+  "NAVBAR-BLACK": {
+    "Login": "Iniciar sesión",
+    "Join Now": "Participar ahora",
+    "Basket": "Carrito",
+    "User Panel": "Panel de usuario",
+    "Home": "Inicio",
+    "About Us": "Acerca de nosotros",
+    "Services": "Servicios",
+    "Contact": "Contacto"
+  }
 }

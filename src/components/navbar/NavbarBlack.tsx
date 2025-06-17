@@ -49,11 +49,6 @@ const NavbarBlack = () => {
     }
   };
 
-  const options = [
-    { value: 'En', label: 'En' },
-    { value: 'Bn', label: 'Bn' },
-    { value: 'Hn', label: 'Hn' },
-  ];
   return (
     <header
       className={`header-section-v1 custom-fixed header-position ${
