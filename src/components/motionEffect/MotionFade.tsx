@@ -8,10 +8,10 @@ const MotionFade = ({ children, className, onClick }: { children: ReactNode; cla
       onClick={onClick}
       viewport={{ once: true }}
       className={className}
-      initial={{ opacity: 0, scale: 0.5, translateY: 40 }}
+      initial={{ opacity: 0, scale: 0.5, y: 40 }}
       whileInView={{
         opacity: 1,
-        translateY: 0,
+        y: 0,
         scale: 1,
         transition: { duration: 0.7 },
       }}
