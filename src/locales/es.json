@@ -5,8 +5,10 @@
     "errors": {
       "emailRequired": "El correo electrónico es requerido",
       "invalidCredentials": "Credenciales inválidas",
+      "invalidEmailFormat": "Formato de correo inválido. Por favor, introduzca un correo válido",
       "networkError": "Error de conexión. Verifica tu internet.",
       "passwordRequired": "La contraseña es requerida",
+      "requiredFields": "Por favor, complete todos los campos requeridos",
       "serverError": "Error del servidor. Por favor, intenta más tarde."
     },
     "forgetPassword": "¿Olvidaste tu contraseña?",

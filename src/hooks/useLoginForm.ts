@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { AuthRequest } from '@/interfaces/authRequest';
 import { authService } from '@/services/authService';
 import { useNotification } from '@/providers/NotificationProvider';
+import { useTranslation } from 'react-i18next';
 
 interface LoginFormData {
   email: string;
@@ -36,6 +37,7 @@ const TokenService = {
 };
 
 export const useLoginForm = (): UseLoginFormReturn => {
+  const { t } = useTranslation();
   const router = useRouter();
   const [formData, setFormData] = useState<LoginFormData>(initialFormData);
   const [isPasswordShow, setIsPasswordShow] = useState(false);
@@ -54,13 +56,17 @@ export const useLoginForm = (): UseLoginFormReturn => {
 
   const validateForm = (): boolean => {
     if (!formData.email || !formData.password) {
-      showNotification('error', 'Faltan campos requeridos', 'Por favor, complete todos los campos requeridos');
+      showNotification('error', t('LOGIN.errors.invalidData').split('.')[0], t('LOGIN.errors.requiredFields'));
       return false;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      showNotification('error', 'Formato de correo inválido', 'Por favor, introduzca un correo válido');
+      showNotification(
+        'error',
+        t('LOGIN.errors.invalidEmailFormat').split('.')[0],
+        t('LOGIN.errors.invalidEmailFormat')
+      );
       return false;
     }
 
@@ -121,7 +127,7 @@ export const useLoginForm = (): UseLoginFormReturn => {
       router.push('/user-panel');
     } catch (error: any) {
       console.error('Login Error:', error);
-      showNotification('error', 'Error al iniciar sesión', 'Error al iniciar sesión');
+      showNotification('error', t('LOGIN.errors.serverError').split('.')[0], t('LOGIN.errors.serverError'));
     } finally {
       setIsLoading(false);
     }

@@ -5,8 +5,10 @@
     "errors": {
       "emailRequired": "Email is required",
       "invalidCredentials": "Invalid credentials",
+      "invalidEmailFormat": "Invalid email format. Please enter a valid email",
       "networkError": "Network error. Check your connection.",
       "passwordRequired": "Password is required",
+      "requiredFields": "Please complete all required fields",
       "serverError": "Server error. Please try again later."
     },
     "forgetPassword": "Forget password",
