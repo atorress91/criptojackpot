@@ -295,7 +295,7 @@
       position: absolute;
       top: -160px;
       left: 20px;
-      content: "";
+      content: '';
       width: 320px;
       height: 320px;
       border-radius: 50%;
@@ -544,7 +544,6 @@
 //limit-timev9
 .limited-lotteryv9 {
   .draw-timer-item {
-
     .smalltext,
     .text-hed {
       color: var(--n0);
@@ -595,7 +594,6 @@
     }
 
     .kewta-btn {
-
       .kew-arrow,
       .kew-text {
         background: var(--act4);
@@ -684,7 +682,7 @@
       top: 0;
       height: 100%;
       width: 2px;
-      content: "";
+      content: '';
       background: linear-gradient(180deg, #ff650e 0%, rgba(255, 101, 14, 0) 100%);
     }
   }
@@ -777,7 +775,7 @@
 
   &::after {
     position: absolute;
-    content: "";
+    content: '';
     top: -2px;
     left: 0;
     width: 100%;
@@ -796,7 +794,7 @@
     left: -0px;
     width: 100%;
     height: 100%;
-    content: "";
+    content: '';
     border: 1px solid rgba(85, 74, 255, 0.1);
     border-radius: 24px;
     z-index: -1;
@@ -850,7 +848,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    content: "";
+    content: '';
     background: var(--s1);
     width: 70%;
     height: 100%;
@@ -861,7 +859,7 @@
     position: absolute;
     left: 40%;
     top: 0px;
-    content: "";
+    content: '';
     background: #9792e6;
     width: 20px;
     height: 4px;
@@ -875,7 +873,7 @@
       height: 11px;
       border-radius: 50%;
       background: var(--s1);
-      content: "";
+      content: '';
     }
   }
 }
@@ -896,7 +894,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    content: "";
+    content: '';
     background: var(--act4);
     width: 70%;
     height: 100%;
@@ -907,7 +905,7 @@
     position: absolute;
     left: 40%;
     top: 0px;
-    content: "";
+    content: '';
     background: rgba(254, 201, 47, 0.8);
     width: 20px;
     height: 4px;
@@ -921,7 +919,7 @@
       height: 11px;
       border-radius: 50%;
       background: var(--act4);
-      content: "";
+      content: '';
     }
   }
 }
@@ -970,7 +968,6 @@
     }
 
     .kewta-btn {
-
       .kew-arrow,
       .kew-text {
         background: var(--s1);
@@ -1141,7 +1138,6 @@
       }
 
       .kewta-btn {
-
         .kew-arrow,
         .kew-text {
           background: var(--act4);
@@ -1269,7 +1265,7 @@
     left: 0px;
     width: 100%;
     height: 100%;
-    content: "";
+    content: '';
     border: 1px solid var(--nw3);
     border-radius: 24px;
     z-index: -1;
@@ -1614,7 +1610,7 @@
       li {
         &::before {
           position: absolute;
-          content: "";
+          content: '';
           top: 10px;
           left: 0;
           width: 6px;
@@ -1705,7 +1701,7 @@
     }
   }
 
-  @media (max-width:768px) {
+  @media (max-width: 768px) {
     .container {
       display: flex;
       justify-content: center;
@@ -1714,9 +1710,8 @@
 }
 
 .form-cmn {
-
   input {
-    color: white
+    color: white;
   }
 
   .form-select {
@@ -1766,7 +1761,6 @@
 }
 
 .form-cmn {
-
   .form-select:focus,
   .input-group-text:focus,
   .form-control:focus {
@@ -1813,7 +1807,7 @@
 //Login Section
 
 .tablet-custom-v1 {
-  .tags-container>canvas {
+  .tags-container > canvas {
     position: relative;
   }
 
@@ -2003,7 +1997,7 @@
 
   &::before {
     position: absolute;
-    content: "";
+    content: '';
     width: 10px;
     height: 10px;
     background: var(--s1);
@@ -2107,7 +2101,7 @@
 
   &::before {
     position: absolute;
-    content: "";
+    content: '';
     width: 422px;
     height: 100%;
     right: 0;
@@ -2230,7 +2224,7 @@
     position: absolute;
     top: -15%;
     right: 0;
-    content: "";
+    content: '';
     width: 345px;
     height: 115%;
     background: var(--s1);
@@ -2363,7 +2357,7 @@
     position: absolute;
     right: 0;
     bottom: 0;
-    content: "";
+    content: '';
     width: 410px;
     height: 100%;
     background: url(../../../../public/images/global/testimonial-before.png) no-repeat center center;
@@ -2899,7 +2893,7 @@
     position: absolute;
     bottom: -1px;
     left: 0;
-    content: "";
+    content: '';
     max-width: 720px;
     width: 100%;
     height: 310px;
@@ -3284,7 +3278,7 @@
     inset: 0;
     width: 100%;
     height: 100%;
-    content: "";
+    content: '';
     background: rgba(32, 32, 35, 0.461);
   }
 
@@ -3320,8 +3314,6 @@
 
   @include maxQuery(575) {
     height: 300px;
-
-    .real-vid {}
   }
 }
 
@@ -3465,7 +3457,6 @@
     }
 
     .kewta-btn {
-
       .kew-arrow,
       .kew-text {
         background: var(--s1);
@@ -3501,7 +3492,6 @@
   &:hover {
     .content-middle {
       .kewta-btn {
-
         .kew-text,
         .kew-arrow {
           background: var(--act4);
@@ -3877,7 +3867,6 @@
 }
 
 .comments-area {
-
   textarea,
   input {
     background: rgba(239, 239, 239, 0.7);
@@ -4008,13 +3997,12 @@
 //Contest Details
 .border-con {
   border-right: 1px solid rgba(255, 101, 14, 0.5);
-  border-width: 1;
+  border-width: 1px;
   display: block;
   height: 13px;
 }
 
 .myrating {
-
   input,
   textarea {
     padding: 8px 16px;
@@ -4090,7 +4078,7 @@
 
     &::before {
       position: absolute;
-      content: "";
+      content: '';
       bottom: -10px;
       left: 10px;
       width: 2px;
@@ -4133,7 +4121,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        content: "";
+        content: '';
         background: var(--s1);
         clip-path: polygon(0 0, 100% 0%, 0 100%, 0% 100%);
         z-index: -1;
@@ -4180,7 +4168,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    content: "";
+    content: '';
     background: var(--s1);
     clip-path: polygon(0 0, 100% 0%, 0 100%, 0% 100%);
     z-index: -1;
@@ -4190,7 +4178,8 @@
     margin: 24px auto;
   }
 
-  @include maxQuery(575) {}
+  @include maxQuery(575) {
+  }
 }
 
 //contest details slider
@@ -4200,7 +4189,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    content: "";
+    content: '';
     height: 300px;
     background: var(--n4);
   }
@@ -4271,7 +4260,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    content: "";
+    content: '';
     background: var(--s1);
     clip-path: polygon(0 0, 100% 0%, 0 100%, 0% 100%);
     z-index: -1;
@@ -4320,7 +4309,8 @@
     }
   }
 
-  @include maxQuery(767) {}
+  @include maxQuery(767) {
+  }
 }
 
 .quantity-basket {
@@ -4366,7 +4356,6 @@
 
     @include maxQuery(1199) {
       .qty {
-
         button,
         input {
           font-size: 16px;
@@ -4767,7 +4756,7 @@
 
   &::before {
     position: absolute;
-    content: "";
+    content: '';
     width: 618px;
     height: 100%;
     background: var(--n4);
@@ -4823,7 +4812,7 @@
         left: 50%;
         width: 2px;
         height: 68px;
-        content: "";
+        content: '';
         border-radius: var(--number-token-0, 0px);
         background: linear-gradient(59deg, rgba(85, 74, 255, 0) 0%, #554aff 100.14%);
       }
@@ -4929,7 +4918,7 @@
     top: 42%;
     left: 45%;
     transform: translate(-50%, -50%);
-    content: "";
+    content: '';
     width: 500px;
     height: 500px;
     border-radius: 50%;
@@ -5336,7 +5325,7 @@
     background: url(../../../../public/images/bike/bliss-bg.png) no-repeat center center;
     background-size: cover;
     position: absolute;
-    content: "";
+    content: '';
     top: 7px;
     left: 0;
     width: 82%;
@@ -5866,7 +5855,6 @@
 }
 
 .contact-form {
-
   input,
   textarea {
     padding: 11px 0;
@@ -6136,3 +6124,198 @@
 }
 
 //Odometer items
+
+/* Register Section Responsive Styles */
+
+/* Override default styles for better mobile experience */
+@media (max-width: 575.98px) {
+  /* Extra small devices (portrait phones, less than 576px) */
+  .login-section {
+    min-height: 100vh !important;
+    height: auto !important;
+  }
+
+  .login-section .authentication-cmn {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .login-section .form-cmn input,
+  .login-section .form-cmn .form-select {
+    font-size: 14px !important;
+    padding: 10px 12px !important;
+  }
+
+  .login-section .input-group-text {
+    padding: 10px 8px !important;
+    font-size: 14px !important;
+  }
+
+  .login-section h3 {
+    font-size: 1.25rem !important;
+  }
+
+  .login-section .log-title span {
+    font-size: 0.875rem !important;
+  }
+
+  .login-section button {
+    padding: 12px 16px !important;
+  }
+
+  .login-section button span {
+    font-size: 14px !important;
+  }
+
+  /* Logo specific sizing for mobile */
+  .login-section img {
+    max-width: 100px !important;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  /* Small devices (landscape phones, 576px and up) */
+  .login-section img {
+    max-width: 130px !important;
+  }
+
+  .login-section .authentication-cmn {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  /* Medium devices (tablets, 768px and up) */
+  .login-section img {
+    max-width: 150px !important;
+  }
+
+  .login-section .authentication-cmn {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  /* Large devices (desktops, 992px and up) */
+  .login-section .left-logwrap {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  /* Extra large devices (large desktops, 1200px and up) */
+  .login-section img {
+    max-width: 180px !important;
+  }
+}
+
+/* Ensure form elements are properly sized on all devices */
+.login-section .form-cmn input:focus,
+.login-section .form-cmn .form-select:focus,
+.login-section .form-cmn .form-control:focus {
+  box-shadow: none !important;
+  border-color: var(--nw4) !important;
+}
+
+/* Fix for password eye icon positioning */
+.login-section .ps-grp {
+  position: relative;
+}
+
+.login-section .ps-grp span {
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ensure proper spacing on all screen sizes */
+.login-section .row.g-2 > * {
+  padding-right: calc(var(--bs-gutter-x) * 0.25);
+  padding-left: calc(var(--bs-gutter-x) * 0.25);
+}
+
+@media (min-width: 576px) {
+  .login-section .row.g-sm-3 > * {
+    padding-right: calc(var(--bs-gutter-x) * 0.375);
+    padding-left: calc(var(--bs-gutter-x) * 0.375);
+  }
+}
+
+/* Fix for input group on mobile */
+@media (max-width: 575.98px) {
+  .login-section .input-group {
+    flex-wrap: nowrap;
+  }
+
+  .login-section .input-group-text {
+    min-width: 45px;
+    padding: 10px 6px !important;
+  }
+}
+
+/* Ensure the section takes full viewport height on all devices */
+.login-section {
+  min-height: -webkit-fill-available;
+  min-height: -moz-available;
+  min-height: fill-available;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Fix for iOS Safari viewport height */
+@supports (-webkit-touch-callout: none) {
+  .login-section {
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* Prevent horizontal scroll on mobile */
+.login-section {
+  overflow-x: hidden;
+}
+
+.login-section .container-fluid {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Ensure background image doesn't cause issues on mobile */
+@media (max-width: 991.98px) {
+  .login-section .log-thumbwrap {
+    display: none !important;
+  }
+}
+
+/* Animation for smooth transitions */
+.login-section input,
+.login-section .form-select,
+.login-section button {
+  transition: all 0.3s ease;
+}
+
+/* Accessibility improvements */
+.login-section input:focus,
+.login-section .form-select:focus {
+  outline: 2px solid var(--s1);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more) {
+  .login-section input,
+  .login-section .form-select {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .login-section * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
