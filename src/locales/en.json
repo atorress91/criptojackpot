@@ -60,8 +60,11 @@
     "creatingAccount": "Creating account...",
     "emailPlaceholder": "Email address",
     "errors": {
+      "countryLoadError": "Error loading countries",
+      "countryRequired": "Please select a country",
       "emailExists": "This email is already registered",
       "invalidData": "Please verify the entered data",
+      "requiredFields": "Please complete all required fields",
       "serverError": "Server error. Please try again later.",
       "termsRequired": "You must accept the terms and conditions",
       "weakPassword": "Password must be at least 8 characters"

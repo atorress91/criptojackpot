@@ -7,6 +7,7 @@ import { User } from '@/interfaces/user';
 import { countryService } from '@/services/countryService';
 import { userService } from '@/services/userService';
 import { useNotification } from '@/providers/NotificationProvider';
+import { useTranslation } from 'react-i18next';
 
 interface UseRegisterFormReturn {
   formData: RegisterFormData;
@@ -35,6 +36,7 @@ const initialFormData: RegisterFormData = {
 };
 
 export const useRegisterForm = (): UseRegisterFormReturn => {
+  const { t } = useTranslation();
   const router = useRouter();
   const [formData, setFormData] = useState<RegisterFormData>(initialFormData);
   const [countries, setCountries] = useState<Country[]>([]);
@@ -52,15 +54,15 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
       } catch (error) {
         showNotification(
           'error',
-          'Faltan los países.',
-          'Error al cargar los países. Por favor, inténtelo de nuevo más tarde.'
+          t('REGISTER.errors.serverError').split('.')[0],
+          t('REGISTER.errors.countryLoadError')
         );
         console.error('Error fetching countries:', error);
       }
     };
 
     fetchCountries().then();
-  }, [showNotification]);
+  }, [showNotification, t]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -86,11 +88,11 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
 
   const validateForm = (): boolean => {
     if (!formData.email || !formData.password || !formData.name || !formData.lastName) {
-      showNotification('error', 'Faltan campos requeridos', 'Por favor, complete todos los campos requeridos');
+      showNotification('error', t('REGISTER.errors.invalidData').split('.')[0], t('REGISTER.errors.requiredFields'));
       return false;
     }
     if (!formData.countryId) {
-      showNotification('error', 'Faltan campos requeridos', 'Por favor, seleccione un país');
+      showNotification('error', t('REGISTER.errors.invalidData').split('.')[0], t('REGISTER.errors.countryRequired'));
       return false;
     }
     return true;
@@ -119,11 +121,7 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
       await userService.createUser(userData);
       router.push('/login');
     } catch (error: any) {
-      showNotification(
-        'error',
-        'Error al registrarse',
-        'Ocurrió un error durante el registro. Por favor, inténtelo de nuevo más tarde.'
-      );
+      showNotification('error', t('REGISTER.errors.serverError').split('.')[0], t('REGISTER.errors.serverError'));
       console.error('Registration error:', error);
     } finally {
       setIsLoading(false);
