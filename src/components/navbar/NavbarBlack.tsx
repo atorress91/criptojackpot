@@ -116,7 +116,7 @@ const NavbarBlack = () => {
                     );
                   })}
                 </ul>
-                <div className="d-flex flex-wrap flex-xl-no-wrap align-items-center justify-content-lg-end gap-4">
+                <div className="d-flex flex-nowrap align-items-center justify-content-lg-end gap-2 gap-lg-3 gap-xl-4">
                   <ul className="d-flex head-card align-items-center gap-3">
                     <li>
                       <Link href="basket" className="cmn-circle" title={t('NAVBAR-BLACK.Basket')}>
