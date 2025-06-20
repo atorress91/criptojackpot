@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './LanguageSelector.module.scss';
 
 interface Language {
@@ -10,12 +11,14 @@ interface Language {
 const languages: Language[] = [
   { code: 'en', name: 'English', flag: '🇺🇸' },
   { code: 'es', name: 'Español', flag: '🇪🇸' },
-  // añade aquí otros idiomas si los necesitas
 ];
 
 export default function LanguageSelector() {
+  const { i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [currentLanguage, setCurrentLanguage] = useState<Language>(languages[0]);
+  const [currentLanguage, setCurrentLanguage] = useState<Language>(
+    languages.find(lang => lang.code === i18n.language) || languages[0]
+  );
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -28,10 +31,19 @@ export default function LanguageSelector() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  function handleLanguageChange(code: string) {
+  // Actualizar el idioma actual cuando cambie en i18n
+  useEffect(() => {
+    const selected = languages.find(lang => lang.code === i18n.language);
+    if (selected) {
+      setCurrentLanguage(selected);
+    }
+  }, [i18n.language]);
+
+  async function handleLanguageChange(code: string) {
     const selected = languages.find(lang => lang.code === code);
     if (selected) {
       setCurrentLanguage(selected);
+      await i18n.changeLanguage(code);
       setIsOpen(false);
     }
   }

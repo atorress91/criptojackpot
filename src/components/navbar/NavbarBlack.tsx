@@ -10,12 +10,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { navbarData } from '../../../public/data/navbarData';
 import AllHomePage from './AllHomePage';
 import LanguageSelector from '../languageSelector/LanguageSelector';
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
 const NavbarBlack = () => {
+  const { t } = useTranslation();
   const pathName = usePathname();
   const [scrollHeight, setScrollHeight] = useState(0);
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -115,19 +117,19 @@ const NavbarBlack = () => {
                 <div className="d-flex flex-wrap flex-xl-no-wrap align-items-center justify-content-lg-end gap-4">
                   <ul className="d-flex head-card align-items-center gap-3">
                     <li>
-                      <Link href="basket" className="cmn-circle">
+                      <Link href="basket" className="cmn-circle" title={t('NAVBAR-BLACK.Basket')}>
                         <ShoppingCartSimple className="ti ti-shopping-cart-plus"></ShoppingCartSimple>
                       </Link>
                       <span className="badge-seri">04</span>
                     </li>
                     <li>
-                      <Link href="user-panel" className="cmn-circle">
+                      <Link href="user-panel" className="cmn-circle" title={t('NAVBAR-BLACK.User Panel')}>
                         <User className="ti ti-user"></User>
                       </Link>
                     </li>
                     <li>
                       <Link href="/login" className="kewta-btn d-inline-flex align-items-center">
-                        <span className="kew-text p1-border n0-clr">Login</span>
+                        <span className="kew-text p1-border n0-clr">{t('NAVBAR-BLACK.Login')}</span>
                       </Link>
                     </li>
                   </ul>
@@ -135,7 +137,7 @@ const NavbarBlack = () => {
                     <LanguageSelector />
                   </div>
                   <Link href="contest-details" className="kewta-btn d-inline-flex align-items-center">
-                    <span className="kew-text p1-border n0-clr">Join Now</span>
+                    <span className="kew-text p1-border n0-clr">{t('NAVBAR-BLACK.Join Now')}</span>
                     <div className="kew-arrow p1-bg">
                       <div className="kt-one">
                         <ArrowRight className="ti ti-arrow-right n4-clr"></ArrowRight>
