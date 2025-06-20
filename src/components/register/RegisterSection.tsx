@@ -5,8 +5,10 @@ import { useRegisterForm } from '@/hooks/useRegisterForm';
 import { CaretRight, Eye, EyeSlash } from '@phosphor-icons/react/dist/ssr';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
 
 const RegisterSection = () => {
+  const { t } = useTranslation();
   const {
     formData,
     countries,
@@ -45,11 +47,11 @@ const RegisterSection = () => {
 
                 {/* Title */}
                 <div className="log-title mb-4 text-center">
-                  <h3 className="fs-5 fs-sm-4 mb-2">Get started absolutely free</h3>
+                  <h3 className="fs-5 fs-sm-4 mb-2">{t('REGISTER.title')}</h3>
                   <span className="n3-clr d-block fs-6">
-                    Already have an account?{' '}
+                    {t('REGISTER.alreadyHaveAccount')}
                     <Link href="/login" className="s1-clr fw_500 s1-texthover">
-                      Sign in
+                      {t('REGISTER.signIn')}
                     </Link>
                   </span>
                 </div>
@@ -72,7 +74,7 @@ const RegisterSection = () => {
                           name="name"
                           value={formData.name}
                           onChange={handleInputChange}
-                          placeholder="Name"
+                          placeholder={t('REGISTER.namePlaceholder')}
                           className="py-2 w-100"
                           required
                         />
@@ -85,7 +87,7 @@ const RegisterSection = () => {
                           name="lastName"
                           value={formData.lastName}
                           onChange={handleInputChange}
-                          placeholder="Last name"
+                          placeholder={t('REGISTER.lastNamePlaceholder')}
                           className="py-2 w-100"
                           required
                         />
@@ -100,7 +102,7 @@ const RegisterSection = () => {
                           name="email"
                           value={formData.email}
                           onChange={handleInputChange}
-                          placeholder="Email address"
+                          placeholder={t('REGISTER.emailPlaceholder')}
                           className="py-2 w-100"
                           required
                         />
@@ -117,7 +119,7 @@ const RegisterSection = () => {
                             value={formData.password}
                             onChange={handleInputChange}
                             className="password-field py-2 w-100 pe-5"
-                            placeholder="Enter Your Password..."
+                            placeholder={t('REGISTER.passwordPlaceholder')}
                             required
                           />
                           <span
@@ -150,7 +152,7 @@ const RegisterSection = () => {
                           required
                         >
                           <option value="" disabled>
-                            Select Country
+                            {t('REGISTER.selectCountry')}
                           </option>
                           {countries.map(country => (
                             <option key={country.id} value={country.id}>
@@ -169,7 +171,7 @@ const RegisterSection = () => {
                           name="identification"
                           value={formData.identification}
                           onChange={handleInputChange}
-                          placeholder="Identification"
+                          placeholder={t('REGISTER.identificationPlaceholder')}
                           className="py-2 w-100"
                           required
                         />
@@ -184,7 +186,7 @@ const RegisterSection = () => {
                             name="phone"
                             value={formData.phone}
                             onChange={handleInputChange}
-                            placeholder="Phone"
+                            placeholder={t('REGISTER.phonePlaceholder')}
                             className="form-control"
                           />
                         </div>
@@ -199,7 +201,7 @@ const RegisterSection = () => {
                           name="state"
                           value={formData.state}
                           onChange={handleInputChange}
-                          placeholder="State"
+                          placeholder={t('REGISTER.statePlaceholder')}
                           className="py-2 w-100"
                           required
                         />
@@ -212,7 +214,7 @@ const RegisterSection = () => {
                           name="city"
                           value={formData.city}
                           onChange={handleInputChange}
-                          placeholder="City"
+                          placeholder={t('REGISTER.cityPlaceholder')}
                           className="py-2 w-100"
                           required
                         />
@@ -227,7 +229,7 @@ const RegisterSection = () => {
                           name="address"
                           value={formData.address}
                           onChange={handleInputChange}
-                          placeholder="Address"
+                          placeholder={t('REGISTER.addressPlaceholder')}
                           className="py-2 w-100"
                           required
                         />
@@ -241,7 +243,9 @@ const RegisterSection = () => {
                         className="w-100 radius12 s1-bg fw_600 nw1-clr d-flex align-items-center justify-content-between py-2 px-3"
                         disabled={isLoading}
                       >
-                        <span className="fs-6 fs-sm-5">{isLoading ? 'Creating account...' : 'Create account'}</span>
+                        <span className="fs-6 fs-sm-5">
+                          {isLoading ? t('REGISTER.creatingAccount') : t('REGISTER.createAccount')}
+                        </span>
                         <CaretRight size={18} />
                       </button>
                     </div>
@@ -249,9 +253,9 @@ const RegisterSection = () => {
                     {/* Terms */}
                     <div className="col-12 mt-2">
                       <span className="n3-clr fs-eight d-block text-center">
-                        By signup, I agree to{' '}
+                        {t('REGISTER.termsAndPrivacy')}
                         <Link href="#" className="n4-clr text-decoration-none">
-                          Terms of service and Privacy Policy.
+                          {t('REGISTER.termsLink')}
                         </Link>
                       </span>
                     </div>

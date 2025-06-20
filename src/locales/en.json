@@ -1,4 +1,21 @@
 {
+  "LOGIN": {
+    "createAccount": "Create an account",
+    "emailPlaceholder": "Email address",
+    "errors": {
+      "emailRequired": "Email is required",
+      "invalidCredentials": "Invalid credentials",
+      "networkError": "Network error. Check your connection.",
+      "passwordRequired": "Password is required",
+      "serverError": "Server error. Please try again later."
+    },
+    "forgetPassword": "Forget password",
+    "loading": "Loading...",
+    "loginButton": "Login",
+    "newUser": "New user?",
+    "passwordPlaceholder": "Enter Your Password...",
+    "title": "Login"
+  },
   "NAVBAR": {
     "About Us": "About Us",
     "Affiliate": "Affiliate",
@@ -34,5 +51,34 @@
     "Join Now": "Join Now",
     "Login": "Login",
     "User Panel": "User Panel"
+  },
+  "REGISTER": {
+    "addressPlaceholder": "Address",
+    "alreadyHaveAccount": "Already have an account?",
+    "cityPlaceholder": "City",
+    "createAccount": "Create account",
+    "creatingAccount": "Creating account...",
+    "emailPlaceholder": "Email address",
+    "errors": {
+      "emailExists": "This email is already registered",
+      "invalidData": "Please verify the entered data",
+      "serverError": "Server error. Please try again later.",
+      "termsRequired": "You must accept the terms and conditions",
+      "weakPassword": "Password must be at least 8 characters"
+    },
+    "identificationPlaceholder": "Identification",
+    "lastNamePlaceholder": "Last name",
+    "loading": "Loading...",
+    "namePlaceholder": "Name",
+    "passwordPlaceholder": "Enter Your Password...",
+    "phonePlaceholder": "Phone",
+    "selectCountry": "Select Country",
+    "signIn": "Sign in",
+    "signUpButton": "Sign Up",
+    "statePlaceholder": "State",
+    "termsAndPrivacy": "By registering, I accept the ",
+    "termsCheckbox": "I agree to the terms and conditions",
+    "termsLink": "Terms of Service and Privacy Policy.",
+    "title": "Get started absolutely free"
   }
 }

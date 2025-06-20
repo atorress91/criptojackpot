@@ -1,4 +1,21 @@
 {
+  "LOGIN": {
+    "createAccount": "Crear una cuenta",
+    "emailPlaceholder": "Dirección de correo electrónico",
+    "errors": {
+      "emailRequired": "El correo electrónico es requerido",
+      "invalidCredentials": "Credenciales inválidas",
+      "networkError": "Error de conexión. Verifica tu internet.",
+      "passwordRequired": "La contraseña es requerida",
+      "serverError": "Error del servidor. Por favor, intenta más tarde."
+    },
+    "forgetPassword": "¿Olvidaste tu contraseña?",
+    "loading": "Cargando...",
+    "loginButton": "Iniciar sesión",
+    "newUser": "¿Nuevo usuario?",
+    "passwordPlaceholder": "Ingresa tu contraseña...",
+    "title": "Iniciar sesión"
+  },
   "NAVBAR": {
     "About Us": "Acerca de nosotros",
     "Affiliate": "Afiliado",
@@ -34,5 +51,34 @@
     "Join Now": "Unirse",
     "Login": "Iniciar sesión",
     "User Panel": "Panel de usuario"
+  },
+  "REGISTER": {
+    "addressPlaceholder": "Dirección",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "cityPlaceholder": "Ciudad",
+    "createAccount": "Crear cuenta",
+    "creatingAccount": "Creando cuenta...",
+    "emailPlaceholder": "Dirección de correo electrónico",
+    "errors": {
+      "emailExists": "Este correo electrónico ya está registrado",
+      "invalidData": "Por favor verifica los datos ingresados",
+      "serverError": "Error del servidor. Por favor, intenta más tarde.",
+      "termsRequired": "Debes aceptar los términos y condiciones",
+      "weakPassword": "La contraseña debe tener al menos 8 caracteres"
+    },
+    "identificationPlaceholder": "Identificación",
+    "lastNamePlaceholder": "Apellido",
+    "loading": "Cargando...",
+    "namePlaceholder": "Nombre",
+    "passwordPlaceholder": "Ingresa tu contraseña...",
+    "phonePlaceholder": "Teléfono",
+    "selectCountry": "Seleccionar país",
+    "signIn": "Iniciar sesión",
+    "signUpButton": "Registrarse",
+    "statePlaceholder": "Estado",
+    "termsAndPrivacy": "Al registrarme, acepto los ",
+    "termsCheckbox": "Acepto los términos y condiciones",
+    "termsLink": "Términos de servicio y Política de privacidad.",
+    "title": "Empezar es totalmente gratis"
   }
 }

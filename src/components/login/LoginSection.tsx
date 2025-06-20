@@ -1,21 +1,16 @@
-"use client";
-import loginImage from "@/../public/images/background/back-register.png";
-import logoBlack from "@/../public/images/logo/cripto-jackpot-logo.png";
-import { useLoginForm } from "@/hooks/useLoginForm";
-import { Eye, EyeSlash } from "@phosphor-icons/react/dist/ssr";
-import Image from "next/image";
-import Link from "next/link";
+'use client';
+import loginImage from '@/../public/images/background/back-register.png';
+import logoBlack from '@/../public/images/logo/cripto-jackpot-logo.png';
+import { useLoginForm } from '@/hooks/useLoginForm';
+import { Eye, EyeSlash } from '@phosphor-icons/react/dist/ssr';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
 
 const LoginSection = () => {
-  const {
-    formData,
-    isPasswordShow,
-    isLoading,
-    error,
-    handleInputChange,
-    togglePasswordVisibility,
-    handleSubmit
-  } = useLoginForm();
+  const { t } = useTranslation();
+  const { formData, isPasswordShow, isLoading, error, handleInputChange, togglePasswordVisibility, handleSubmit } =
+    useLoginForm();
 
   return (
     <section className="login-section position-relative">
@@ -31,15 +26,15 @@ const LoginSection = () => {
                 </div>
                 <div className="log-title mb-xxl-10 mb-xl-7 mb-6">
                   <span className="n3-clr">
-                    New user?{" "}
+                    {t('LOGIN.newUser')}{' '}
                     <Link href="/register" className="s1-clr s1-texthover">
-                      Create an account
+                      {t('LOGIN.createAccount')}
                     </Link>
                   </span>
                 </div>
                 {error && (
                   <div className="alert alert-danger" role="alert">
-                    {error}
+                    {t(`LOGIN.errors.${error}`) || error}
                   </div>
                 )}
                 <form onSubmit={handleSubmit} className="form-cmn-action">
@@ -51,7 +46,7 @@ const LoginSection = () => {
                           name="email"
                           value={formData.email}
                           onChange={handleInputChange}
-                          placeholder="Email address"
+                          placeholder={t('LOGIN.emailPlaceholder')}
                         />
                       </div>
                     </div>
@@ -59,32 +54,28 @@ const LoginSection = () => {
                       <div className="form-cmn">
                         <div className="ps-grp position-relative">
                           <input
-                            type={isPasswordShow ? "text" : "password"}
+                            type={isPasswordShow ? 'text' : 'password'}
                             name="password"
                             value={formData.password}
                             onChange={handleInputChange}
                             className="password-field"
-                            placeholder="Enter Your Password..."
+                            placeholder={t('LOGIN.passwordPlaceholder')}
                           />
                           <span
                             onClick={togglePasswordVisibility}
                             style={{ cursor: 'pointer' }}
                             className="position-absolute top-50 end-0 translate-middle-y"
                           >
-                            {!isPasswordShow ? (
-                              <EyeSlash size={18} />
-                            ) : (
-                              <Eye size={18} />
-                            )}
+                            {!isPasswordShow ? <EyeSlash size={18} /> : <Eye size={18} />}
                           </span>
                         </div>
                       </div>
                     </div>
                     <Link
-                      href="#"
+                      href="/forgot-password"
                       className="d-flex text-decoration-underline act4-texthover justify-content-end fw_600 n4-clr fs-eight mt-xxl-6 mt-3"
                     >
-                      Forget password
+                      {t('LOGIN.forgetPassword')}
                     </Link>
                     <div className="col-lg-12">
                       <button
@@ -92,9 +83,7 @@ const LoginSection = () => {
                         className="cmn-btn s1-bg radius12 w-100 fw_600 justify-content-center d-inline-flex align-items-center gap-2 py-xxl-4 py-3 px-xl-6 px-5 n0-clr mt-1"
                         disabled={isLoading}
                       >
-                        <span className="fw_600 n0-clr">
-                          {isLoading ? 'Loading...' : 'Login'}
-                        </span>
+                        <span className="fw_600 n0-clr">{isLoading ? t('LOGIN.loading') : t('LOGIN.loginButton')}</span>
                       </button>
                     </div>
                   </div>
@@ -111,7 +100,7 @@ const LoginSection = () => {
                   style={{
                     width: '100%',
                     height: '100%',
-                    objectFit: 'contain'
+                    objectFit: 'contain',
                   }}
                 />
               </div>
