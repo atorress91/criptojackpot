@@ -129,16 +129,11 @@ const NavbarBlack = () => {
                         <User className="ti ti-user"></User>
                       </Link>
                     </li>
-                    <li>
-                      <Link href="/login" className="kewta-btn d-inline-flex align-items-center">
-                        <span className="kew-text p1-border n0-clr">{t('NAVBAR-BLACK.Login')}</span>
-                      </Link>
-                    </li>
                   </ul>
                   <div className="head-language">
                     <LanguageSelector />
                   </div>
-                  <Link href="contest-details" className="kewta-btn d-inline-flex align-items-center">
+                  <Link href="/login" className="kewta-btn d-inline-flex align-items-center">
                     <span className="kew-text p1-border n0-clr">{t('NAVBAR-BLACK.Join Now')}</span>
                     <div className="kew-arrow p1-bg">
                       <div className="kt-one">
