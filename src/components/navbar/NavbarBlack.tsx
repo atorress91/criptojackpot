@@ -86,19 +86,21 @@ const NavbarBlack = () => {
                 <ul className="custom-nav d-xl-flex d-grid gap-4 gap-xl-5 gap-xxl-10">
                   <AllHomePage handleDropDown={handleDropDown} dropdownId={dropdownId} />
 
-                  {navbarData.map(({ id, menuTitle, path, menuItems }) => {
+                  {navbarData.map(({ id, menuTitle, menuTitleKey, path, menuItems }) => {
                     let isActive = menuItems?.some(path => pathName == path.menuItemPath);
                     return menuItems ? (
                       <li key={`black-nav-dropdown-menu-title-${id}`} className="menu-item position-relative">
                         <div className="d-flex align-items-center" onClick={() => handleDropDown(id)}>
-                          <button className={`position-relative ${isActive ? 'active' : ''}`}>{menuTitle}</button>{' '}
+                          <button className={`position-relative ${isActive ? 'active' : ''}`}>
+                            {menuTitleKey ? t(menuTitleKey) : menuTitle}
+                          </button>{' '}
                           <CaretDown />
                         </div>
                         <ul className={`sub-menu ${dropdownId === id ? 'active-sub-menu' : ''}`}>
-                          {menuItems.map(({ id, title, menuItemPath }) => (
+                          {menuItems.map(({ id, title, titleKey, menuItemPath }) => (
                             <li key={id} className={`menu-link mb-xxl-2 `}>
                               <Link href={menuItemPath} className={`${pathName == menuItemPath ? 'menu-active' : ''}`}>
-                                {title}
+                                {titleKey ? t(titleKey) : title}
                               </Link>
                             </li>
                           ))}
@@ -109,7 +111,7 @@ const NavbarBlack = () => {
                         key={`black-nav-menu-title-${id}`}
                         className={`menu-item position-relative ${pathName === path ? 'active' : ''}`}
                       >
-                        <Link href={path}> {menuTitle} </Link>
+                        <Link href={path}> {menuTitleKey ? t(menuTitleKey) : menuTitle} </Link>
                       </li>
                     );
                   })}
