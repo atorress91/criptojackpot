@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import miller from "@/../public/images/man-global/devid-miller.png";
-import { TokenService } from "@/services/tokenService";
-import { Headset, Heart, Info, Lightning, SignOut, Ticket, Upload, Wallet } from "@phosphor-icons/react/dist/ssr";
-import Image, { StaticImageData } from "next/image";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
-import ImageUploader from "../uploadFiles/imageUploader";
+import miller from '@/../public/images/man-global/devid-miller.png';
+import { TokenService } from '@/services/tokenService';
+import { Headset, Heart, Info, Lightning, SignOut, Ticket, Upload, Wallet } from '@phosphor-icons/react/dist/ssr';
+import Image, { StaticImageData } from 'next/image';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { useState } from 'react';
+import ImageUploader from '../uploadFiles/imageUploader';
 
 type ProfileImageType = StaticImageData | string;
 
@@ -19,8 +19,7 @@ const UserPanelSidebar = () => {
   const [showUploader, setShowUploader] = useState(false);
 
   const handleLogout = () => {
-    TokenService.removeToken();
-    TokenService.removeUser();
+    TokenService.clearToken();
     router.push('/login');
   };
 
@@ -67,11 +66,13 @@ const UserPanelSidebar = () => {
 
           {/* Menú lateral */}
           <ul className="user-sidebar d-grid gap-2">
-            {sidebarItems.map((item) => (
+            {sidebarItems.map(item => (
               <li key={`sidebar-${item.id}`}>
                 <Link
                   href={item.href}
-                  className={`${path === item.href ? "active" : ""} py-xxl-3 py-2 px-xxl-5 px-xl-4 px-3 radius12 n4-clr fw_600 d-flex align-items-center gap-xxl-3 gap-2 user-text-inner`}
+                  className={`${
+                    path === item.href ? 'active' : ''
+                  } py-xxl-3 py-2 px-xxl-5 px-xl-4 px-3 radius12 n4-clr fw_600 d-flex align-items-center gap-xxl-3 gap-2 user-text-inner`}
                 >
                   {item.icon}
                   {item.text}
@@ -97,11 +98,41 @@ const UserPanelSidebar = () => {
 export default UserPanelSidebar;
 
 const sidebarItems = [
-  { id: 3434652, href: "/personal-info", icon: <Info weight="bold" className="ph-bold ph-info fs-five" />, text: "Personal Information" },
-  { id: 1343, href: "/user-panel", icon: <Ticket weight="bold" className="ph-bold ph-ticket fs-five" />, text: "My Tickets" },
-  { id: 334221, href: "/transaction", icon: <Upload weight="bold" className="ph-bold ph-upload fs-five" />, text: "Transactions" },
-  { id: 4212, href: "/referal-program", icon: <Lightning weight="bold" className="ph-bold ph-lightning fs-five" />, text: "Referral Program" },
-  { id: 51212, href: "/wish-list", icon: <Heart weight="bold" className="ph-bold ph-heart fs-five" />, text: "Wishlist" },
-  { id: 62342, href: "/payment", icon: <Wallet weight="bold" className="ph-bold ph-wallet fs-five" />, text: "Payment Methods" },
-  { id: 4447, href: "/#", icon: <Headset weight="bold" className="ph-bold ph-headset fs-five" />, text: "Help Center" },
+  {
+    id: 3434652,
+    href: '/personal-info',
+    icon: <Info weight="bold" className="ph-bold ph-info fs-five" />,
+    text: 'Personal Information',
+  },
+  {
+    id: 1343,
+    href: '/user-panel',
+    icon: <Ticket weight="bold" className="ph-bold ph-ticket fs-five" />,
+    text: 'My Tickets',
+  },
+  {
+    id: 334221,
+    href: '/transaction',
+    icon: <Upload weight="bold" className="ph-bold ph-upload fs-five" />,
+    text: 'Transactions',
+  },
+  {
+    id: 4212,
+    href: '/referal-program',
+    icon: <Lightning weight="bold" className="ph-bold ph-lightning fs-five" />,
+    text: 'Referral Program',
+  },
+  {
+    id: 51212,
+    href: '/wish-list',
+    icon: <Heart weight="bold" className="ph-bold ph-heart fs-five" />,
+    text: 'Wishlist',
+  },
+  {
+    id: 62342,
+    href: '/payment',
+    icon: <Wallet weight="bold" className="ph-bold ph-wallet fs-five" />,
+    text: 'Payment Methods',
+  },
+  { id: 4447, href: '/#', icon: <Headset weight="bold" className="ph-bold ph-headset fs-five" />, text: 'Help Center' },
 ];

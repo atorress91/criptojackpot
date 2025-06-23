@@ -10,7 +10,7 @@ const AdminPanelSidebar = () => {
   const router = useRouter();
 
   const handleLogout = () => {
-    TokenService.removeToken();
+    TokenService.clearToken();
     router.push('/login');
   };
 

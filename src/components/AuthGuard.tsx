@@ -25,7 +25,7 @@ export const AuthGuard = ({ children, requireAuth, requiredRole }: AuthGuardProp
         return;
       }
 
-      // Si no requiere autenticación pero hay token (ej: página de login)
+      // Si no requiere autenticación pero hay token
       if (!requireAuth && token) {
         // Redirigir según el rol del usuario
         if (user?.role?.name === 'admin') {
