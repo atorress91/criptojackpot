@@ -1,13 +1,11 @@
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-
+import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNotificationStore } from '@/store/notificationStore';
+import { useAppStore } from '@/store/appStore';
+import { useRegisterStore } from '@/store/registerStore';
 import { Country } from '@/interfaces/country';
 import { RegisterFormData } from '@/interfaces/registerFormData';
-import { User } from '@/interfaces/user';
-import { countryService } from '@/services/countryService';
-import { userService } from '@/services/userService';
-import { useNotification } from '@/providers/NotificationProvider';
-import { useTranslation } from 'react-i18next';
 
 interface UseRegisterFormReturn {
   formData: RegisterFormData;
@@ -22,35 +20,32 @@ interface UseRegisterFormReturn {
   handleSubmit: (e: React.FormEvent) => Promise<void>;
 }
 
-const initialFormData: RegisterFormData = {
-  name: '',
-  lastName: '',
-  email: '',
-  password: '',
-  countryId: 0,
-  identification: '',
-  phone: '',
-  state: '',
-  city: '',
-  address: '',
-};
-
 export const useRegisterForm = (): UseRegisterFormReturn => {
   const { t } = useTranslation();
   const router = useRouter();
-  const [formData, setFormData] = useState<RegisterFormData>(initialFormData);
-  const [countries, setCountries] = useState<Country[]>([]);
-  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
-  const [isPasswordShow, setIsPasswordShow] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const showNotification = useNotification();
 
+  // Estados de Zustand
+  const showNotification = useNotificationStore(state => state.show);
+  const { countries, loadCountries } = useAppStore();
+  const {
+    formData,
+    selectedCountry,
+    isPasswordShow,
+    isLoading,
+    error,
+    updateFormData,
+    setSelectedCountry,
+    togglePasswordVisibility,
+    registerUser,
+    clearError,
+    resetForm,
+  } = useRegisterStore();
+
+  // Cargar países al montar el componente
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const countriesData = await countryService.getAllCountries();
-        setCountries(countriesData);
+        await loadCountries();
       } catch (error) {
         showNotification(
           'error',
@@ -61,17 +56,24 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
       }
     };
 
-    fetchCountries().then();
-  }, [showNotification, t]);
+    fetchCountries();
+  }, [loadCountries, showNotification, t]);
+
+  // Limpiar el formulario al desmontar
+  useEffect(() => {
+    return () => {
+      resetForm();
+    };
+  }, [resetForm]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
     if (name === 'phone') {
       const cleaned = value.replace(/\D/g, '');
-      setFormData(prev => ({ ...prev, [name]: cleaned }));
+      updateFormData({ [name]: cleaned });
     } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
+      updateFormData({ [name]: value });
     }
   };
 
@@ -79,11 +81,6 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
     const countryId = parseInt(e.target.value);
     const country = countries.find(c => c.id === countryId);
     setSelectedCountry(country || null);
-    setFormData(prev => ({ ...prev, countryId }));
-  };
-
-  const togglePasswordVisibility = () => {
-    setIsPasswordShow(prev => !prev);
   };
 
   const validateForm = (): boolean => {
@@ -91,40 +88,60 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
       showNotification('error', t('REGISTER.errors.invalidData').split('.')[0], t('REGISTER.errors.requiredFields'));
       return false;
     }
+
     if (!formData.countryId) {
       showNotification('error', t('REGISTER.errors.invalidData').split('.')[0], t('REGISTER.errors.countryRequired'));
       return false;
     }
+
+    // Validación adicional de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      showNotification(
+        'error',
+        t('REGISTER.errors.invalidData').split('.')[0],
+        t('REGISTER.errors.invalidEmailFormat', 'Email inválido')
+      );
+      return false;
+    }
+
+    // Validación de contraseña
+    if (formData.password.length < 8) {
+      showNotification('error', t('REGISTER.errors.invalidData').split('.')[0], t('REGISTER.errors.weakPassword'));
+      return false;
+    }
+
     return true;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
+    clearError();
 
     if (!validateForm()) {
       return;
     }
 
-    setIsLoading(true);
-
     try {
-      const userData: User = {
-        ...formData,
-        phone: selectedCountry ? `+${selectedCountry.phoneCode}${formData.phone}` : formData.phone,
-        status: true,
-        roleId: 2,
-        country: selectedCountry!,
-        statePlace: formData.state,
-      };
+      await registerUser();
 
-      await userService.createUser(userData);
-      router.push('/login');
+      showNotification(
+        'success',
+        t('REGISTER.success', 'Registro exitoso'),
+        t('REGISTER.successMessage', 'Tu cuenta ha sido creada exitosamente')
+      );
+
+      // Redirigir al login después de un registro exitoso
+      setTimeout(() => {
+        router.push('/login');
+      }, 1500);
     } catch (error: any) {
-      showNotification('error', t('REGISTER.errors.serverError').split('.')[0], t('REGISTER.errors.serverError'));
+      showNotification(
+        'error',
+        t('REGISTER.errors.serverError').split('.')[0],
+        error.message || t('REGISTER.errors.serverError')
+      );
       console.error('Registration error:', error);
-    } finally {
-      setIsLoading(false);
     }
   };
 

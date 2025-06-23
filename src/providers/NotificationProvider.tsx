@@ -1,40 +1,36 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode, useCallback } from 'react';
-import NotificationComponent from '@/components/notification/Notification';
+import { useNotificationStore } from '@/store/notificationStore';
+import { useEffect } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-type NotificationType = 'success' | 'error' | 'info' | 'warning';
+export const NotificationProvider = ({ children }: { children: React.ReactNode }) => {
+  const notifications = useNotificationStore(state => state.notifications);
 
-interface Notification {
-  id: number;
-  type: NotificationType;
-  message: string;
-  title: string;
-}
-
-const NotificationContext = createContext<(type: NotificationType, title: string, message: string) => void>(() => {});
-
-export const useNotification = () => useContext(NotificationContext);
-
-export function NotificationProvider({ children }: { children: ReactNode }) {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-
-  const showNotification = useCallback((type: NotificationType, title: string, message: string) => {
-    const id = Date.now();
-    setNotifications(prev => [...prev, { id, type, title, message }]);
-    setTimeout(() => {
-      setNotifications(prev => prev.filter(n => n.id !== id));
-    }, 3000);
-  }, []);
-
-  const removeNotification = (id: number) => {
-    setNotifications(prev => prev.filter(n => n.id !== id));
-  };
+  useEffect(() => {
+    notifications.forEach(notification => {
+      switch (notification.type) {
+        case 'success':
+          toast.success(notification.message);
+          break;
+        case 'error':
+          toast.error(notification.message);
+          break;
+        case 'warning':
+          toast.warning(notification.message);
+          break;
+        case 'info':
+          toast.info(notification.message);
+          break;
+      }
+    });
+  }, [notifications]);
 
   return (
-    <NotificationContext.Provider value={showNotification}>
+    <>
       {children}
-      <NotificationComponent notifications={notifications} removeNotification={removeNotification} />
-    </NotificationContext.Provider>
+      <ToastContainer position="top-right" />
+    </>
   );
-}
+};

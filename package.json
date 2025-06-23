@@ -42,7 +42,8 @@
     "react-tooltip": "^5.27.1",
     "sharp": "^0.33.4",
     "swiper": "^11.1.4",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",

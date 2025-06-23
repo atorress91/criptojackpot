@@ -1,6 +1,6 @@
 'use client';
 
-import { TokenService } from '@/services/tokenService';
+import { useAuthStore } from '@/store/authStore';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -12,22 +12,19 @@ type AuthGuardProps = {
 
 export const AuthGuard = ({ children, requireAuth, requiredRole }: AuthGuardProps) => {
   const router = useRouter();
+  const { user, isAuthenticated } = useAuthStore();
   const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
     const checkAuth = () => {
-      const token = TokenService.getToken();
-      const user = TokenService.getUser();
-
-      // Si requiere autenticación y no hay token, redirigir al login
-      if (requireAuth && !token) {
+      // Si requiere autenticación y no está autenticado
+      if (requireAuth && !isAuthenticated) {
         router.push('/login');
         return;
       }
 
-      // Si no requiere autenticación pero hay token
-      if (!requireAuth && token) {
-        // Redirigir según el rol del usuario
+      // Si no requiere autenticación pero está autenticado
+      if (!requireAuth && isAuthenticated) {
         if (user?.role?.name === 'admin') {
           router.push('/admin');
         } else {
@@ -36,9 +33,8 @@ export const AuthGuard = ({ children, requireAuth, requiredRole }: AuthGuardProp
         return;
       }
 
-      // Si requiere autenticación y hay token, verificar el rol
-      if (requireAuth && token && requiredRole) {
-        // Si el rol no coincide, redirigir al dashboard correspondiente
+      // Verificar rol si es necesario
+      if (requireAuth && isAuthenticated && requiredRole) {
         if (user?.role?.name !== requiredRole) {
           if (user?.role?.name === 'admin') {
             router.push('/admin');
@@ -49,12 +45,11 @@ export const AuthGuard = ({ children, requireAuth, requiredRole }: AuthGuardProp
         }
       }
 
-      // Si llegamos aquí, todo está bien
       setIsChecking(false);
     };
 
     checkAuth();
-  }, [requireAuth, requiredRole, router]);
+  }, [requireAuth, requiredRole, router, user, isAuthenticated]);
 
   if (isChecking) {
     return (
