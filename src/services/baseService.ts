@@ -38,7 +38,7 @@ export abstract class BaseService {
       response => response,
       async error => {
         if (error.response?.status === 401) {
-          TokenService.clearSession();
+          TokenService.clearToken();
           if (typeof window !== 'undefined') {
             window.location.href = '/login?error=session_expired';
           }
@@ -60,7 +60,7 @@ export abstract class BaseService {
 
   protected handleError(error: AxiosError<Response<any>>): never {
     if (error.response?.status === 401) {
-      TokenService.clearSession();
+      TokenService.clearToken();
       throw new Error('The session has expired');
     }
 

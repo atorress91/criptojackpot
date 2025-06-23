@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 
-import Breadcrumbs from "@/components/about/Breadcrumbs";
-import { AuthGuard } from "@/components/AuthGuard";
-import Footer from "@/components/home-one/Footer";
-import NavbarBlack from "@/components/navbar/NavbarBlack";
-import UserPanelSidebar from "@/components/user-panel/UserPanelSidebar";
+import Breadcrumbs from '@/components/about/Breadcrumbs';
+import { AuthGuard } from '@/components/AuthGuard';
+import Footer from '@/components/home-one/Footer';
+import NavbarBlack from '@/components/navbar/NavbarBlack';
+import UserPanelSidebar from '@/components/user-panel/UserPanelSidebar';
 
 const layout = ({
   children,
@@ -12,7 +12,7 @@ const layout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <AuthGuard requireAuth={false}>
+    <AuthGuard requireAuth={false} requiredRole="client">
       <div>
         <NavbarBlack />
         <Breadcrumbs pageName="User Panel" />

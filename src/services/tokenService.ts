@@ -1,5 +1,4 @@
-'use client';
-
+import { Role } from '@/interfaces/role';
 import { User } from '@/interfaces/user';
 
 export class TokenService {
@@ -58,10 +57,5 @@ export class TokenService {
 
   static isAuthenticated(): boolean {
     return !!this.getToken();
-  }
-
-  static clearSession() {
-    this.clearToken();
-    localStorage.removeItem(this.USER_KEY);
   }
 }

@@ -5,6 +5,8 @@ import { AuthRequest } from '@/interfaces/authRequest';
 import { authService } from '@/services/authService';
 import { useNotification } from '@/providers/NotificationProvider';
 import { useTranslation } from 'react-i18next';
+import { TokenService } from '@/services/tokenService';
+import { User } from '@/interfaces/user';
 
 interface LoginFormData {
   email: string;
@@ -24,16 +26,6 @@ interface UseLoginFormReturn {
 const initialFormData: LoginFormData = {
   email: '',
   password: '',
-};
-
-// Simulación temporal de servicio de tokens
-const TokenService = {
-  setToken: (token: string) => {
-    localStorage.setItem('auth_token', token);
-  },
-  setUser: (user: any) => {
-    localStorage.setItem('user', JSON.stringify(user));
-  },
 };
 
 export const useLoginForm = (): UseLoginFormReturn => {
@@ -83,51 +75,39 @@ export const useLoginForm = (): UseLoginFormReturn => {
 
     setIsLoading(true);
 
-    // MODO SIMULACIÓN - Establece a true para omitir la llamada al backend
-    const SIMULATION_MODE = false;
-
-    if (SIMULATION_MODE) {
-      // Simulamos un pequeño retraso para dar sensación de carga real
-      await new Promise(resolve => setTimeout(resolve, 800));
-
-      // Crear un usuario simulado con los datos introducidos
-      const mockUser = {
-        email: formData.email,
-        name: formData.email.split('@')[0],
-        token: 'mock-jwt-token-' + Math.random().toString(36).substring(2, 10),
-        role: 'user',
-      };
-
-      // Guardar los datos en localStorage como lo haría la aplicación real
-      TokenService.setToken(mockUser.token);
-      TokenService.setUser(mockUser);
-
-      // Dejamos de mostrar el estado de carga
-      setIsLoading(false);
-
-      // Navegamos a la página que normalmente se mostraría tras un inicio de sesión exitoso
-      window.location.href = '/user-panel';
-
-      return;
-    }
-
-    // CÓDIGO ORIGINAL - Se ejecuta cuando SIMULATION_MODE es false
     try {
       const credentials: AuthRequest = {
         email: formData.email,
         password: formData.password,
       };
 
-      const user = await authService.authenticate(credentials);
+      // La respuesta del backend ya incluye token y datos del usuario
+      const userData = (await authService.authenticate(credentials)) as User;
 
-      if (user.token) {
-        TokenService.setToken(user.token);
-        TokenService.setUser(user);
+      if (userData.token) {
+        TokenService.setToken(userData.token);
+        TokenService.setUser(userData);
+
+        showNotification('success', t('LOGIN.success.title'), t('LOGIN.success.message'));
+
+        // Redirigir según el rol
+        setTimeout(() => {
+          const roleName = userData.role?.name;
+          if (roleName === 'admin') {
+            router.push('/admin');
+          } else {
+            router.push('/user-panel');
+          }
+        }, 500);
       }
-      router.push('/user-panel');
     } catch (error: any) {
       console.error('Login Error:', error);
-      showNotification('error', t('LOGIN.errors.serverError').split('.')[0], t('LOGIN.errors.serverError'));
+      setError(error.message || t('LOGIN.errors.serverError'));
+      showNotification(
+        'error',
+        t('LOGIN.errors.serverError').split('.')[0],
+        error.message || t('LOGIN.errors.serverError')
+      );
     } finally {
       setIsLoading(false);
     }
