@@ -12,7 +12,7 @@ const layout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <AuthGuard requireAuth={false} requiredRole="client">
+    <AuthGuard requireAuth={true} requiredRole="client">
       <div>
         <NavbarBlack />
         <Breadcrumbs pageName="User Panel" />

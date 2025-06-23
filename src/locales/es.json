@@ -16,6 +16,7 @@
     "loginButton": "Iniciar sesión",
     "newUser": "¿Nuevo usuario?",
     "passwordPlaceholder": "Ingresa tu contraseña...",
+    "success": "Credenciales correctas",
     "title": "Iniciar sesión"
   },
   "NAVBAR": {

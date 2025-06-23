@@ -88,7 +88,7 @@ export const useLoginForm = (): UseLoginFormReturn => {
         TokenService.setToken(userData.token);
         TokenService.setUser(userData);
 
-        showNotification('success', t('LOGIN.success.title'), t('LOGIN.success.message'));
+        showNotification('success', t('LOGIN.loading'), t('LOGIN.success'));
 
         // Redirigir según el rol
         setTimeout(() => {

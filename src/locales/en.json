@@ -16,6 +16,8 @@
     "loginButton": "Login",
     "newUser": "New user?",
     "passwordPlaceholder": "Enter Your Password...",
+    "success": "Successfully authenticated",
+
     "title": "Login"
   },
   "NAVBAR": {

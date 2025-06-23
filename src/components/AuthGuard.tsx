@@ -19,11 +19,13 @@ export const AuthGuard = ({ children, requireAuth, requiredRole }: AuthGuardProp
       const token = TokenService.getToken();
       const user = TokenService.getUser();
 
+      // Si requiere autenticación y no hay token, redirigir al login
       if (requireAuth && !token) {
         router.push('/login');
         return;
       }
 
+      // Si no requiere autenticación pero hay token (ej: página de login)
       if (!requireAuth && token) {
         // Redirigir según el rol del usuario
         if (user?.role?.name === 'admin') {
@@ -34,17 +36,20 @@ export const AuthGuard = ({ children, requireAuth, requiredRole }: AuthGuardProp
         return;
       }
 
-      // Verificar rol específico si es requerido
-      if (requiredRole && user?.role?.name !== requiredRole) {
-        // Redirigir al dashboard correspondiente
-        if (user?.role?.name === 'admin') {
-          router.push('/admin');
-        } else {
-          router.push('/user-panel');
+      // Si requiere autenticación y hay token, verificar el rol
+      if (requireAuth && token && requiredRole) {
+        // Si el rol no coincide, redirigir al dashboard correspondiente
+        if (user?.role?.name !== requiredRole) {
+          if (user?.role?.name === 'admin') {
+            router.push('/admin');
+          } else {
+            router.push('/user-panel');
+          }
+          return;
         }
-        return;
       }
 
+      // Si llegamos aquí, todo está bien
       setIsChecking(false);
     };
 
