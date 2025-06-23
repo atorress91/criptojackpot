@@ -1,52 +1,67 @@
-'use client'
+'use client';
 
-import Cookies from 'js-cookie';
+import { User } from '@/interfaces/user';
 
 export class TokenService {
-  private static TOKEN_KEY = 'token';
-  private static USER_KEY = 'user';
+  private static readonly TOKEN_KEY = 'auth_token';
+  private static readonly USER_KEY = 'user_data';
+
+  static setToken(token: string): void {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(this.TOKEN_KEY, token);
+    }
+  }
 
   static getToken(): string | null {
     if (typeof window !== 'undefined') {
-      return Cookies.get(this.TOKEN_KEY) || null;
+      return localStorage.getItem(this.TOKEN_KEY);
     }
     return null;
   }
 
-  static setToken(token: string) {
-    Cookies.set(this.TOKEN_KEY, token, {
-      expires: 7,
-      secure: true,
-      sameSite: 'strict'
-    });
-  }
-
-  static removeToken(): void {
-    Cookies.remove(this.TOKEN_KEY);
-  }
-
-  static getUser(): any | null {
+  static clearToken(): void {
     if (typeof window !== 'undefined') {
-      const user = Cookies.get(this.USER_KEY);
-      return user ? JSON.parse(user) : null;
+      localStorage.removeItem(this.TOKEN_KEY);
+      localStorage.removeItem(this.USER_KEY);
+    }
+  }
+
+  static setUser(user: User): void {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+    }
+  }
+
+  static getUser(): User | null {
+    if (typeof window !== 'undefined') {
+      const userData = localStorage.getItem(this.USER_KEY);
+      if (userData) {
+        try {
+          return JSON.parse(userData);
+        } catch {
+          return null;
+        }
+      }
     }
     return null;
   }
 
-  static setUser(user: any): void {
-    Cookies.set(this.USER_KEY, JSON.stringify(user), {
-      expires: 7,
-      secure: true,
-      sameSite: 'strict'
-    });
+  static isAdmin(): boolean {
+    const user = this.getUser();
+    return user?.role?.name === 'admin';
   }
 
-  static removeUser(): void {
-    Cookies.remove(this.USER_KEY);
+  static isClient(): boolean {
+    const user = this.getUser();
+    return user?.role?.name === 'client';
   }
 
-  static clearSession(): void {
-    this.removeToken();
-    this.removeUser();
+  static isAuthenticated(): boolean {
+    return !!this.getToken();
+  }
+
+  static clearSession() {
+    this.clearToken();
+    localStorage.removeItem(this.USER_KEY);
   }
 }

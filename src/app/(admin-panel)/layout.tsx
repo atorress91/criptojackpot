@@ -1,31 +1,34 @@
-import React from "react";
+'use client';
 
-import Breadcrumbs from "@/components/about/Breadcrumbs";
-import Footer from "@/components/home-one/Footer";
-import NavbarBlack from "@/components/navbar/NavbarBlack";
+import React from 'react';
+import { AuthGuard } from '@/components/AuthGuard';
+import AdminPanelSidebar from '@/components/admin-panel/AdminPanelSidebar';
+import Breadcrumbs from '@/components/about/Breadcrumbs';
+import Footer from '@/components/home-one/Footer';
+import NavbarBlack from '@/components/navbar/NavbarBlack';
 
-
-const layout = ({
-    children,
-
+const AdminLayout = ({
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) => {
-    return (
-        <div>
-            <NavbarBlack />
-            <Breadcrumbs pageName="User Panel" />
-            <div className="userpanel-section pt-120 pb-120">
-                <div className="container">
-                    <div className="row g-6 justify-content-center">
-                        {/* componente del admin */}
-                        {children}
-                    </div>
-                </div>
+  return (
+    <AuthGuard requireAuth={true} requiredRole="admin">
+      <div>
+        <NavbarBlack />
+        <Breadcrumbs pageName="Panel de Administración" />
+        <div className="userpanel-section pt-120 pb-120">
+          <div className="container">
+            <div className="row g-6 justify-content-center">
+              <AdminPanelSidebar />
+              {children}
             </div>
-            <Footer />
+          </div>
         </div>
-    );
+        <Footer />
+      </div>
+    </AuthGuard>
+  );
 };
 
-export default layout;
+export default AdminLayout;
