@@ -56,7 +56,7 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
       }
     };
 
-    fetchCountries();
+    fetchCountries().then();
   }, [loadCountries, showNotification, t]);
 
   // Limpiar el formulario al desmontar
