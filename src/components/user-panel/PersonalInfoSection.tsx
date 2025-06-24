@@ -1,70 +1,10 @@
 "use client";
-import { Check, Eye, EyeSlash } from "@phosphor-icons/react/dist/ssr";
-import { useState, useEffect } from "react";
-import { useAuthStore } from "@/store/authStore";
+import { Eye, EyeSlash, Check } from "@phosphor-icons/react";
 import MotionFade from "../motionEffect/MotionFade";
+import { usePersonalInfoForm } from "@/hooks/usePersonalInfoForm";
 
-const PersonalInfoSection = () => {
-  const { user, updateUser } = useAuthStore();
-
-  const [isChecked, setIsChecked] = useState(true);
-  const [isPasswordShow, setIsPasswordShow] = useState(false);
-  const [isConfirmPasswordShow, setIsConfirmPasswordShow] = useState(false);
-
-  // Estados para los valores del formulario
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    password: "",
-    confirmPassword: ""
-  });
-
-  // Setear los valores del formulario cuando el usuario esté disponible
-  useEffect(() => {
-    if (user) {
-      setFormData(prev => ({
-        ...prev,
-        firstName: user.name || "",
-        lastName: user.lastName || "",
-        email: user.email || "",
-        phone: user.phone || "",
-      }));
-    }
-  }, [user]);
-
-  // Manejar cambios en los inputs
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-
-  // Manejar envío del formulario
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Validaciones básicas
-    if (formData.password && formData.password !== formData.confirmPassword) {
-      alert("Las contraseñas no coinciden");
-      return;
-    }
-
-    // TODO:la lógica para actualizar el perfil
-    console.log("Datos a actualizar:", formData);
-
-    // Ejemplo de actualización en el store
-    if (user) {
-      updateUser({
-        ...user,
-        name: formData.firstName,
-        lastName: formData.lastName,
-        phone: formData.phone,
-      });
-    }
-  };
+export default function PersonalInfoSection() {
+  const { formData, showPwd, setShowPwd, handleChange, handleSubmit } = usePersonalInfoForm();
 
   return (
       <MotionFade className="col-xxl-9 col-xl-8 col-lg-8">
@@ -72,120 +12,119 @@ const PersonalInfoSection = () => {
           <h3 className="user-title n4-clr mb-xxl-10 mb-xl-8 mb-lg-6 mb-5">Personal Details</h3>
           <form onSubmit={handleSubmit} className="ch-form-one">
             <div className="row g-6">
+              {/* First Name */}
               <div className="col-lg-6 col-md-6 col-sm-6">
                 <div className="ch-form-items">
-                  <label htmlFor="name1" className="text-capitalize fs18 fw_600 n3-clr mb-xxl-4 mb-xl-3 mb-2">
+                  <label htmlFor="firstName" className="text-capitalize fs18 fw_600 n3-clr mb-xxl-4 mb-xl-3 mb-2">
                     First Name
                   </label>
                   <input
-                      id="name1"
+                      id="firstName"
                       type="text"
                       placeholder="First Name"
                       value={formData.firstName}
-                      onChange={(e) => handleInputChange("firstName", e.target.value)}
+                      onChange={(e) => handleChange("firstName", e.target.value)}
                   />
                 </div>
               </div>
+              {/* Last Name */}
               <div className="col-lg-6 col-md-6 col-sm-6">
                 <div className="ch-form-items">
-                  <label htmlFor="lname1" className="text-capitalize fs18 fw_600 n3-clr mb-xxl-4 mb-xl-3 mb-2">
+                  <label htmlFor="lastName" className="text-capitalize fs18 fw_600 n3-clr mb-xxl-4 mb-xl-3 mb-2">
                     Last Name
                   </label>
                   <input
-                      id="lname1"
+                      id="lastName"
                       type="text"
                       placeholder="Last Name"
                       value={formData.lastName}
-                      onChange={(e) => handleInputChange("lastName", e.target.value)}
+                      onChange={(e) => handleChange("lastName", e.target.value)}
                   />
                 </div>
               </div>
+              {/* Email */}
               <div className="col-lg-6 col-md-6 col-sm-6">
                 <div className="ch-form-items">
-                  <label htmlFor="eml" className="text-capitalize fs18 fw_600 n3-clr mb-xxl-4 mb-xl-3 mb-2">
+                  <label htmlFor="email" className="text-capitalize fs18 fw_600 n3-clr mb-xxl-4 mb-xl-3 mb-2">
                     Email Address
                   </label>
                   <input
-                      id="eml"
+                      id="email"
                       type="email"
                       placeholder="Email"
                       value={formData.email}
-                      onChange={(e) => handleInputChange("email", e.target.value)}
-                      disabled // Email generalmente no se permite modificar
+                      disabled
                   />
                 </div>
               </div>
+              {/* Phone */}
               <div className="col-lg-6 col-md-6 col-sm-6">
                 <div className="ch-form-items">
-                  <label htmlFor="phs" className="text-capitalize fs18 fw_600 n3-clr mb-xxl-4 mb-xl-3 mb-2">
+                  <label htmlFor="phone" className="text-capitalize fs18 fw_600 n3-clr mb-xxl-4 mb-xl-3 mb-2">
                     Phone Number
                   </label>
                   <input
-                      id="phs"
+                      id="phone"
                       type="tel"
                       placeholder="Phone Number"
                       value={formData.phone}
-                      onChange={(e) => handleInputChange("phone", e.target.value)}
+                      onChange={(e) => handleChange("phone", e.target.value)}
                   />
                 </div>
               </div>
+              {/* New Password */}
               <div className="col-lg-6 col-md-6 col-sm-6">
                 <div className="ch-form-items">
-                  <label htmlFor="password-field" className="text-capitalize fs18 fw_600 n3-clr mb-xxl-4 mb-xl-3 mb-2">
+                  <label htmlFor="password" className="text-capitalize fs18 fw_600 n3-clr mb-xxl-4 mb-xl-3 mb-2">
                     New Password
                   </label>
                   <div className="ps-grp position-relative">
                     <input
-                        type={`${isPasswordShow ? "text" : "password"}`}
-                        id="password-field"
-                        name="password"
-                        className="password-field"
+                        id="password"
+                        type={showPwd.password ? "text" : "password"}
                         placeholder="New Password"
                         value={formData.password}
-                        onChange={(e) => handleInputChange("password", e.target.value)}
+                        onChange={(e) => handleChange("password", e.target.value)}
                     />
-                    {!isPasswordShow ? (
-                        <EyeSlash className="far fa-eye-slash field-icon toggle-password eye-icon" onClick={() => setIsPasswordShow(!isPasswordShow)}></EyeSlash>
+                    {showPwd.password ? (
+                        <Eye onClick={() => setShowPwd(prev => ({ ...prev, password: false }))} className="field-icon toggle-password eye-icon" />
                     ) : (
-                        <Eye className="far fa-eye-slash field-icon toggle-password eye-icon" onClick={() => setIsPasswordShow(!isPasswordShow)}></Eye>
+                        <EyeSlash onClick={() => setShowPwd(prev => ({ ...prev, password: true }))} className="field-icon toggle-password eye-icon" />
                     )}
                   </div>
                 </div>
               </div>
+              {/* Confirm Password */}
               <div className="col-lg-6 col-md-6 col-sm-6">
                 <div className="ch-form-items">
-                  <label htmlFor="password-field2" className="text-capitalize fs18 fw_600 n3-clr mb-xxl-4 mb-xl-3 mb-2">
+                  <label htmlFor="confirmPassword" className="text-capitalize fs18 fw_600 n3-clr mb-xxl-4 mb-xl-3 mb-2">
                     Confirm Password
                   </label>
                   <div className="ps-grp position-relative">
                     <input
-                        type={`${isConfirmPasswordShow ? "text" : "password"}`}
-                        id="password-field2"
-                        name="confirmPassword"
-                        className="password-field"
+                        id="confirmPassword"
+                        type={showPwd.confirmPassword ? "text" : "password"}
                         placeholder="Confirm Password"
                         value={formData.confirmPassword}
-                        onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
+                        onChange={(e) => handleChange("confirmPassword", e.target.value)}
                     />
-                    {!isConfirmPasswordShow ? (
-                        <EyeSlash className="far fa-eye-slash field-icon toggle-password eye-icon" onClick={() => setIsConfirmPasswordShow(!isConfirmPasswordShow)}></EyeSlash>
+                    {showPwd.confirmPassword ? (
+                        <Eye onClick={() => setShowPwd(prev => ({ ...prev, confirmPassword: false }))} className="field-icon toggle-password eye-icon" />
                     ) : (
-                        <Eye className="far fa-eye-slash field-icon toggle-password eye-icon" onClick={() => setIsConfirmPasswordShow(!isConfirmPasswordShow)}></Eye>
+                        <EyeSlash onClick={() => setShowPwd(prev => ({ ...prev, confirmPassword: true }))} className="field-icon toggle-password eye-icon" />
                     )}
                   </div>
                 </div>
               </div>
             </div>
-
+            {/* Checkbox y boton */}
             <div className="border-top d-flex align-items-center justify-content-between pt-xxl-8 pt-6 mt-xxl-8 mt-6">
-              <div className="ch-condition">
-                <label className="checkbox-single">
-                  <input type="checkbox" name="checkbox" className="d-none" checked={isChecked} onChange={() => setIsChecked(!isChecked)} />
-                  <span className="checkmark d-center">{isChecked && <Check />}</span>
-                  <span className="fs-seven fw_600 title-item">Subscribe me to Newsletter</span>
-                </label>
-              </div>
-              <button type="submit" className="kewta-btn kewta-alt d-inline-flex align-items-center " data-aos="zoom-in-right" data-aos-duration="1000">
+              <label className="checkbox-single">
+                <input type="checkbox" name="checkbox" className="d-none" />
+                <span className="checkmark d-center"><Check /></span>
+                <span className="fs-seven fw_600 title-item">Subscribe me to Newsletter</span>
+              </label>
+              <button type="submit" className="kewta-btn kewta-alt d-inline-flex align-items-center">
                 <span className="kew-text act4-bg nw1-clr act3-bg">Update Profile</span>
               </button>
             </div>
@@ -193,6 +132,4 @@ const PersonalInfoSection = () => {
         </div>
       </MotionFade>
   );
-};
-
-export default PersonalInfoSection;
+}
