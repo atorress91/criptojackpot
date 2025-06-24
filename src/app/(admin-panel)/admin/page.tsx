@@ -1,5 +1,6 @@
 'use client';
 
+import RecentActivityTable from '@/components/admin-panel/RecentActivityTable';
 import { Users, Ticket, Money, TrendUp } from '@phosphor-icons/react';
 import Link from 'next/link';
 
@@ -80,42 +81,7 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Recent Activity Table */}
-        <div className="card border-0 shadow-sm mb-6">
-          <div className="card-header bg-white py-4">
-            <h5 className="mb-0">Actividad Reciente</h5>
-          </div>
-          <div className="card-body p-0">
-            <div className="table-responsive">
-              <table className="table table-hover mb-0">
-                <thead className="table-light">
-                  <tr>
-                    <th>Usuario</th>
-                    <th>Acción</th>
-                    <th>Ticket/Producto</th>
-                    <th>Fecha</th>
-                    <th>Estado</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {recentActivity.map(activity => (
-                    <tr key={activity.id}>
-                      <td>{activity.user}</td>
-                      <td>{activity.action}</td>
-                      <td>{activity.ticket}</td>
-                      <td>{activity.date}</td>
-                      <td>
-                        <span className={`badge bg-${activity.statusColor}-subtle text-${activity.statusColor}`}>
-                          {activity.status}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+        <RecentActivityTable />
 
         {/* Quick Actions */}
         <div className="card border-0 shadow-sm">
@@ -157,51 +123,3 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
-
-const recentActivity = [
-  {
-    id: 1,
-    user: 'Juan Pérez',
-    action: 'Compró',
-    ticket: 'Ticket #1234',
-    date: 'Hace 5 min',
-    status: 'Completado',
-    statusColor: 'success',
-  },
-  {
-    id: 2,
-    user: 'María García',
-    action: 'Registró',
-    ticket: 'Nueva cuenta',
-    date: 'Hace 15 min',
-    status: 'Activo',
-    statusColor: 'primary',
-  },
-  {
-    id: 3,
-    user: 'Carlos López',
-    action: 'Canceló',
-    ticket: 'Ticket #1233',
-    date: 'Hace 1 hora',
-    status: 'Cancelado',
-    statusColor: 'danger',
-  },
-  {
-    id: 4,
-    user: 'Ana Martínez',
-    action: 'Actualizó',
-    ticket: 'Perfil',
-    date: 'Hace 2 horas',
-    status: 'Actualizado',
-    statusColor: 'info',
-  },
-  {
-    id: 5,
-    user: 'Luis Rodríguez',
-    action: 'Compró',
-    ticket: 'Ticket #1232',
-    date: 'Hace 3 horas',
-    status: 'Procesando',
-    statusColor: 'warning',
-  },
-];
