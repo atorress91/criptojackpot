@@ -126,11 +126,13 @@ const NavbarBlack = () => {
                       </Link>
                       <span className="badge-seri">04</span>
                     </li>
-                    <li>
-                      <Link href="user-panel" className="cmn-circle" title={t('NAVBAR-BLACK.User Panel')}>
-                        <User className="ti ti-user"></User>
-                      </Link>
-                    </li>
+                    {isAuthenticated && (
+                      <li>
+                        <Link href="user-panel" className="cmn-circle" title={t('NAVBAR-BLACK.User Panel')}>
+                          <User className="ti ti-user" />
+                        </Link>
+                      </li>
+                    )}
                   </ul>
                   <div className="head-language">
                     <LanguageSelector />
