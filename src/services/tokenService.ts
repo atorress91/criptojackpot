@@ -1,4 +1,3 @@
-import { Role } from '@/interfaces/role';
 import { User } from '@/interfaces/user';
 
 export class TokenService {
