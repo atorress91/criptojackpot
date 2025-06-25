@@ -14,11 +14,10 @@ type ProfileImageType = StaticImageData | string;
 const UserPanelSidebar = () => {
   const path = usePathname();
   const router = useRouter();
-  const { user, updateUser } = useAuthStore();
   const [profileImage, setProfileImage] = useState<ProfileImageType>(miller);
   const [uploading, setUploading] = useState(false);
   const [showUploader, setShowUploader] = useState(false);
-  const { logout } = useAuthStore();
+  const { logout, user, updateUser } = useAuthStore();
 
   useEffect(() => {
     if (user?.imagePath) {
