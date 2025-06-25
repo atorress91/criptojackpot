@@ -2,16 +2,17 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { TokenService } from '@/services/tokenService';
 import { sidebarItems } from 'public/data/sidebarItems';
 import { IconProps, SignOut } from '@phosphor-icons/react';
+import { useAuthStore } from '@/store/authStore';
 
 const AdminPanelSidebar = () => {
   const path = usePathname();
   const router = useRouter();
+  const { logout } = useAuthStore();
 
   const handleLogout = () => {
-    TokenService.clearToken();
+    logout();
     router.push('/login');
   };
 

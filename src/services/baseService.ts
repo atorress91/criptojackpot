@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 
 import { Response } from '@/interfaces/response';
 import { TokenService } from './tokenService';
+import { useAuthStore } from '@/store/authStore';
 
 export abstract class BaseService {
   protected apiClient: AxiosInstance;
@@ -23,7 +24,7 @@ export abstract class BaseService {
   private setupInterceptors(): void {
     this.apiClient.interceptors.request.use(
       config => {
-        const token = TokenService.getToken();
+        const token = useAuthStore.getState().token;
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
@@ -38,7 +39,7 @@ export abstract class BaseService {
       response => response,
       async error => {
         if (error.response?.status === 401) {
-          TokenService.clearToken();
+          useAuthStore.getState().logout();
           if (typeof window !== 'undefined') {
             window.location.href = '/login?error=session_expired';
           }
@@ -60,7 +61,7 @@ export abstract class BaseService {
 
   protected handleError(error: AxiosError<Response<any>>): never {
     if (error.response?.status === 401) {
-      TokenService.clearToken();
+      useAuthStore.getState().logout();
       throw new Error('The session has expired');
     }
 
