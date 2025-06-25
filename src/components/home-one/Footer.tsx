@@ -1,9 +1,9 @@
-import bannerCar3 from "@/../public/images/banner/banner-car3.png";
-import chnagingIcon from "@/../public/images/global/chnaging-icon.png";
-import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
-import Image from "next/image";
-import Link from "next/link";
-import MotionFadeRight from "../motionEffect/MotionFadeRight";
+import bannerCar3 from '@/../public/images/banner/banner-car3.png';
+import chnagingIcon from '@/../public/images/global/chnaging-icon.png';
+import { ArrowUpRight } from '@phosphor-icons/react/dist/ssr';
+import Image from 'next/image';
+import Link from 'next/link';
+import MotionFadeRight from '../motionEffect/MotionFadeRight';
 
 function Footer() {
   return (
@@ -22,12 +22,12 @@ function Footer() {
                     Explore
                     <span className="d-flex align-items-center gap-2">
                       <span className="d-block" data-aos="zoom-in-right" data-aos-duration="1200">
-                        {" "}
-                        Our{" "}
+                        {' '}
+                        Our{' '}
                       </span>
                       <span className="act4-clr act4-underline" data-aos="zoom-in-left" data-aos-duration="1000">
-                        {" "}
-                        Lottery{" "}
+                        {' '}
+                        Lottery{' '}
                       </span>
                     </span>
                     Hub
@@ -37,8 +37,8 @@ function Footer() {
                   <div className="mails">
                     <span className="nw4-clr d-block mb-xxl-2 mb-0"> Say Hello </span>
                     <Link href="#0" className="fs20 fw_600 nw1-clr">
-                      {" "}
-                      cruz@example.com{" "}
+                      {' '}
+                      cruz@example.com{' '}
                     </Link>
                   </div>
                   <Link href="contest" className="kewta-btn d-inline-flex align-items-center">
@@ -155,17 +155,17 @@ function Footer() {
             </ul>
             <p className="footer-copyright flex-wrap justify-content-center">
               <span className="copy n0-clr">
-                {" "}
-                Copyright &copy; 2024 <Link href="#">Lottovibe</Link>{" "}
+                {' '}
+                Copyright &copy; 2025 <Link href="#">Criptojackpot</Link>{' '}
               </span>
               <span className="midbor"> </span>
               <span className="designed n0-clr">
-                {" "}
-                Designed By{" "}
+                {' '}
+                Designed By{' '}
                 <Link href="https://themeforest.net/user/pixelaxis" className="p1-clr">
-                  {" "}
+                  {' '}
                   Pixelaxis
-                </Link>{" "}
+                </Link>{' '}
               </span>
             </p>
           </div>
