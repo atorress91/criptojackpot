@@ -53,7 +53,8 @@
     "Basket": "Carrito",
     "Join Now": "Unirse",
     "Login": "Iniciar sesión",
-    "User Panel": "Panel de usuario"
+    "User Panel": "Panel de usuario",
+    "Logout": "Botón de salir"
   },
   "REGISTER": {
     "addressPlaceholder": "Dirección",

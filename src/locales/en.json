@@ -54,7 +54,8 @@
     "Basket": "Basket",
     "Join Now": "Join Now",
     "Login": "Login",
-    "User Panel": "User Panel"
+    "User Panel": "User Panel",
+    "Logout": "Logout button"
   },
   "REGISTER": {
     "addressPlaceholder": "Address",
