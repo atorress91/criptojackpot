@@ -3,7 +3,7 @@ import globalNft from '@/../public/images/global/global-nft.png';
 import globalNft2 from '@/../public/images/global/global-nft2.png';
 import logoWhite from '@/../public/images/logo/BlackOrange.png';
 
-import { ShoppingCartSimple } from '@phosphor-icons/react';
+import { ShoppingCartSimple, SignOut } from '@phosphor-icons/react';
 import { ArrowRight, CaretDown, User } from '@phosphor-icons/react/dist/ssr';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
@@ -24,7 +24,7 @@ const NavbarBlack = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isOverflowHidden, setIsOverflowHidden] = useState(false);
   const [dropdownId, setDropdownId] = useState('');
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, logout } = useAuthStore();
 
   const handleNavToggle = () => {
     setIsNavOpen(!isNavOpen);
@@ -135,15 +135,29 @@ const NavbarBlack = () => {
                   <div className="head-language">
                     <LanguageSelector />
                   </div>
-                  {!isAuthenticated && (
+                  {isAuthenticated ? (
+                    <button
+                      onClick={logout}
+                      className="cmn-circle text-danger border-0 bg-transparent p-0"
+                      title={t('NAVBAR-BLACK.Logout')}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        padding: 0,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <SignOut size={24} weight="bold" />
+                    </button>
+                  ) : (
                     <Link href="/login" className="kewta-btn d-inline-flex align-items-center">
                       <span className="kew-text p1-border n0-clr">{t('NAVBAR-BLACK.Join Now')}</span>
                       <div className="kew-arrow p1-bg">
                         <div className="kt-one">
-                          <ArrowRight className="ti ti-arrow-right n4-clr"></ArrowRight>
+                          <ArrowRight className="ti ti-arrow-right n4-clr" />
                         </div>
                         <div className="kt-two">
-                          <ArrowRight className="ti ti-arrow-right n4-clr"></ArrowRight>
+                          <ArrowRight className="ti ti-arrow-right n4-clr" />
                         </div>
                       </div>
                     </Link>
