@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { navbarData } from '../../../public/data/navbarData';
 import AllHomePage from './AllHomePage';
 import LanguageSelector from '../languageSelector/LanguageSelector';
+import { useAuthStore } from '@/store/authStore';
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
 const NavbarBlack = () => {
@@ -23,6 +24,7 @@ const NavbarBlack = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isOverflowHidden, setIsOverflowHidden] = useState(false);
   const [dropdownId, setDropdownId] = useState('');
+  const { isAuthenticated } = useAuthStore();
 
   const handleNavToggle = () => {
     setIsNavOpen(!isNavOpen);
@@ -133,17 +135,20 @@ const NavbarBlack = () => {
                   <div className="head-language">
                     <LanguageSelector />
                   </div>
-                  <Link href="/login" className="kewta-btn d-inline-flex align-items-center">
-                    <span className="kew-text p1-border n0-clr">{t('NAVBAR-BLACK.Join Now')}</span>
-                    <div className="kew-arrow p1-bg">
-                      <div className="kt-one">
-                        <ArrowRight className="ti ti-arrow-right n4-clr"></ArrowRight>
+                  {!isAuthenticated && (
+                    <Link href="/login" className="kewta-btn d-inline-flex align-items-center">
+                      <span className="kew-text p1-border n0-clr">{t('NAVBAR-BLACK.Join Now')}</span>
+                      <div className="kew-arrow p1-bg">
+                        <div className="kt-one">
+                          <ArrowRight className="ti ti-arrow-right n4-clr"></ArrowRight>
+                        </div>
+                        <div className="kt-two">
+                          <ArrowRight className="ti ti-arrow-right n4-clr"></ArrowRight>
+                        </div>
                       </div>
-                      <div className="kt-two">
-                        <ArrowRight className="ti ti-arrow-right n4-clr"></ArrowRight>
-                      </div>
-                    </div>
-                  </Link>
+                    </Link>
+                  )}
+
                   <div className="invisible-menuthumb d-flex">
                     <Link href="landing-nft1">
                       <Image src={globalNft} width={456} alt="img" />
