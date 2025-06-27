@@ -71,7 +71,7 @@ export abstract class BaseService {
     throw new Error(errorMessage);
   }
 
-  async getAll<T>(): Promise<T[]> {
+  protected async getAll<T>(): Promise<T[]> {
     try {
       const response = await this.apiClient.get<Response<T[]>>(`${this.endpoint}`);
       return this.handleResponse(response);
@@ -80,7 +80,7 @@ export abstract class BaseService {
     }
   }
 
-  async getById<T>(id: string | number): Promise<T> {
+  protected async getById<T>(id: string | number): Promise<T> {
     try {
       const response = await this.apiClient.get<Response<T>>(`${this.endpoint}/${id}`);
       return this.handleResponse(response);
@@ -89,7 +89,7 @@ export abstract class BaseService {
     }
   }
 
-  async create<T>(data: Partial<T>): Promise<T> {
+  protected async create<T>(data: Partial<T>): Promise<T> {
     try {
       const response = await this.apiClient.post<Response<T>>(`${this.endpoint}`, data);
       return this.handleResponse(response);
@@ -98,7 +98,7 @@ export abstract class BaseService {
     }
   }
 
-  async update<T>(id: string | number, data: Partial<T>): Promise<T> {
+  protected async update<T>(id: string | number, data: Partial<T>): Promise<T> {
     try {
       const response = await this.apiClient.put<Response<T>>(`${this.endpoint}/${id}`, data);
       return this.handleResponse(response);
@@ -107,9 +107,18 @@ export abstract class BaseService {
     }
   }
 
-  async delete(id: string | number): Promise<void> {
+  protected async delete(id: string | number): Promise<void> {
     try {
       await this.apiClient.delete(`${this.endpoint}/${id}`);
+    } catch (error) {
+      throw this.handleError(error as AxiosError<Response<any>>);
+    }
+  }
+
+  protected async patch<T>(url: string, data: any): Promise<T> {
+    try {
+      const response = await this.apiClient.patch<Response<T>>(url, data);
+      return this.handleResponse(response);
     } catch (error) {
       throw this.handleError(error as AxiosError<Response<any>>);
     }

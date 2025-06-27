@@ -1,86 +1,76 @@
-'use client'
+import { BaseService } from './baseService';
 
-import { S3Client } from '@aws-sdk/client-s3';
-import { createPresignedPost } from '@aws-sdk/s3-presigned-post';
-import axios from 'axios';
+interface UploadRequest {
+  fileName: string;
+  contentType: string;
+  expirationMinutes?: number;
+}
+
+interface PresignedUrlResponse {
+  url: string;
+}
 
 interface UploadResponse {
-  url: string;
   fileName: string;
+  fileUrl: string;
   cdnUrl: string;
 }
 
-export class DigitalOceanStorageService {
-  private static readonly CDN_ENDPOINT = 'https://cryptojackpot.nyc3.cdn.digitaloceanspaces.com';
-  private static readonly ORIGIN_ENDPOINT = 'https://cryptojackpot.nyc3.digitaloceanspaces.com';
-  private static readonly BUCKET_NAME = 'cryptojackpot';
+export class DigitalOceanStorageService extends BaseService {
+  protected endpoint: string = 'digitaloceanstorage';
 
-  private static readonly s3Client = new S3Client({
-    endpoint: 'https://nyc3.digitaloceanspaces.com',
-    region: 'nyc3',
-    credentials: {
-      accessKeyId: 'DO801T9NJ6E98L2XBNNE',
-      secretAccessKey: 'JMXZuQO4hSJCrHtMXZS6XkIaK22vQtoOmw5DSZQMv9Q'
-    }
-  });
-
-  static async uploadFile(file: File, path: string): Promise<UploadResponse> {
+  /**
+   * Sube un archivo usando presigned URL del backend
+   */
+  async uploadFile(file: File, path: string = 'uploads'): Promise<UploadResponse> {
     try {
+      // Validación básica
       if (!file.type.startsWith('image/')) {
         throw new Error('Solo se permiten archivos de imagen');
       }
 
-      const timestamp = new Date().getTime();
-      const fileName = `${timestamp}-${file.name}`;
-      const filePath = `${path}/${fileName}`;
-
-      try {
-        const { url, fields } = await createPresignedPost(this.s3Client, {
-          Bucket: this.BUCKET_NAME,
-          Key: filePath,
-          Conditions: [
-            ['content-length-range', 0, 10485760],
-            ['starts-with', '$Content-Type', 'image/'],
-          ],
-          Fields: {
-            'Content-Type': file.type,
-          },
-          Expires: 600,
-        });
-
-        const formData = new FormData();
-        Object.entries(fields).forEach(([key, value]) => {
-          formData.append(key, value);
-        });
-        formData.append('file', file);
-
-        await axios.post(url, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          timeout: 60000,
-        });
-
-        const cdnUrl = `${this.CDN_ENDPOINT}/${fileName}`;
-
-        return {
-          url: `${this.ORIGIN_ENDPOINT}/${fileName}`,
-          fileName,
-          cdnUrl,
-        };
-      } catch (error) {
-        console.error('Error al obtener URL firmada o subir archivo:', error);
-        throw new Error('Error al subir el archivo a Digital Ocean');
+      if (file.size > 10 * 1024 * 1024) {
+        // 10MB
+        throw new Error('El archivo es demasiado grande (máximo 10MB)');
       }
+
+      // 1. Generar nombre único para el archivo
+      const timestamp = Date.now();
+      const fileExtension = file.name.split('.').pop();
+      const fileName = `${path}/${timestamp}-${Math.random().toString(36).substring(7)}.${fileExtension}`;
+
+      // 2. Solicitar presigned URL al backend
+      const presignedUrl = await this.getPresignedUploadUrl({
+        fileName,
+        contentType: file.type,
+        expirationMinutes: 15,
+      });
+
+      // 3. Subir archivo directamente a Digital Ocean
+      await this.uploadToDigitalOcean(presignedUrl, file);
+
+      // 4. Construir URLs de respuesta
+      const fileUrl = presignedUrl.split('?')[0]; // Remover query params
+      const cdnUrl = fileUrl.replace(
+        'cryptojackpot.nyc3.digitaloceanspaces.com',
+        'cryptojackpot.nyc3.cdn.digitaloceanspaces.com'
+      );
+
+      return {
+        fileName,
+        fileUrl,
+        cdnUrl,
+      };
     } catch (error) {
-      if (error instanceof Error) {
-        throw error;
-      }
-      throw new Error('Error desconocido al subir el archivo');
+      console.error('Error uploading file:', error);
+      throw error instanceof Error ? error : new Error('Error desconocido al subir el archivo');
     }
   }
 
-  static async uploadMultipleFiles(files: File[], path: string): Promise<UploadResponse[]> {
+  /**
+   * Sube múltiples archivos
+   */
+  async uploadMultipleFiles(files: File[], path: string = 'uploads'): Promise<UploadResponse[]> {
     try {
       const uploadPromises = files.map(file => this.uploadFile(file, path));
       return await Promise.all(uploadPromises);
@@ -90,8 +80,85 @@ export class DigitalOceanStorageService {
     }
   }
 
+  /**
+   * Sube foto de perfil y actualiza en el backend
+   */
+  async uploadProfilePhoto(file: File, userId?: string): Promise<UploadResponse> {
+    try {
+      // 1. Subir archivo
+      const uploadResult = await this.uploadFile(file, 'profile-photos');
+
+      // 2. Actualizar perfil en backend (opcional si tienes este endpoint)
+      try {
+        await this.updateProfilePhoto(uploadResult.fileUrl);
+      } catch (error) {
+        console.warn('Error updating profile photo in backend:', error);
+        // No lanzar error aquí, el archivo ya se subió exitosamente
+      }
+
+      return uploadResult;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
+   * Obtener presigned URL del backend
+   */
+  private async getPresignedUploadUrl(request: UploadRequest): Promise<string> {
+    try {
+      const response = await this.apiClient.post<PresignedUrlResponse>(`${this.endpoint}/presign`, request);
+      return response.data.url;
+    } catch (error) {
+      throw this.handleError(error as any);
+    }
+  }
+
+  /**
+   * Subir archivo directamente a Digital Ocean usando presigned URL
+   */
+  private async uploadToDigitalOcean(presignedUrl: string, file: File): Promise<void> {
+    try {
+      const response = await fetch(presignedUrl, {
+        method: 'PUT',
+        body: file,
+        headers: {
+          'Content-Type': file.type,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Upload failed: ${response.status} ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error('Error uploading to Digital Ocean:', error);
+      throw new Error('Error al subir el archivo a Digital Ocean');
+    }
+  }
+
+  /**
+   * Actualizar foto de perfil en backend
+   */
+  private async updateProfilePhoto(photoUrl: string): Promise<void> {
+    try {
+      await this.apiClient.post('/user/profile-photo', { photoUrl });
+    } catch (error) {
+      throw this.handleError(error as any);
+    }
+  }
+
+  /**
+   * Construir URL del archivo (CDN o original)
+   */
   static getFileUrl(fileName: string, useCdn: boolean = true): string {
-    const baseUrl = useCdn ? this.CDN_ENDPOINT : this.ORIGIN_ENDPOINT;
-    return `${baseUrl}/${fileName}`;
+    const baseUrl = useCdn
+      ? 'https://cryptojackpot.nyc3.cdn.digitaloceanspaces.com'
+      : 'https://cryptojackpot.nyc3.digitaloceanspaces.com';
+
+    // Remover path duplicado si fileName ya incluye el path completo
+    const cleanFileName = fileName.startsWith('http') ? fileName.split('/').pop() : fileName;
+    return `${baseUrl}/${cleanFileName}`;
   }
 }
+
+export const digitalOceanStorageService = new DigitalOceanStorageService();

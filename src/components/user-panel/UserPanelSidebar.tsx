@@ -2,28 +2,32 @@
 
 import miller from '@/../public/images/man-global/devid-miller.png';
 import { Headset, Heart, Info, Lightning, SignOut, Ticket, Upload, Wallet } from '@phosphor-icons/react/dist/ssr';
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import ImageUploader from '../uploadFiles/imageUploader';
 import { useAuthStore } from '@/store/authStore';
-
-type ProfileImageType = StaticImageData | string;
+import { useProfilePhoto } from '@/hooks/useProfilePhoto';
 
 const UserPanelSidebar = () => {
   const path = usePathname();
   const router = useRouter();
-  const [profileImage, setProfileImage] = useState<ProfileImageType>(miller);
-  const [uploading, setUploading] = useState(false);
-  const [showUploader, setShowUploader] = useState(false);
-  const { logout, user, updateUser } = useAuthStore();
+  const { logout, user } = useAuthStore();
 
-  useEffect(() => {
-    if (user?.imagePath) {
-      setProfileImage(user.imagePath);
-    }
-  }, [user?.imagePath]);
+  const { profileImage, uploading, uploadError, fileInputRef, handleFileSelect, openFileSelector, clearError } =
+    useProfilePhoto({
+      defaultImage: miller,
+      maxFileSize: 10 * 1024 * 1024,
+      allowedTypes: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
+      onUploadStart: () => {
+        console.log('Iniciando subida de imagen...');
+      },
+      onUploadSuccess: url => {
+        console.log('Imagen subida exitosamente:', url);
+      },
+      onUploadError: error => {
+        console.error('Error en upload:', error);
+      },
+    });
 
   const handleLogout = () => {
     logout();
@@ -40,71 +44,100 @@ const UserPanelSidebar = () => {
       <div className="user-panel-sidebarwrap sidebar-sticky">
         <div className="user-panel-sideinner win40-ragba border radius24 py-xxl-10 py-xl-8 py-lg-6 py-5 px-xxl-8 px-xl-6 px-5">
           <div className="user-profile-thumb position-relative text-center border-bottom pb-xxl-5 pb-4 mb-xxl-6 mb-5">
-            {/* Ícono para abrir el ImageUploader */}
-            <span className="pencil d-center" onClick={() => setShowUploader(true)}>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileSelect}
+              style={{ display: 'none' }}
+            />
+
+            <span
+              className={`pencil d-center ${uploading ? 'disabled' : ''}`}
+              onClick={openFileSelector}
+              style={{
+                cursor: uploading ? 'not-allowed' : 'pointer',
+                opacity: uploading ? 0.6 : 1,
+              }}
+              title={uploading ? 'Subiendo imagen...' : 'Cambiar foto de perfil'}
+            >
               <Upload weight="bold" className="ph-bold ph-upload fs-five" />
             </span>
 
-            {/* Imagen de perfil */}
-            <div className="thumb mb-xxl-5 mb-xl-4 mb-4 m-auto">
-              <Image src={profileImage} alt="img" className="radius-circle" width={100} height={100} />
+            <div className="thumb mb-xxl-5 mb-xl-4 mb-4 m-auto position-relative">
+              <Image
+                src={profileImage}
+                alt="Profile Image"
+                className="radius-circle"
+                width={100}
+                height={100}
+                style={{ objectFit: 'cover' }}
+                priority
+              />
+
               {uploading && (
                 <div className="position-absolute inset-0 bg-black bg-opacity-50 d-center radius-circle">
                   <div className="spinner-border text-white" role="status">
-                    <span className="visually-hidden">Cargando...</span>
+                    <span className="visually-hidden">Subiendo...</span>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* ImageUploader para subir imágenes */}
-            {showUploader && (
-              <ImageUploader
-                onUploadComplete={(url: string) => {
-                  setProfileImage(url);
-                  setShowUploader(false);
-                  // Actualizar el usuario con la nueva imagen
-                  if (user) {
-                    updateUser({ ...user, imagePath: url });
-                  }
-                }}
-                onCancel={() => setShowUploader(false)}
-                folderPath="profile"
-                singleUpload={true}
-              />
+            {uploadError && (
+              <div
+                className="alert alert-danger mt-2 p-2 d-flex align-items-center justify-content-between"
+                style={{ fontSize: '12px', lineHeight: '1.2' }}
+              >
+                <span>{uploadError}</span>
+                <button
+                  type="button"
+                  className="btn-close btn-close-sm ms-2"
+                  onClick={clearError}
+                  aria-label="Cerrar error"
+                ></button>
+              </div>
             )}
 
             <div className="content">
-              <span className="fs20 fw_700 n4-clr d-block mb-1">{getFullName()}</span>
-              <span className="n3-clr">{user?.email || 'email@ejemplo.com'}</span>
+              <span className="fs20 fw_700 n4-clr d-block mb-1" title={getFullName()}>
+                {getFullName()}
+              </span>
+              <span className="n3-clr" title={user?.email}>
+                {user?.email || 'email@ejemplo.com'}
+              </span>
             </div>
           </div>
 
-          {/* Menú lateral */}
-          <ul className="user-sidebar d-grid gap-2">
-            {sidebarItems.map(item => (
-              <li key={`sidebar-${item.id}`}>
-                <Link
-                  href={item.href}
-                  className={`${
-                    path === item.href ? 'active' : ''
-                  } py-xxl-3 py-2 px-xxl-5 px-xl-4 px-3 radius12 n4-clr fw_600 d-flex align-items-center gap-xxl-3 gap-2 user-text-inner`}
+          <nav aria-label="Panel de usuario">
+            <ul className="user-sidebar d-grid gap-2">
+              {sidebarItems.map(item => (
+                <li key={`sidebar-${item.id}`}>
+                  <Link
+                    href={item.href}
+                    className={`${
+                      path === item.href ? 'active' : ''
+                    } py-xxl-3 py-2 px-xxl-5 px-xl-4 px-3 radius12 n4-clr fw_600 d-flex align-items-center gap-xxl-3 gap-2 user-text-inner`}
+                    aria-current={path === item.href ? 'page' : undefined}
+                  >
+                    {item.icon}
+                    {item.text}
+                  </Link>
+                </li>
+              ))}
+
+              <li>
+                <button
+                  onClick={handleLogout}
+                  className="py-xxl-3 py-2 px-xxl-5 px-xl-4 px-3 radius12 n4-clr fw_600 d-flex align-items-center gap-xxl-3 gap-2 user-text-inner w-full border-0 bg-transparent text-start"
+                  aria-label="Cerrar sesión"
                 >
-                  {item.icon}
-                  {item.text}
-                </Link>
+                  <SignOut weight="bold" className="ph-bold ph-sign-out fs-five" />
+                  Log Out
+                </button>
               </li>
-            ))}
-            <li>
-              <button
-                onClick={handleLogout}
-                className="py-xxl-3 py-2 px-xxl-5 px-xl-4 px-3 radius12 n4-clr fw_600 d-flex align-items-center gap-xxl-3 gap-2 user-text-inner w-full"
-              >
-                <SignOut weight="bold" className="ph-bold ph-sign-out fs-five" />
-                Log Out
-              </button>
-            </li>
-          </ul>
+            </ul>
+          </nav>
         </div>
       </div>
     </div>
@@ -150,5 +183,10 @@ const sidebarItems = [
     icon: <Wallet weight="bold" className="ph-bold ph-wallet fs-five" />,
     text: 'Payment Methods',
   },
-  { id: 4447, href: '/#', icon: <Headset weight="bold" className="ph-bold ph-headset fs-five" />, text: 'Help Center' },
+  {
+    id: 4447,
+    href: '/#',
+    icon: <Headset weight="bold" className="ph-bold ph-headset fs-five" />,
+    text: 'Help Center',
+  },
 ];
