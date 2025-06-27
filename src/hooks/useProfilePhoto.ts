@@ -88,15 +88,15 @@ export const useProfilePhoto = (options: UseProfilePhotoOptions = {}): UseProfil
 
     try {
       const uploadResult = await digitalOceanStorageService.uploadProfilePhoto(file);
-      setProfileImage(uploadResult.cdnUrl);
+      setProfileImage(uploadResult);
 
       if (user) {
-        const updatedUser = { ...user, imagePath: uploadResult.cdnUrl };
+        const updatedUser = { ...user, imagePath: uploadResult };
         updateUser(updatedUser);
 
         const updateImageProfile: UpdateImageProfileRequest = {
           userId: user.id ?? 0,
-          imageUrl: uploadResult.cdnUrl,
+          imageUrl: uploadResult,
         };
 
         try {
@@ -108,7 +108,7 @@ export const useProfilePhoto = (options: UseProfilePhotoOptions = {}): UseProfil
         }
       }
 
-      onUploadSuccess?.(uploadResult.cdnUrl);
+      onUploadSuccess?.(uploadResult);
       console.log('Profile photo updated successfully:', uploadResult);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Error al subir la imagen';

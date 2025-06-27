@@ -1,4 +1,5 @@
 import { BaseService } from './baseService';
+import type { Response as ApiResponse } from '@/interfaces/response';
 
 interface UploadRequest {
   fileName: string;
@@ -83,20 +84,12 @@ export class DigitalOceanStorageService extends BaseService {
   /**
    * Sube foto de perfil y actualiza en el backend
    */
-  async uploadProfilePhoto(file: File, userId?: string): Promise<UploadResponse> {
+  async uploadProfilePhoto(file: File): Promise<string> {
     try {
       // 1. Subir archivo
-      const uploadResult = await this.uploadFile(file, 'profile-photos');
+      const { fileUrl } = await this.uploadFile(file, 'profile-photos');
 
-      // 2. Actualizar perfil en backend (opcional si tienes este endpoint)
-      try {
-        await this.updateProfilePhoto(uploadResult.fileUrl);
-      } catch (error) {
-        console.warn('Error updating profile photo in backend:', error);
-        // No lanzar error aquí, el archivo ya se subió exitosamente
-      }
-
-      return uploadResult;
+      return fileUrl;
     } catch (error) {
       throw error;
     }
@@ -105,13 +98,10 @@ export class DigitalOceanStorageService extends BaseService {
   /**
    * Obtener presigned URL del backend
    */
-  private async getPresignedUploadUrl(request: UploadRequest): Promise<string> {
-    try {
-      const response = await this.apiClient.post<PresignedUrlResponse>(`${this.endpoint}/presign`, request);
-      return response.data.url;
-    } catch (error) {
-      throw this.handleError(error as any);
-    }
+  async getPresignedUploadUrl(request: UploadRequest): Promise<string> {
+    const { data: wrapper } = await this.apiClient.post<ApiResponse<string>>(`${this.endpoint}/presign`, request);
+    if (!wrapper.success || !wrapper.data) throw new Error(wrapper.message);
+    return wrapper.data;
   }
 
   /**
@@ -133,17 +123,6 @@ export class DigitalOceanStorageService extends BaseService {
     } catch (error) {
       console.error('Error uploading to Digital Ocean:', error);
       throw new Error('Error al subir el archivo a Digital Ocean');
-    }
-  }
-
-  /**
-   * Actualizar foto de perfil en backend
-   */
-  private async updateProfilePhoto(photoUrl: string): Promise<void> {
-    try {
-      await this.apiClient.post('/user/profile-photo', { photoUrl });
-    } catch (error) {
-      throw this.handleError(error as any);
     }
   }
 
