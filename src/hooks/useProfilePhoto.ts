@@ -87,21 +87,21 @@ export const useProfilePhoto = (options: UseProfilePhotoOptions = {}): UseProfil
     const previousImage = profileImage;
 
     try {
-      const uploadResult = await digitalOceanStorageService.uploadProfilePhoto(file);
-      setProfileImage(uploadResult);
+      const uploadResult = await digitalOceanStorageService.uploadProfilePhoto(file, user?.id ?? 0);
+      const url = new URL(uploadResult);
+      const imageRelativePath = url.pathname.replace('/cryptojackpot/', '');
 
       if (user) {
-        const updatedUser = { ...user, imagePath: uploadResult };
-        updateUser(updatedUser);
-
         const updateImageProfile: UpdateImageProfileRequest = {
           userId: user.id ?? 0,
-          imageUrl: uploadResult,
+          imageUrl: imageRelativePath,
         };
 
         try {
           if (user?.id !== undefined) {
-            await userService.updateImageProfile(updateImageProfile);
+            const user = await userService.updateImageProfile(updateImageProfile);
+            setProfileImage(user.imagePath ?? '');
+            updateUser(user);
           }
         } catch (backendError) {
           console.warn('Error updating user profile in backend:', backendError);

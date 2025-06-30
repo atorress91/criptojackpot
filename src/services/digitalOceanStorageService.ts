@@ -5,6 +5,7 @@ interface UploadRequest {
   fileName: string;
   contentType: string;
   expirationMinutes?: number;
+  userId: number;
 }
 
 interface PresignedUrlResponse {
@@ -23,7 +24,7 @@ export class DigitalOceanStorageService extends BaseService {
   /**
    * Sube un archivo usando presigned URL del backend
    */
-  async uploadFile(file: File, path: string = 'uploads'): Promise<UploadResponse> {
+  async uploadFile(file: File, userId: number, path: string = 'uploads'): Promise<UploadResponse> {
     try {
       // Validación básica
       if (!file.type.startsWith('image/')) {
@@ -35,27 +36,29 @@ export class DigitalOceanStorageService extends BaseService {
         throw new Error('El archivo es demasiado grande (máximo 10MB)');
       }
 
-      // 1. Generar nombre único para el archivo
-      const timestamp = Date.now();
-      const fileExtension = file.name.split('.').pop();
-      const fileName = `${path}/${timestamp}-${Math.random().toString(36).substring(7)}.${fileExtension}`;
+      // Usar solo el nombre original - el backend generará el nombre único
+      const originalFileName = file.name;
 
-      // 2. Solicitar presigned URL al backend
+      // Solicitar presigned URL al backend (incluye userId)
       const presignedUrl = await this.getPresignedUploadUrl({
-        fileName,
+        fileName: originalFileName,
         contentType: file.type,
         expirationMinutes: 15,
+        userId: userId,
       });
 
-      // 3. Subir archivo directamente a Digital Ocean
+      // Subir archivo directamente a Digital Ocean
       await this.uploadToDigitalOcean(presignedUrl, file);
 
-      // 4. Construir URLs de respuesta
+      // Construir URLs de respuesta
       const fileUrl = presignedUrl.split('?')[0]; // Remover query params
       const cdnUrl = fileUrl.replace(
         'cryptojackpot.nyc3.digitaloceanspaces.com',
         'cryptojackpot.nyc3.cdn.digitaloceanspaces.com'
       );
+
+      // Extraer el fileName del presigned URL
+      const fileName = fileUrl.split('/').slice(-2).join('/'); // profile-photos/user-123-...
 
       return {
         fileName,
@@ -71,9 +74,9 @@ export class DigitalOceanStorageService extends BaseService {
   /**
    * Sube múltiples archivos
    */
-  async uploadMultipleFiles(files: File[], path: string = 'uploads'): Promise<UploadResponse[]> {
+  async uploadMultipleFiles(files: File[], userId: number, path: string = 'uploads'): Promise<UploadResponse[]> {
     try {
-      const uploadPromises = files.map(file => this.uploadFile(file, path));
+      const uploadPromises = files.map(file => this.uploadFile(file, userId, path));
       return await Promise.all(uploadPromises);
     } catch (error) {
       console.error('Error en uploadMultipleFiles:', error);
@@ -84,17 +87,15 @@ export class DigitalOceanStorageService extends BaseService {
   /**
    * Sube foto de perfil y actualiza en el backend
    */
-  async uploadProfilePhoto(file: File): Promise<string> {
+  async uploadProfilePhoto(file: File, userId: number): Promise<string> {
     try {
-      // 1. Subir archivo
-      const { fileUrl } = await this.uploadFile(file, 'profile-photos');
-
+      // Subir archivo con userId
+      const { fileUrl } = await this.uploadFile(file, userId, 'profile-photos');
       return fileUrl;
     } catch (error) {
       throw error;
     }
   }
-
   /**
    * Obtener presigned URL del backend
    */
