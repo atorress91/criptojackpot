@@ -24,10 +24,24 @@ export abstract class BaseService {
   private setupInterceptors(): void {
     this.apiClient.interceptors.request.use(
       config => {
-        const token = useAuthStore.getState().token;
+        let token = useAuthStore.getState().token;
+
+        if (!token && typeof window !== 'undefined') {
+          const authStorage = localStorage.getItem('auth-storage');
+          if (authStorage) {
+            try {
+              const parsed = JSON.parse(authStorage);
+              token = parsed.state?.token;
+            } catch (e) {
+              console.error('Error parsing auth storage:', e);
+            }
+          }
+        }
+
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
+
         return config;
       },
       error => {
