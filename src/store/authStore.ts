@@ -3,7 +3,6 @@ import { persist } from 'zustand/middleware';
 import { User } from '@/interfaces/user';
 import { AuthRequest } from '@/interfaces/authRequest';
 import { authService } from '@/services/authService';
-import { TokenService } from '@/services/tokenService';
 
 interface AuthState {
   user: User | null;
@@ -33,9 +32,6 @@ export const useAuthStore = create<AuthState>()(
           const userData = await authService.authenticate(credentials);
 
           if (userData.token) {
-            TokenService.setToken(userData.token);
-            TokenService.setUser(userData);
-
             set({
               user: userData,
               token: userData.token,
@@ -60,8 +56,6 @@ export const useAuthStore = create<AuthState>()(
           error: null,
         });
 
-        TokenService.clearToken();
-
         if (typeof window !== 'undefined') {
           localStorage.removeItem('auth-storage');
         }
@@ -69,8 +63,6 @@ export const useAuthStore = create<AuthState>()(
 
       updateUser: user => {
         set({ user });
-
-        TokenService.setUser(user);
       },
 
       clearError: () => {
