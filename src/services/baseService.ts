@@ -1,7 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 
 import { Response } from '@/interfaces/response';
-import { TokenService } from './tokenService';
 import { useAuthStore } from '@/store/authStore';
 
 export abstract class BaseService {
@@ -81,7 +80,7 @@ export abstract class BaseService {
 
     const errorMessage = error.response?.data?.message || error.message || 'An error occurred';
 
-    console.log('Error Response:', error.response?.data);
+    console.error('Error Response:', error.response?.data);
     throw new Error(errorMessage);
   }
 
@@ -106,6 +105,15 @@ export abstract class BaseService {
   protected async create<T>(data: Partial<T>): Promise<T> {
     try {
       const response = await this.apiClient.post<Response<T>>(`${this.endpoint}`, data);
+      return this.handleResponse(response);
+    } catch (error) {
+      throw this.handleError(error as AxiosError<Response<any>>);
+    }
+  }
+
+  protected async createWithParams<T, TResponse>(data: Partial<T>, route: string): Promise<TResponse> {
+    try {
+      const response = await this.apiClient.post<Response<TResponse>>(`${this.endpoint}/${route}`, data);
       return this.handleResponse(response);
     } catch (error) {
       throw this.handleError(error as AxiosError<Response<any>>);

@@ -100,9 +100,9 @@ export class DigitalOceanStorageService extends BaseService {
    * Obtener presigned URL del backend
    */
   async getPresignedUploadUrl(request: UploadRequest): Promise<string> {
-    const { data: wrapper } = await this.apiClient.post<ApiResponse<string>>(`${this.endpoint}/presign`, request);
-    if (!wrapper.success || !wrapper.data) throw new Error(wrapper.message);
-    return wrapper.data;
+    const response = await this.createWithParams<UploadRequest, string>(request, 'presign');
+
+    return response;
   }
 
   /**

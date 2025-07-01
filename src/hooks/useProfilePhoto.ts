@@ -109,7 +109,6 @@ export const useProfilePhoto = (options: UseProfilePhotoOptions = {}): UseProfil
       }
 
       onUploadSuccess?.(uploadResult);
-      console.log('Profile photo updated successfully:', uploadResult);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Error al subir la imagen';
       console.error('Error uploading profile photo:', error);
