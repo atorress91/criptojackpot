@@ -7,13 +7,14 @@ export const metadata: Metadata = {
 };
 
 interface PageProps {
-  params: {
+  params: Promise<{
     ref?: string[];
-  };
+  }>;
 }
 
-const Register = ({ params }: PageProps) => {
-  const referralCode = params.ref && params.ref.length > 0 ? params.ref[0] : null;
+const Register = async ({ params }: PageProps) => {
+  const { ref } = await params;
+  const referralCode = ref && ref.length > 0 ? ref[0] : null;
 
   return (
     <div>
