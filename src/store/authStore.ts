@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { User } from '@/interfaces/user';
 import { AuthRequest } from '@/interfaces/authRequest';
-import { authService } from '@/services/authService';
 
 interface AuthState {
   user: User | null;
@@ -29,6 +28,7 @@ export const useAuthStore = create<AuthState>()(
       login: async credentials => {
         set({ isLoading: true, error: null });
         try {
+          const { authService } = await import('@/services/authService');
           const userData = await authService.authenticate(credentials);
 
           if (userData.token) {
