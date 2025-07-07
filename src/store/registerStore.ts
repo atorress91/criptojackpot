@@ -80,7 +80,6 @@ export const useRegisterStore = create<RegisterState>((set, get) => ({
         roleId: 2,
         country: selectedCountry!,
         statePlace: formData.state,
-        referredBy: formData.referralCode || undefined,
       };
 
       await userService.createUser(userData);

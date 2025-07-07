@@ -18,7 +18,6 @@ export interface User {
   googleAccessToken?: string;
   googleRefreshToken?: string;
   token?: string;
-  referredBy?: string;
 
   roleId: number;
   role?: Role;
