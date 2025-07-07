@@ -5,9 +5,14 @@ import { useRegisterForm } from '@/hooks/useRegisterForm';
 import { CaretRight, Eye, EyeSlash } from '@phosphor-icons/react/dist/ssr';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const RegisterSection = () => {
+interface RegisterSectionProps {
+  referralCode?: string | null;
+}
+
+const RegisterSection = ({ referralCode }: RegisterSectionProps) => {
   const { t } = useTranslation();
   const {
     formData,
@@ -20,7 +25,14 @@ const RegisterSection = () => {
     handleCountryChange,
     togglePasswordVisibility,
     handleSubmit,
+    setReferralCode,
   } = useRegisterForm();
+
+  useEffect(() => {
+    if (referralCode && setReferralCode) {
+      setReferralCode(referralCode);
+    }
+  }, [referralCode, setReferralCode]);
 
   return (
     <section className="login-section position-relative min-vh-100 d-flex align-items-center overflow-hidden">

@@ -9,4 +9,5 @@ export interface RegisterFormData {
   state: string;
   city: string;
   address: string;
+  referralCode?: string;
 }

@@ -18,6 +18,7 @@ interface RegisterState {
   registerUser: () => Promise<void>;
   clearError: () => void;
   resetForm: () => void;
+  setReferralCode: (code: string) => void;
 }
 
 const initialFormData: RegisterFormData = {
@@ -31,6 +32,7 @@ const initialFormData: RegisterFormData = {
   state: '',
   city: '',
   address: '',
+  referralCode: '',
 };
 
 export const useRegisterStore = create<RegisterState>((set, get) => ({
@@ -59,6 +61,12 @@ export const useRegisterStore = create<RegisterState>((set, get) => ({
     set(state => ({ isPasswordShow: !state.isPasswordShow }));
   },
 
+  setReferralCode: (code: string) => {
+    set(state => ({
+      formData: { ...state.formData, referralCode: code },
+    }));
+  },
+
   registerUser: async () => {
     set({ isLoading: true, error: null });
 
@@ -72,6 +80,7 @@ export const useRegisterStore = create<RegisterState>((set, get) => ({
         roleId: 2,
         country: selectedCountry!,
         statePlace: formData.state,
+        referredBy: formData.referralCode || undefined,
       };
 
       await userService.createUser(userData);

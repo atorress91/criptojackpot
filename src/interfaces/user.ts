@@ -1,5 +1,5 @@
-import { Country } from "./country";
-import { Role } from "./role";
+import { Country } from './country';
+import { Role } from './role';
 
 export interface User {
   id?: number;
@@ -18,8 +18,9 @@ export interface User {
   googleAccessToken?: string;
   googleRefreshToken?: string;
   token?: string;
+  referredBy?: string;
 
   roleId: number;
-  role?: Role
-  country?: Country
+  role?: Role;
+  country?: Country;
 }

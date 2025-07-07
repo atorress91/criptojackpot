@@ -18,6 +18,7 @@ interface UseRegisterFormReturn {
   handleCountryChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   togglePasswordVisibility: () => void;
   handleSubmit: (e: React.FormEvent) => Promise<void>;
+  setReferralCode: (code: string) => void;
 }
 
 export const useRegisterForm = (): UseRegisterFormReturn => {
@@ -39,6 +40,7 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
     registerUser,
     clearError,
     resetForm,
+    setReferralCode,
   } = useRegisterStore();
 
   // Cargar países al montar el componente
@@ -111,6 +113,18 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
       return false;
     }
 
+    if (formData.referralCode) {
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+      if (!uuidRegex.test(formData.referralCode)) {
+        showNotification(
+          'error',
+          t('REGISTER.errors.invalidData').split('.')[0],
+          t('REGISTER.errors.invalidReferralCode', 'Código de referido inválido')
+        );
+        return false;
+      }
+    }
+
     return true;
   };
 
@@ -156,5 +170,6 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
     handleCountryChange,
     togglePasswordVisibility,
     handleSubmit,
+    setReferralCode,
   };
 };
