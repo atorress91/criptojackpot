@@ -3,15 +3,20 @@ import { CalendarBlank, HandHeart, LinkSimple, UsersFour } from "@phosphor-icons
 import Link from "next/link";
 import { useRef } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { useReferralProgram } from "@/hooks/useReferralProgram";
 import MotionFade from "../motionEffect/MotionFade";
 import MotionFadeDownToTop from "../motionEffect/MotionFadeDownToTop";
 import MotionFadeTopToDown from "../motionEffect/MotionFadeTopToDown";
 
 const ReferalProgram = () => {
   const textAreaRef = useRef<HTMLInputElement>(null);
+  const { referralLink, copyToClipboard: copyReferralLink, hasSecurityCode } = useReferralProgram();
 
   function copyToClipboard(e: React.MouseEvent<HTMLInputElement, MouseEvent>) {
-    if (textAreaRef.current) {
+    if (copyReferralLink()) {
+      toast.success("Link Copied Successfully.");
+    } else if (textAreaRef.current) {
+      // Fallback to old method if navigator.clipboard is not available
       textAreaRef.current.select();
       document.execCommand("copy");
       e.currentTarget.focus();
@@ -24,6 +29,11 @@ const ReferalProgram = () => {
       <MotionFadeTopToDown className="cmn-box-addingbg mb-6 win40-ragba border radius24 py-xxl-10 py-xl-8 py-lg-6 py-5 px-xxl-10 px-xl-8 px-lg-6 px-5">
         <h3 className="user-title n4-clr mb-lg-6 mb-5">Partners:</h3>
         <div className="copy-codearea">
+          {!hasSecurityCode && (
+            <div className="alert alert-warning mb-3" role="alert">
+              No security code found. Contact support to get your referral code.
+            </div>
+          )}
           <div
             className="copy-form d-flex border flex-sm-nowrap flex-wrap radius100 p-2 align-items-center justify-content-sm-between justify-content-center text-sm-start text-center w-100"
             data-copy="true"
@@ -35,7 +45,7 @@ const ReferalProgram = () => {
               <span className="n4-clr fw_600">Referral Link :</span>
             </div>
             <span className="minput">
-              <input type="text" value="https:/Lottovibe.com/?ref=albert25" readOnly data-click-select-all className="in-input" ref={textAreaRef} />
+              <input type="text" value={referralLink} readOnly data-click-select-all className="in-input" ref={textAreaRef} />
             </span>
             <input
               type="submit"

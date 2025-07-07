@@ -18,6 +18,7 @@ export interface User {
   googleAccessToken?: string;
   googleRefreshToken?: string;
   token?: string;
+  securityCode?: string;
 
   roleId: number;
   role?: Role;
