@@ -17,8 +17,27 @@
     "newUser": "New user?",
     "passwordPlaceholder": "Enter Your Password...",
     "success": "Successfully authenticated",
-
     "title": "Login"
+  },
+  "REFERRAL_PROGRAM": {
+    "partners": "Partners:",
+    "yourPartners": "Your Partners:",
+    "referralLink": "Referral Link :",
+    "copyLink": "Copy Link",
+    "linkCopied": "Link Copied Successfully.",
+    "noSecurityCode": "No security code found. Contact support to get your referral code.",
+    "generateNewCodeSuccess": "New security code generated successfully.",
+    "generateNewCodeError": "Failed to generate new security code.",
+    "generateNewCodeTitle": "Generate new security code",
+    "earnedReferral": "Earned Referral",
+    "lastMonth": "Last Month",
+    "dateRangeFilter": "min - max date",
+    "table": {
+      "date": "Date",
+      "level": "Level",
+      "username": "Username",
+      "email": "Email"
+    }
   },
   "NAVBAR": {
     "About Us": "About Us",

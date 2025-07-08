@@ -19,6 +19,26 @@
     "success": "Credenciales correctas",
     "title": "Iniciar sesión"
   },
+  "REFERRAL_PROGRAM": {
+    "partners": "Socios:",
+    "yourPartners": "Tus Socios:",
+    "referralLink": "Enlace de Referido :",
+    "copyLink": "Copiar Enlace",
+    "linkCopied": "Enlace copiado con éxito.",
+    "noSecurityCode": "No se encontró código de seguridad. Contacta con soporte para obtener tu código de referido.",
+    "generateNewCodeSuccess": "Nuevo código de seguridad generado con éxito.",
+    "generateNewCodeError": "Error al generar nuevo código de seguridad.",
+    "generateNewCodeTitle": "Generar nuevo código de seguridad",
+    "earnedReferral": "Ganancias por Referidos",
+    "lastMonth": "Último Mes",
+    "dateRangeFilter": "fecha mín - máx",
+    "table": {
+      "date": "Fecha",
+      "level": "Nivel",
+      "username": "Usuario",
+      "email": "Correo"
+    }
+  },
   "NAVBAR": {
     "About Us": "Acerca de nosotros",
     "Affiliate": "Afiliado",
