@@ -77,7 +77,7 @@ export const useLoginForm = () => {
         } else {
           router.push('/user-panel');
         }
-      }, 500);
+      }, 200);
     } catch (error: any) {
       showNotification(
         'error',
