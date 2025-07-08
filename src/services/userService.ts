@@ -1,6 +1,7 @@
 import { User } from '@/interfaces/user';
 import { BaseService } from './baseService';
 import { UpdateImageProfileRequest } from '@/interfaces/updateImageProfileRequest';
+import { GenerateNewSecurityCodeRequest } from '@/interfaces/generateNewSecurityCodeRequest';
 
 class UserService extends BaseService {
   protected endpoint: string = 'user';
@@ -13,8 +14,8 @@ class UserService extends BaseService {
     return this.patch<User>(`${this.endpoint}/update-image-profile`, request);
   }
 
-  async generateNewSecurityCode(): Promise<User> {
-    return this.patch<User>(`${this.endpoint}/generate-new-security-code`, {});
+  async generateNewSecurityCode(request: GenerateNewSecurityCodeRequest): Promise<User> {
+    return this.patch<User>(`${this.endpoint}/generate-new-security-code`, request);
   }
 }
 

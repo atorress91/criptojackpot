@@ -1,5 +1,6 @@
 import { useAuthStore } from '@/store/authStore';
 import { userService } from '@/services/userService';
+import { GenerateNewSecurityCodeRequest } from '@/interfaces/generateNewSecurityCodeRequest';
 
 /**
  * Custom hook for handling referral program functionality
@@ -8,7 +9,7 @@ import { userService } from '@/services/userService';
 export const useReferralProgram = () => {
   // Get the current user from the auth store
   const user = useAuthStore.getState().user;
-  const setUser = useAuthStore.getState().setUser;
+  const setUser = useAuthStore.getState().updateUser;
 
   // Base URL for the application
   const baseUrl = typeof window !== 'undefined' 
@@ -32,7 +33,10 @@ export const useReferralProgram = () => {
   // Function to generate a new security code
   const generateNewSecurityCode = async () => {
     try {
-      const updatedUser = await userService.generateNewSecurityCode();
+      const request: GenerateNewSecurityCodeRequest = {
+        userId: user?.id ?? 0
+      };
+      const updatedUser = await userService.generateNewSecurityCode(request);
       setUser(updatedUser);
       return true;
     } catch (error) {
