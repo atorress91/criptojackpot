@@ -21,7 +21,7 @@ export const useReferralProgram = () => {
   // Function to copy the referral link to clipboard
   const copyToClipboard = () => {
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
-      navigator.clipboard.writeText(referralLink);
+      navigator.clipboard.writeText(referralLink).then();
       return true;
     }
     return false;
