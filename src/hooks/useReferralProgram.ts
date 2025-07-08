@@ -8,8 +8,8 @@ import { GenerateNewSecurityCodeRequest } from '@/interfaces/generateNewSecurity
  */
 export const useReferralProgram = () => {
   // Get the current user from the auth store
-  const user = useAuthStore.getState().user;
-  const setUser = useAuthStore.getState().updateUser;
+  const user = useAuthStore(state =>state.user);
+  const setUser = useAuthStore(state => state.updateUser);
 
   // Base URL for the application
   const baseUrl = typeof window !== 'undefined' 
