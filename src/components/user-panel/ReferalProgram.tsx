@@ -10,7 +10,7 @@ import MotionFadeTopToDown from "../motionEffect/MotionFadeTopToDown";
 
 const ReferalProgram = () => {
   const textAreaRef = useRef<HTMLInputElement>(null);
-  const { referralLink, copyToClipboard: copyReferralLink, hasSecurityCode } = useReferralProgram();
+  const { referralLink, copyToClipboard: copyReferralLink, generateNewSecurityCode, hasSecurityCode } = useReferralProgram();
 
   function copyToClipboard(e: React.MouseEvent<HTMLInputElement, MouseEvent>) {
     if (copyReferralLink()) {
@@ -21,6 +21,15 @@ const ReferalProgram = () => {
       document.execCommand("copy");
       e.currentTarget.focus();
       toast.success("Link Copied Successfully.");
+    }
+  }
+
+  async function handleGenerateNewCode() {
+    const success = await generateNewSecurityCode();
+    if (success) {
+      toast.success("New security code generated successfully.");
+    } else {
+      toast.error("Failed to generate new security code.");
     }
   }
 
@@ -39,7 +48,12 @@ const ReferalProgram = () => {
             data-copy="true"
           >
             <div className="d-flex align-items-center gap-3 icon-text">
-              <span className="c-icon s1-bg radius-circle d-center cmn-48">
+              <span 
+                className="c-icon s1-bg radius-circle d-center cmn-48 cursor-pointer" 
+                onClick={handleGenerateNewCode}
+                title="Generate new security code"
+                style={{ cursor: 'pointer' }}
+              >
                 <LinkSimple weight="bold" className="ph-bold ph-link nw1-clr fs-four"></LinkSimple>
               </span>
               <span className="n4-clr fw_600">Referral Link :</span>

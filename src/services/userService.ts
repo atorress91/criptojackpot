@@ -12,6 +12,10 @@ class UserService extends BaseService {
   async updateImageProfile(request: UpdateImageProfileRequest): Promise<User> {
     return this.patch<User>(`${this.endpoint}/update-image-profile`, request);
   }
+
+  async generateNewSecurityCode(): Promise<User> {
+    return this.patch<User>(`${this.endpoint}/generate-new-security-code`, {});
+  }
 }
 
 export const userService = new UserService();
