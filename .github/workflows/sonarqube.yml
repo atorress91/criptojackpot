@@ -13,27 +13,35 @@ jobs:
     name: Build & SonarCloud Scan
     runs-on: ubuntu-latest
 
-    # Usamos la imagen oficial de Node (Debian) que incluye bash
+    # Imagen oficial de Node (Debian) con bash incluido
     container:
       image: node:22
 
     steps:
-      # 1) Clonar el repositorio con historial completo
+      # 1) Clonar con historial completo
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # 2) Instalar dependencias con la misma opción que tu Dockerfile
+      # 2) Instalar dependencias
       - name: npm install
         run: npm install --legacy-peer-deps
 
-      # 3) Compilar la aplicación Next.js
+      # 3) Build de Next.js
       - name: npm run build
         run: npm run build
 
-      # 4) Ejecutar el análisis en SonarCloud
+      # 4) Escaneo SonarCloud
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+        uses: SonarSource/sonarqube-scan-action@v5.0.0
+        with:
+          # Directorio base de tu código (opcional si es el root)
+          projectBaseDir: .
+          # Pasamos explícitamente org y projectKey
+          args: >
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
         env:
+          # Único token requerido para autenticarse en SonarCloud
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
