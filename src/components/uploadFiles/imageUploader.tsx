@@ -1,6 +1,6 @@
 "use client";
 
-import { DigitalOceanStorageService } from "@/services/digitalOceanStorageService";
+import { digitalOceanStorageService } from "@/services/digitalOceanStorageService";
 import { Upload } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -8,9 +8,9 @@ import { useState } from "react";
 const ImageUploader: React.FC<{
     onUploadComplete: (url: string) => void;
     onCancel: () => void;
-    folderPath: string;
+    userId: number;
     singleUpload?: boolean;
-}> = ({ onUploadComplete, onCancel, folderPath, singleUpload = false }) => {
+}> = ({ onUploadComplete, onCancel, userId, singleUpload = false }) => {
     const [uploading, setUploading] = useState(false);
     const [preview, setPreview] = useState<string | null>(null);
 
@@ -23,9 +23,9 @@ const ImageUploader: React.FC<{
 
         setUploading(true);
         try {
-            const uploadedFiles = await DigitalOceanStorageService.uploadMultipleFiles(
+            const uploadedFiles = await digitalOceanStorageService.uploadMultipleFiles(
                 Array.from(files),
-                folderPath
+                userId
             );
 
             if (singleUpload) {
