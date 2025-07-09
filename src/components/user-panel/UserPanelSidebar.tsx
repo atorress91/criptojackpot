@@ -19,7 +19,6 @@ const UserPanelSidebar = () => {
       maxFileSize: 10 * 1024 * 1024,
       allowedTypes: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
       onUploadStart: () => {
-        console.log('Iniciando subida de imagen...');
       },
       onUploadSuccess: url => {
         console.log('Imagen subida exitosamente:', url);
