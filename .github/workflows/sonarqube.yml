@@ -1,0 +1,44 @@
+name: SonarCloud Scan
+
+# Se ejecuta en cada push a main/develop y en cada PR abierto o sincronizado
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  sonarcloud:
+    name: Análisis SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Checkout del repositorio con historial completo
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 2. Configura Node.js (Next.js 15 requiere Node ≥18)
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      # 3. Instala dependencias
+      - name: Instalar dependencias
+        run: npm ci
+
+      # 4. Build (recomendado para proyectos Next.js)
+      - name: Compilar proyecto
+        run: npm run build
+
+      # 5. Escaneo SonarCloud
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          # Token de GitHub (proporcionado automáticamente)
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Token de SonarCloud (añádelo en Settings → Secrets → Actions)
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
