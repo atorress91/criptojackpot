@@ -12,7 +12,6 @@ jobs:
   sonar:
     name: Build & SonarCloud Scan
     runs-on: ubuntu-latest
-
     container:
       image: node:22-alpine
 
@@ -23,7 +22,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      # 2) Instalar dependencias (igual que tu Dockerfile)
+      # 2) Instalar dependencias
       - name: npm install
         run: npm install --legacy-peer-deps
 
@@ -31,9 +30,8 @@ jobs:
       - name: npm run build
         run: npm run build
 
-      # 4) Lanzar el análisis en SonarCloud
+      # 4) SonarCloud Scan (solo SONAR_TOKEN)
       - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@v2.1.0
+        uses: SonarSource/sonarcloud-github-action@master
         env:
-          # Único secreto que necesitas:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
