@@ -1,4 +1,28 @@
 {
+  "PERSONAL_INFO": {
+    "title": "Personal Details",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "emailAddress": "Email Address",
+    "phoneNumber": "Phone Number",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "subscribeNewsletter": "Subscribe me to Newsletter",
+    "updateProfile": "Update Profile",
+    "placeholders": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "phoneNumber": "Phone Number",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password"
+    },
+    "notifications": {
+      "passwordMismatch": "Password and confirmation do not match.",
+      "updateSuccess": "Profile updated successfully!",
+      "updateError": "Failed to update profile."
+    }
+  },
   "LOGIN": {
     "createAccount": "Create an account",
     "emailPlaceholder": "Email address",

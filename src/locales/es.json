@@ -1,4 +1,28 @@
 {
+  "PERSONAL_INFO": {
+    "title": "Datos Personales",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "emailAddress": "Correo Electrónico",
+    "phoneNumber": "Número de Teléfono",
+    "newPassword": "Nueva Contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "subscribeNewsletter": "Suscribirme al Boletín",
+    "updateProfile": "Actualizar Perfil",
+    "placeholders": {
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "email": "Correo",
+      "phoneNumber": "Número de Teléfono",
+      "newPassword": "Nueva Contraseña",
+      "confirmPassword": "Confirmar Contraseña"
+    },
+    "notifications": {
+      "passwordMismatch": "La contraseña y la confirmación no coinciden.",
+      "updateSuccess": "¡Perfil actualizado con éxito!",
+      "updateError": "Error al actualizar el perfil."
+    }
+  },
   "LOGIN": {
     "createAccount": "Crear una cuenta",
     "emailPlaceholder": "Dirección de correo electrónico",

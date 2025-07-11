@@ -1,9 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuthStore } from '@/store/authStore';
 import { userService } from '@/services/userService';
 import { useNotificationStore } from '@/store/notificationStore';
-import { Update } from 'next/dist/build/swc/types';
 import { UpdateUserRequest } from '@/interfaces/updateUserRequest';
+import { useTranslation } from 'react-i18next';
 
 interface FormData {
   firstName: string;
@@ -20,6 +20,7 @@ interface ShowPwd {
 }
 
 export function usePersonalInfoForm() {
+  const { t } = useTranslation();
   const { user, updateUser } = useAuthStore();
   const showNotification = useNotificationStore(state => state.show);
 
@@ -59,7 +60,7 @@ export function usePersonalInfoForm() {
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (formData.password && formData.password !== formData.confirmPassword) {
-        showNotification('error', 'Error', 'La contraseña y la confirmación no coinciden.');
+        showNotification('error', 'Error', t('PERSONAL_INFO.notifications.passwordMismatch'));
         return;
       }
       if (user) {
@@ -78,14 +79,14 @@ export function usePersonalInfoForm() {
           const response = await userService.updateUserAsync(user.id ?? 0, updatedUserData);
 
           updateUser(response);
-          showNotification('success', 'Success', 'Profile updated successfully!');
+          showNotification('success', 'Success', t('PERSONAL_INFO.notifications.updateSuccess'));
         } catch (error) {
           console.error('Failed to update profile:', error);
-          showNotification('error', 'Error', 'Failed to update profile.');
+          showNotification('error', 'Error', t('PERSONAL_INFO.notifications.updateError'));
         }
       }
     },
-    [formData, user, updateUser, showNotification]
+    [formData, user, updateUser, showNotification, t]
   );
 
   return {
