@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { useAuthStore } from '@/store/authStore';
 import { userService } from '@/services/userService';
 import { useNotificationStore } from '@/store/notificationStore';
+import { Update } from 'next/dist/build/swc/types';
+import { UpdateUserRequest } from '@/interfaces/updateUserRequest';
 
 interface FormData {
   firstName: string;
@@ -62,21 +64,21 @@ export function usePersonalInfoForm() {
       }
       if (user) {
         try {
-          // 1. Call the service to update the user on the backend
-          const updatedUserData = {
-            ...user,
+          const updatedUserData: UpdateUserRequest = {
+            id: user.id ?? 0,
             name: formData.firstName,
             lastName: formData.lastName,
             phone: formData.phone,
-            // Conditionally include password if it has changed
-            ...(formData.password !== '************' && { password: formData.password }),
+            password: '',
           };
 
-          const response = await userService.updateUserAsync(user.id ?? 0, updatedUserData);
+          if (formData.password) {
+            updatedUserData.password = formData.password;
+          }
 
-          // 2. Update the local state in Zustand
+          const response = await userService.updateUserAsync(updatedUserData);
+
           updateUser(response);
-
           showNotification('success', 'Success', 'Profile updated successfully!');
         } catch (error) {
           console.error('Failed to update profile:', error);
