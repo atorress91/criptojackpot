@@ -59,7 +59,7 @@ export function usePersonalInfoForm() {
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (formData.password && formData.password !== formData.confirmPassword) {
-        alert('Las contraseñas no coinciden');
+        showNotification('error', 'Error', 'La contraseña y la confirmación no coinciden.');
         return;
       }
       if (user) {
