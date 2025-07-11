@@ -120,7 +120,7 @@ export abstract class BaseService {
     }
   }
 
-  protected async update<T>(id: string | number, data: Partial<T>): Promise<T> {
+  protected async update<T>(id: number, data: Partial<T>): Promise<T> {
     try {
       const response = await this.apiClient.put<Response<T>>(`${this.endpoint}/${id}`, data);
       return this.handleResponse(response);
@@ -129,7 +129,7 @@ export abstract class BaseService {
     }
   }
 
-  protected async delete(id: string | number): Promise<void> {
+  protected async delete(id: number): Promise<void> {
     try {
       await this.apiClient.delete(`${this.endpoint}/${id}`);
     } catch (error) {
