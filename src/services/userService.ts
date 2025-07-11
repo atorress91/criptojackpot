@@ -19,8 +19,8 @@ class UserService extends BaseService {
     return this.patch<User>(`${this.endpoint}/generate-new-security-code`, request);
   }
 
-  async updateUserAsync(updateUser: UpdateUserRequest): Promise<User> {
-    return this.update<User>(updateUser.id, updateUser);
+  async updateUserAsync(userId: number, updateUser: UpdateUserRequest): Promise<User> {
+    return this.update<User>(userId, updateUser);
   }
 }
 

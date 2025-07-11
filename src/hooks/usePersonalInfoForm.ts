@@ -65,7 +65,6 @@ export function usePersonalInfoForm() {
       if (user) {
         try {
           const updatedUserData: UpdateUserRequest = {
-            id: user.id ?? 0,
             name: formData.firstName,
             lastName: formData.lastName,
             phone: formData.phone,
@@ -76,7 +75,7 @@ export function usePersonalInfoForm() {
             updatedUserData.password = formData.password;
           }
 
-          const response = await userService.updateUserAsync(updatedUserData);
+          const response = await userService.updateUserAsync(user.id ?? 0, updatedUserData);
 
           updateUser(response);
           showNotification('success', 'Success', 'Profile updated successfully!');
