@@ -45,9 +45,7 @@ export function usePersonalInfoForm() {
         firstName: user.name || '',
         lastName: user.lastName || '',
         email: user.email || '',
-        phone: user.phone || '',
-        password: '************',
-        confirmPassword: '************',
+        phone: user.phone || ''
       }));
     }
   }, [user]);
