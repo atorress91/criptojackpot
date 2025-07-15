@@ -37,7 +37,7 @@ export const useLoginForm = () => {
             }
         },
         onError: (error: any) => {
-            const errorMessage = error?.response?.data?.message || t('LOGIN.errors.invalidCredentials');
+            const errorMessage = error?.message || t('LOGIN.errors.invalidCredentials');
             showNotification('error', t('LOGIN.errors.loginFailed'), errorMessage);
         },
     });

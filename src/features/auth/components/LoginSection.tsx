@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 const LoginSection = () => {
   const { t } = useTranslation();
-  const { formData, isPasswordShow, isLoading, error, handleInputChange, togglePasswordVisibility, handleSubmit } =
+  const { formData, isPasswordShow, isLoading, handleInputChange, togglePasswordVisibility, handleSubmit } =
     useLoginForm();
 
   return (
@@ -32,11 +32,6 @@ const LoginSection = () => {
                     </Link>
                   </span>
                 </div>
-                {error && (
-                  <div className="alert alert-danger" role="alert">
-                    {t(`LOGIN.errors.${error}`) || error}
-                  </div>
-                )}
                 <form onSubmit={handleSubmit} className="form-cmn-action">
                   <div className="row g-6">
                     <div className="col-lg-12">
