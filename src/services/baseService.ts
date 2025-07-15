@@ -49,16 +49,18 @@ export abstract class BaseService {
     );
 
     this.apiClient.interceptors.response.use(
-      response => response,
-      async error => {
-        if (error.response?.status === 401) {
-          useAuthStore.getState().logout();
-          if (typeof window !== 'undefined') {
-            window.location.href = '/login?error=session_expired';
+        response => response,
+        async error => {
+          const originalRequest = error.config;
+
+          if (error.response?.status === 401 && originalRequest.url !== 'auth') {
+            useAuthStore.getState().logout();
+            if (typeof window !== 'undefined') {
+              window.location.href = '/login?error=session_expired';
+            }
           }
+          return Promise.reject(error);
         }
-        return Promise.reject(error);
-      }
     );
   }
 
@@ -73,14 +75,15 @@ export abstract class BaseService {
   }
 
   protected handleError(error: AxiosError<Response<any>>): never {
-    if (error.response?.status === 401) {
-      useAuthStore.getState().logout();
-      throw new Error('The session has expired');
-    }
-
     const errorMessage = error.response?.data?.message || error.message || 'An error occurred';
 
-    console.error('Error Response:', error.response?.data);
+    if (error.response?.status === 401) {
+      if (error.config?.url !== this.endpoint) {
+        useAuthStore.getState().logout();
+        throw new Error('The session has expired');
+      }
+    }
+
     throw new Error(errorMessage);
   }
 
