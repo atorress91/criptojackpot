@@ -5,7 +5,7 @@ import { I18nextProvider } from 'react-i18next';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import i18n from '@/locales/i18n';
-import { NotificationProvider } from '@/providers/NotificationProvider';
+import { NotificationProvider } from '@/components/notification/NotificationProvider';
 import {ProvidersProps} from "@/interfaces/providersProps";
 
 export default function Providers({ children }: ProvidersProps) {
