@@ -6,6 +6,7 @@ import Providers from '@/components/Providers';
 import type { Metadata } from 'next';
 import 'swiper/css';
 import '../styles/scss/style.scss';
+import React from "react";
 
 export const metadata: Metadata = {
   title: 'Lottovibe - Lottery & Giveaway NextJs Template',

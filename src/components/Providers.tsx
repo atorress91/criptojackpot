@@ -1,18 +1,26 @@
 'use client';
 
+import React, { useState } from 'react';
 import { I18nextProvider } from 'react-i18next';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import i18n from '@/locales/i18n';
 import { NotificationProvider } from '@/providers/NotificationProvider';
-import { ReactNode } from 'react';
 
 interface ProvidersProps {
-  children: ReactNode;
+    children: React.ReactNode;
 }
 
 export default function Providers({ children }: ProvidersProps) {
-  return (
-    <I18nextProvider i18n={i18n}>
-      <NotificationProvider>{children}</NotificationProvider>
-    </I18nextProvider>
-  );
+    const [queryClient] = useState(() => new QueryClient());
+
+    return (
+        <QueryClientProvider client={queryClient}>
+            <I18nextProvider i18n={i18n}>
+                <NotificationProvider>{children}</NotificationProvider>
+            </I18nextProvider>
+            {/*Devtools*/}
+            <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+    );
 }
