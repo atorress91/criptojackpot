@@ -6,10 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import i18n from '@/locales/i18n';
 import { NotificationProvider } from '@/providers/NotificationProvider';
-
-interface ProvidersProps {
-    children: React.ReactNode;
-}
+import {ProvidersProps} from "@/interfaces/providersProps";
 
 export default function Providers({ children }: ProvidersProps) {
     const [queryClient] = useState(() => new QueryClient());
