@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import React, {FormEvent, useCallback, useEffect, useState} from 'react';
+import React, { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { countryService } from '@/services/countryService';
@@ -12,6 +12,7 @@ import { Country } from '@/interfaces/country';
 import { RegisterFormData } from '@/interfaces/registerFormData';
 import { UseRegisterFormReturn } from '@/features/auth/types';
 import { User } from '@/interfaces/user';
+import { validateRegisterForm } from '../validators/registerValidations';
 
 export const useRegisterForm = (): UseRegisterFormReturn => {
   const { t } = useTranslation();
@@ -83,26 +84,11 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
     }
   }, []);
 
-  const validateForm = (): boolean => {
-    if (!formData.email || !formData.password || !formData.name || !formData.lastName || !selectedCountry) {
-      showNotification('error', t('REGISTER.errors.invalidData'), t('REGISTER.errors.requiredFields'));
-      return false;
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      showNotification('error', t('REGISTER.errors.invalidData'), t('REGISTER.errors.invalidEmailFormat'));
-      return false;
-    }
-    if (formData.password.length < 8) {
-      showNotification('error', t('REGISTER.errors.invalidData'), t('REGISTER.errors.weakPassword'));
-      return false;
-    }
-    return true;
-  };
-
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    if (!validateRegisterForm(formData, selectedCountry, t, showNotification)) {
+      return;
+    }
 
     const userData: User = {
       ...formData,
