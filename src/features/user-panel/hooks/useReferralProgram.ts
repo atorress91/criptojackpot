@@ -1,6 +1,6 @@
 import { useAuthStore } from '@/store/authStore';
 import { userService } from '@/services/userService';
-import { GenerateNewSecurityCodeRequest } from '@/interfaces/generateNewSecurityCodeRequest';
+import {GenerateNewSecurityCodeRequest} from "@/features/user-panel/types";
 
 /**
  * Custom hook for handling referral program functionality

@@ -1,11 +1,11 @@
-import americanCard from "@/../public/images/howit/american-card.png";
-import discoverCard from "@/../public/images/howit/discover-card.png";
-import masterCard from "@/../public/images/howit/master-card.png";
-import paypalCard from "@/../public/images/howit/paypal-card.png";
-import visaCard from "@/../public/images/howit/visa-card.png";
+import americanCard from "public/images/howit/american-card.png";
+import discoverCard from "public/images/howit/discover-card.png";
+import masterCard from "public/images/howit/master-card.png";
+import paypalCard from "public/images/howit/paypal-card.png";
+import visaCard from "public/images/howit/visa-card.png";
 import { PencilSimpleLine, Trash } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
-import MotionFade from "../motionEffect/MotionFade";
+import MotionFade from "../../../components/motionEffect/MotionFade";
 
 const PaymentSection = () => {
   return (

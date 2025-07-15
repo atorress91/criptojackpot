@@ -1,4 +1,4 @@
-import UserPanelSection from "@/components/user-panel/UserPanelSection";
+import UserPanelSection from "@/features/user-panel/components/UserPanelSection";
 
 const UserPanel = () => {
   return (

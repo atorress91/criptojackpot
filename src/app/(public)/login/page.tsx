@@ -1,4 +1,4 @@
-import LoginSection from "@/components/login/LoginSection";
+import LoginSection from "@/features/auth/components/LoginSection";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

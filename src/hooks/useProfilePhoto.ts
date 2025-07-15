@@ -1,4 +1,4 @@
-import { UpdateImageProfileRequest } from '@/interfaces/updateImageProfileRequest';
+import { UpdateImageProfileRequest } from '@/features/user-panel/types/updateImageProfileRequest';
 import { useState, useEffect, useRef } from 'react';
 import { StaticImageData } from 'next/image';
 import { useAuthStore } from '@/store/authStore';

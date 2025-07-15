@@ -1,4 +1,4 @@
-import { AuthRequest } from '@/interfaces/authRequest';
+import { AuthRequest } from '@/features/auth/types/authRequest';
 import { Response } from '@/interfaces/response';
 import { User } from '@/interfaces/user';
 import { AxiosError } from 'axios';

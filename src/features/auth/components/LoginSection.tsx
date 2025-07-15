@@ -1,7 +1,7 @@
 'use client';
-import loginImage from '@/../public/images/background/back-register.png';
-import logoBlack from '@/../public/images/logo/cripto-jackpot-logo.png';
-import { useLoginForm } from '@/hooks/useLoginForm';
+import loginImage from 'public/images/background/back-register.png';
+import logoBlack from 'public/images/logo/cripto-jackpot-logo.png';
+import { useLoginForm } from '@/features/auth/hooks/useLoginForm';
 import { Eye, EyeSlash } from '@phosphor-icons/react/dist/ssr';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -20,7 +20,7 @@ const LoginSection = () => {
             <div className="left-logwrap d-center">
               <div className="authentication-cmn">
                 <div className="container">
-                  <Link href="/" className="text-center mb-xxl-10 d-block">
+                  <Link href="/public" className="text-center mb-xxl-10 d-block">
                     <Image src={logoBlack} alt="img" />
                   </Link>
                 </div>

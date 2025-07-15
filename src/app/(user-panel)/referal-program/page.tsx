@@ -1,4 +1,4 @@
-import ReferalProgram from "@/components/user-panel/ReferalProgram";
+import ReferalProgram from "@/features/user-panel/components/ReferalProgram";
 
 const ReferalPage = () => {
   return (

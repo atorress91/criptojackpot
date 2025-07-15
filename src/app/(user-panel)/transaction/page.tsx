@@ -1,4 +1,4 @@
-import TransactionSection from "@/components/user-panel/TransactionSection";
+import TransactionSection from "@/features/user-panel/components/TransactionSection";
 
 const TransactionPage = () => {
   return (

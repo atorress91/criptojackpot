@@ -1,7 +1,7 @@
 "use client";
 import { Eye, EyeSlash, Check } from "@phosphor-icons/react";
-import MotionFade from "../motionEffect/MotionFade";
-import { usePersonalInfoForm } from "@/hooks/usePersonalInfoForm";
+import MotionFade from "../../../components/motionEffect/MotionFade";
+import { usePersonalInfoForm } from "@/features/user-panel/hooks/usePersonalInfoForm";
 import { useTranslation } from "react-i18next";
 
 export default function PersonalInfoSection() {

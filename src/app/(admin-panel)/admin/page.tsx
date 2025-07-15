@@ -1,8 +1,8 @@
 'use client';
 
-import QuickActions from '@/components/admin-panel/QuickActions';
-import RecentActivityTable from '@/components/admin-panel/RecentActivityTable';
-import StatsSection from '@/components/admin-panel/StatsSection';
+import QuickActions from '@/features/admin-panel/components/QuickActions';
+import RecentActivityTable from '@/features/admin-panel/components/RecentActivityTable';
+import StatsSection from '@/features/admin-panel/components/StatsSection';
 
 const AdminDashboard = () => {
   return (

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { AuthGuard } from '@/components/AuthGuard';
-import AdminPanelSidebar from '@/components/admin-panel/AdminPanelSidebar';
+import AdminPanelSidebar from '@/features/admin-panel/components/AdminPanelSidebar';
 import Breadcrumbs from '@/components/about/Breadcrumbs';
 import Footer from '@/components/home-one/Footer';
 import NavbarBlack from '@/components/navbar/NavbarBlack';

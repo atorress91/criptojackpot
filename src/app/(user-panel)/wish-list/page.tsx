@@ -1,4 +1,4 @@
-import WishListSection from "@/components/user-panel/WishListSection";
+import WishListSection from "@/features/user-panel/components/WishListSection";
 
 const WishList = () => {
   return (

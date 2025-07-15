@@ -1,10 +1,10 @@
-import lc1 from "@/../public/images/lottery/lc1.png";
-import lc3 from "@/../public/images/lottery/lc3.png";
-import lc4 from "@/../public/images/lottery/lc4.png";
-import lc5 from "@/../public/images/lottery/lc5.png";
+import lc1 from "public/images/lottery/lc1.png";
+import lc3 from "public/images/lottery/lc3.png";
+import lc4 from "public/images/lottery/lc4.png";
+import lc5 from "public/images/lottery/lc5.png";
 import { ArrowUpRight, Barbell, BookmarkSimple, CaretRight, Clock, ShoppingCart, Star, StarHalf } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
-import MotionFade from "../motionEffect/MotionFade";
+import MotionFade from "../../../components/motionEffect/MotionFade";
 import Link from "next/link";
 
 const WishListSection = () => {

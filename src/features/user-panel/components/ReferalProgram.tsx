@@ -3,10 +3,10 @@ import { CalendarBlank, HandHeart, LinkSimple, UsersFour } from '@phosphor-icons
 import Link from 'next/link';
 import { useRef } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { useReferralProgram } from '@/hooks/useReferralProgram';
-import MotionFade from '../motionEffect/MotionFade';
-import MotionFadeDownToTop from '../motionEffect/MotionFadeDownToTop';
-import MotionFadeTopToDown from '../motionEffect/MotionFadeTopToDown';
+import { useReferralProgram } from '@/features/user-panel/hooks/useReferralProgram';
+import MotionFade from '../../../components/motionEffect/MotionFade';
+import MotionFadeDownToTop from '../../../components/motionEffect/MotionFadeDownToTop';
+import MotionFadeTopToDown from '../../../components/motionEffect/MotionFadeTopToDown';
 import { useTranslation } from 'react-i18next';
 
 const ReferalProgram = () => {

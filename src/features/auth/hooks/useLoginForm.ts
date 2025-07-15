@@ -1,15 +1,11 @@
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
-import { AuthRequest } from '@/interfaces/authRequest';
+import { AuthRequest } from '@/features/auth/types/authRequest';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '@/store/authStore';
 import { useNotificationStore } from '@/store/notificationStore';
-
-interface LoginFormData {
-  email: string;
-  password: string;
-}
+import { LoginFormData } from '@/features/auth/types';
 
 export const useLoginForm = () => {
   const { t } = useTranslation();

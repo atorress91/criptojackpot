@@ -1,6 +1,6 @@
 'use client';
 
-import miller from '@/../public/images/man-global/devid-miller.png';
+import miller from 'public/images/man-global/devid-miller.png';
 import { Headset, Heart, Info, Lightning, SignOut, Ticket, Upload, Wallet } from '@phosphor-icons/react/dist/ssr';
 import Image from 'next/image';
 import Link from 'next/link';

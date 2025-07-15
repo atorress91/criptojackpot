@@ -1,25 +1,10 @@
 import { create } from 'zustand';
 import { RegisterFormData } from '@/interfaces/registerFormData';
-import { Country } from '@/interfaces/country';
+
 import { User } from '@/interfaces/user';
 import { userService } from '@/services/userService';
+import {RegisterState} from "@/interfaces/registerState.interface";
 
-interface RegisterState {
-  formData: RegisterFormData;
-  selectedCountry: Country | null;
-  isPasswordShow: boolean;
-  isLoading: boolean;
-  error: string | null;
-
-  // Actions
-  updateFormData: (data: Partial<RegisterFormData>) => void;
-  setSelectedCountry: (country: Country | null) => void;
-  togglePasswordVisibility: () => void;
-  registerUser: () => Promise<void>;
-  clearError: () => void;
-  resetForm: () => void;
-  setReferralCode: (code: string) => void;
-}
 
 const initialFormData: RegisterFormData = {
   name: '',

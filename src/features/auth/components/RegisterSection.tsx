@@ -1,7 +1,7 @@
 'use client';
-import registerImage from '@/../public/images/background/back-register.png';
-import logo from '@/../public/images/logo/cripto-jackpot-logo.png';
-import { useRegisterForm } from '@/hooks/useRegisterForm';
+import registerImage from 'public/images/background/back-register.png';
+import logo from 'public/images/logo/cripto-jackpot-logo.png';
+import { useRegisterForm } from '@/features/auth/hooks/useRegisterForm';
 import { CaretRight, Eye, EyeSlash } from '@phosphor-icons/react/dist/ssr';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -43,7 +43,7 @@ const RegisterSection = ({ referralCode }: RegisterSectionProps) => {
             <div className="left-logwrap h-100 d-flex align-items-center py-4 py-md-5">
               <div className="authentication-cmn w-100 px-3 px-sm-4 px-md-5 px-lg-4 px-xl-5">
                 {/* Logo */}
-                <Link href="/" className="d-block text-center mb-4">
+                <Link href="/public" className="d-block text-center mb-4">
                   <div className="d-flex justify-content-center">
                     <Image
                       src={logo}

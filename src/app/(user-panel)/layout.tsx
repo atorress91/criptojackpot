@@ -4,7 +4,7 @@ import Breadcrumbs from '@/components/about/Breadcrumbs';
 import { AuthGuard } from '@/components/AuthGuard';
 import Footer from '@/components/home-one/Footer';
 import NavbarBlack from '@/components/navbar/NavbarBlack';
-import UserPanelSidebar from '@/components/user-panel/UserPanelSidebar';
+import UserPanelSidebar from '@/features/user-panel/components/UserPanelSidebar';
 
 const layout = ({
   children,

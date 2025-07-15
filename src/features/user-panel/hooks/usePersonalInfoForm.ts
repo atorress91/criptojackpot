@@ -2,22 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useAuthStore } from '@/store/authStore';
 import { userService } from '@/services/userService';
 import { useNotificationStore } from '@/store/notificationStore';
-import { UpdateUserRequest } from '@/interfaces/updateUserRequest';
 import { useTranslation } from 'react-i18next';
-
-interface FormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  password: string;
-  confirmPassword: string;
-}
-
-interface ShowPwd {
-  password: boolean;
-  confirmPassword: boolean;
-}
+import { FormData, ShowPwd,UpdateUserRequest } from '@/features/user-panel/types';
 
 export function usePersonalInfoForm() {
   const { t } = useTranslation();

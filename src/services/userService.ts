@@ -1,8 +1,8 @@
 import { User } from '@/interfaces/user';
 import { BaseService } from './baseService';
-import { UpdateImageProfileRequest } from '@/interfaces/updateImageProfileRequest';
-import { GenerateNewSecurityCodeRequest } from '@/interfaces/generateNewSecurityCodeRequest';
-import { UpdateUserRequest } from '@/interfaces/updateUserRequest';
+import { UpdateImageProfileRequest } from '@/features/user-panel/types/updateImageProfileRequest';
+import { GenerateNewSecurityCodeRequest } from '@/features/user-panel/types/generateNewSecurityCodeRequest';
+import { UpdateUserRequest } from '@/features/user-panel/types/updateUserRequest';
 
 class UserService extends BaseService {
   protected endpoint: string = 'user';

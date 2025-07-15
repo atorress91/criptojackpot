@@ -1,4 +1,4 @@
-import RegisterSection from '@/components/register/RegisterSection';
+import RegisterSection from '@/features/auth/components/RegisterSection';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

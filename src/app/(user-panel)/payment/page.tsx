@@ -1,4 +1,4 @@
-import PaymentSection from "@/components/user-panel/PaymentSection";
+import PaymentSection from "@/features/user-panel/components/PaymentSection";
 
 const PaymentPage = () => {
   return (
