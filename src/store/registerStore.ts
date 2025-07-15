@@ -3,7 +3,7 @@ import { RegisterFormData } from '@/interfaces/registerFormData';
 
 import { User } from '@/interfaces/user';
 import { userService } from '@/services/userService';
-import {RegisterState} from "@/interfaces/registerState.interface";
+import {RegisterState} from "@/interfaces/registerState";
 
 
 const initialFormData: RegisterFormData = {

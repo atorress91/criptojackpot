@@ -1,81 +1,46 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { User } from '@/interfaces/user';
-import { AuthRequest } from '@/features/auth/types/authRequest';
-
-interface AuthState {
-  user: User | null;
-  token: string | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  error: string | null;
-
-  login: (credentials: AuthRequest) => Promise<void>;
-  logout: () => void;
-  updateUser: (user: User) => void;
-  clearError: () => void;
-}
+import {AuthState} from "@/interfaces/authState";
 
 export const useAuthStore = create<AuthState>()(
-  persist(
-    set => ({
-      user: null,
-      token: null,
-      isAuthenticated: false,
-      isLoading: false,
-      error: null,
+    persist(
+        set => ({
+            user: null,
+            token: null,
+            isAuthenticated: false,
 
-      login: async credentials => {
-        set({ isLoading: true, error: null });
-        try {
-          const { authService } = await import('@/services/authService');
-          const userData = await authService.authenticate(credentials);
+            login: userData => {
+                set({
+                    user: userData,
+                    token: userData.token,
+                    isAuthenticated: true,
+                });
+            },
 
-          if (userData.token) {
-            set({
-              user: userData,
-              token: userData.token,
-              isAuthenticated: true,
-              isLoading: false,
-            });
-          }
-        } catch (error: any) {
-          set({
-            error: error.message || 'Error al iniciar sesión',
-            isLoading: false,
-          });
-          throw error;
+            logout: () => {
+                set({
+                    user: null,
+                    token: null,
+                    isAuthenticated: false,
+                });
+                if (typeof window !== 'undefined') {
+                    localStorage.removeItem('auth-storage');
+                }
+            },
+
+            updateUser: user => {
+                set(state => ({
+                    user: state.user ? { ...state.user, ...user } : user,
+                }));
+            },
+        }),
+        {
+            name: 'auth-storage',
+            partialize: state => ({
+                user: state.user,
+                token: state.token,
+                isAuthenticated: state.isAuthenticated,
+            }),
         }
-      },
-
-      logout: () => {
-        set({
-          user: null,
-          token: null,
-          isAuthenticated: false,
-          error: null,
-        });
-
-        if (typeof window !== 'undefined') {
-          localStorage.removeItem('auth-storage');
-        }
-      },
-
-      updateUser: user => {
-        set({ user });
-      },
-
-      clearError: () => {
-        set({ error: null });
-      },
-    }),
-    {
-      name: 'auth-storage',
-      partialize: state => ({
-        user: state.user,
-        token: state.token,
-        isAuthenticated: state.isAuthenticated,
-      }),
-    }
-  )
+    )
 );
