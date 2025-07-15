@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, {FormEvent, useCallback, useEffect, useState} from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { countryService } from '@/services/countryService';
@@ -77,11 +77,11 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
 
   const togglePasswordVisibility = () => setIsPasswordShow(prev => !prev);
 
-  const setReferralCode = (code: string) => {
+  const setReferralCode = useCallback((code: string) => {
     if (code) {
       setFormData(prev => ({ ...prev, referralCode: code }));
     }
-  };
+  }, []);
 
   const validateForm = (): boolean => {
     if (!formData.email || !formData.password || !formData.name || !formData.lastName || !selectedCountry) {
