@@ -1,8 +1,7 @@
 'use client';
-import { CalendarBlank, HandHeart, LinkSimple, UsersFour } from '@phosphor-icons/react/dist/ssr';
+import { CalendarBlankIcon, HandHeartIcon, LinkSimpleIcon, UsersFourIcon } from '@phosphor-icons/react/dist/ssr';
 import Link from 'next/link';
-import { useRef } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import React, { useRef } from 'react';
 import { useReferralProgram } from '@/features/user-panel/hooks/useReferralProgram';
 import MotionFade from '../../../components/motionEffect/MotionFade';
 import MotionFadeDownToTop from '../../../components/motionEffect/MotionFadeDownToTop';
@@ -16,28 +15,22 @@ const ReferalProgram = () => {
     referralLink,
     copyToClipboard: copyReferralLink,
     generateNewSecurityCode,
+    isGenerating,
     hasSecurityCode,
   } = useReferralProgram();
 
   function copyToClipboard(e: React.MouseEvent<HTMLInputElement, MouseEvent>) {
-    if (copyReferralLink()) {
-      toast.success(t('REFERRAL_PROGRAM.linkCopied'));
-    } else if (textAreaRef.current) {
-      // Fallback to old method if navigator.clipboard is not available
+    copyReferralLink();
+
+    if (!navigator.clipboard && textAreaRef.current) {
       textAreaRef.current.select();
       document.execCommand('copy');
       e.currentTarget.focus();
-      toast.success(t('REFERRAL_PROGRAM.linkCopied'));
     }
   }
 
   async function handleGenerateNewCode() {
-    const success = await generateNewSecurityCode();
-    if (success) {
-      toast.success(t('REFERRAL_PROGRAM.generateNewCodeSuccess'));
-    } else {
-      toast.error(t('REFERRAL_PROGRAM.generateNewCodeError'));
-    }
+    generateNewSecurityCode();
   }
 
   return (
@@ -56,12 +49,18 @@ const ReferalProgram = () => {
           >
             <div className="d-flex align-items-center gap-3 icon-text">
               <span
-                className="c-icon s1-bg radius-circle d-center cmn-48 cursor-pointer"
-                onClick={handleGenerateNewCode}
+                className={`c-icon s1-bg radius-circle d-center cmn-48 ${isGenerating ? 'opacity-50' : 'cursor-pointer'}`}
+                onClick={isGenerating ? undefined : handleGenerateNewCode}
                 title={t('REFERRAL_PROGRAM.generateNewCodeTitle')}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: isGenerating ? 'not-allowed' : 'pointer' }}
               >
-                <LinkSimple weight="bold" className="ph-bold ph-link nw1-clr fs-four"></LinkSimple>
+                {isGenerating ? (
+                  <div className="spinner-border spinner-border-sm text-light" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                ) : (
+                  <LinkSimpleIcon weight="bold" className="ph-bold ph-link nw1-clr fs-four"></LinkSimpleIcon>
+                )}
               </span>
               <span className="n4-clr fw_600">{t('REFERRAL_PROGRAM.referralLink')}</span>
             </div>
@@ -94,7 +93,7 @@ const ReferalProgram = () => {
           >
             <span className="box">
               <span className="icon m-auto mb-xxl-5 mb-xl-4 mb-lg-3 mb-2 s1-bg radius-circle d-center">
-                <UsersFour className="ph ph-users-four fs-two n0-clr"></UsersFour>
+                <UsersFourIcon className="ph ph-users-four fs-two n0-clr"></UsersFourIcon>
               </span>
               <span className="n4-clr fs-three mb-2"> $2956.00 </span>
               <span className="n3-clr fw_600 d-block"> {t('REFERRAL_PROGRAM.earnedReferral')} </span>
@@ -106,7 +105,7 @@ const ReferalProgram = () => {
           >
             <span className="box">
               <span className="icon m-auto mb-xxl-5 mb-xl-4 mb-lg-3 mb-2 s1-bg radius-circle d-center">
-                <HandHeart className="ph ph-hand-heart fs-two n0-clr"></HandHeart>
+                <HandHeartIcon className="ph ph-hand-heart fs-two n0-clr"></HandHeartIcon>
               </span>
               <span className="n4-clr fs-three mb-2"> $2956.00 </span>
               <span className="n3-clr fw_600 d-block"> {t('REFERRAL_PROGRAM.lastMonth')} </span>
@@ -122,7 +121,7 @@ const ReferalProgram = () => {
             className="min-maxdate d-flex align-items-center justify-content-between border radius100 py-xxl-3 py-2 px-xxl-6 px-5"
           >
             <input type="text" placeholder={t('REFERRAL_PROGRAM.dateRangeFilter')} />
-            <CalendarBlank weight="bold" className="ph-bold ph-calendar-blank"></CalendarBlank>
+            <CalendarBlankIcon weight="bold" className="ph-bold ph-calendar-blank"></CalendarBlankIcon>
           </form>
         </div>
         <div className="table-responsive">
@@ -164,7 +163,6 @@ const ReferalProgram = () => {
           </table>
         </div>
       </MotionFade>
-      <Toaster />
     </div>
   );
 };

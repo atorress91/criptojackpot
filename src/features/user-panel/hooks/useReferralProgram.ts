@@ -1,47 +1,47 @@
 import { useAuthStore } from '@/store/authStore';
 import { userService } from '@/services/userService';
-import {GenerateNewSecurityCodeRequest} from "@/features/user-panel/types";
+import { GenerateNewSecurityCodeRequest } from "@/features/user-panel/types";
+import { useMutation } from '@tanstack/react-query';
+import { useNotificationStore } from '@/store/notificationStore';
+import { useTranslation } from 'react-i18next';
 
-/**
- * Custom hook for handling referral program functionality
- * Gets the security code from the authenticated user and generates a referral URL
- */
 export const useReferralProgram = () => {
-  // Get the current user from the auth store
-  const user = useAuthStore(state =>state.user);
-  const setUser = useAuthStore(state => state.updateUser);
+  const { t } = useTranslation();
 
-  // Base URL for the application
-  const baseUrl = typeof window !== 'undefined' 
-    ? `${window.location.protocol}//${window.location.host}` 
-    : 'https://cryptojackpot.com';
+  const { user, updateUser } = useAuthStore();
+  const showNotification = useNotificationStore(state => state.show);
 
-  // Generate the referral link using the user's security code
-  const referralLink = user?.securityCode 
-    ? `${baseUrl}/register/${user.securityCode}`
-    : `${baseUrl}`;
+  const baseUrl = typeof window !== 'undefined'
+      ? `${window.location.protocol}//${window.location.host}`
+      : 'https://cryptojackpot.com';
 
-  // Function to copy the referral link to clipboard
-  const copyToClipboard = () => {
-    if (typeof navigator !== 'undefined' && navigator.clipboard) {
-      navigator.clipboard.writeText(referralLink).then();
-      return true;
-    }
-    return false;
-  };
+  const referralLink = user?.securityCode
+      ? `${baseUrl}/register/${user.securityCode}`
+      : `${baseUrl}`;
 
-  // Function to generate a new security code
-  const generateNewSecurityCode = async () => {
-    try {
+  const { mutate: generateNewSecurityCode, isPending: isGenerating } = useMutation({
+    mutationFn: () => {
+      if (!user?.id) throw new Error("User ID is not available");
+
       const request: GenerateNewSecurityCodeRequest = {
-        userId: user?.id ?? 0
+        userId: user.id
       };
-      const updatedUser = await userService.generateNewSecurityCode(request);
-      setUser(updatedUser);
-      return true;
-    } catch (error) {
+      return userService.generateNewSecurityCode(request);
+    },
+    onSuccess: (updatedUser) => {
+      updateUser(updatedUser);
+      showNotification('success', t('COMMON.success'), 'New security code generated successfully!');
+    },
+    onError: (error) => {
       console.error('Error generating new security code:', error);
-      return false;
+      showNotification('error', t('COMMON.error'), 'Failed to generate new security code.');
+    }
+  });
+
+  const copyToClipboard = () => {
+    if (referralLink) {
+      navigator.clipboard.writeText(referralLink).then();
+      showNotification('success', t('COMMON.success'), 'Referral link copied to clipboard!');
     }
   };
 
@@ -49,6 +49,7 @@ export const useReferralProgram = () => {
     referralLink,
     copyToClipboard,
     generateNewSecurityCode,
+    isGenerating,
     hasSecurityCode: !!user?.securityCode,
   };
 };
