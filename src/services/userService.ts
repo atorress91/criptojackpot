@@ -22,6 +22,10 @@ class UserService extends BaseService {
   async updateUserAsync(userId: number, updateUser: UpdateUserRequest): Promise<User> {
     return this.update<User>(userId, updateUser);
   }
+
+  async getUserById(userId: number): Promise<User> {
+    return this.getById<User>(userId);
+  }
 }
 
 export const userService = new UserService();
