@@ -2,7 +2,7 @@
 import registerImage from 'public/images/background/back-register.png';
 import logo from 'public/images/logo/cripto-jackpot-logo.png';
 import { useRegisterForm } from '@/features/auth/hooks/useRegisterForm';
-import { CaretRight, Eye, EyeSlash } from '@phosphor-icons/react/dist/ssr';
+import { CaretRightIcon, EyeIcon, EyeSlashIcon } from '@phosphor-icons/react/dist/ssr';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect } from 'react';
@@ -144,9 +144,9 @@ const RegisterSection = ({ referralCode }: RegisterSectionProps) => {
                             onClick={togglePasswordVisibility}
                           >
                             {!isPasswordShow ? (
-                              <EyeSlash size={18} className="n4-clr" />
+                              <EyeSlashIcon size={18} className="n4-clr" />
                             ) : (
-                              <Eye size={18} className="n4-clr" />
+                              <EyeIcon size={18} className="n4-clr" />
                             )}
                           </span>
                         </div>
@@ -258,7 +258,7 @@ const RegisterSection = ({ referralCode }: RegisterSectionProps) => {
                         <span className="fs-6 fs-sm-5">
                           {isLoading ? t('REGISTER.creatingAccount') : t('REGISTER.createAccount')}
                         </span>
-                        <CaretRight size={18} />
+                        <CaretRightIcon size={18} />
                       </button>
                     </div>
 

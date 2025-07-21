@@ -2,7 +2,7 @@
 import loginImage from 'public/images/background/back-register.png';
 import logoBlack from 'public/images/logo/cripto-jackpot-logo.png';
 import { useLoginForm } from '@/features/auth/hooks/useLoginForm';
-import { Eye, EyeSlash } from '@phosphor-icons/react/dist/ssr';
+import { EyeIcon, EyeSlashIcon } from '@phosphor-icons/react/dist/ssr';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
@@ -61,7 +61,7 @@ const LoginSection = () => {
                             style={{ cursor: 'pointer' }}
                             className="position-absolute top-50 end-0 translate-middle-y"
                           >
-                            {!isPasswordShow ? <EyeSlash size={18} /> : <Eye size={18} />}
+                            {!isPasswordShow ? <EyeSlashIcon size={18} /> : <EyeIcon size={18} />}
                           </span>
                         </div>
                       </div>
