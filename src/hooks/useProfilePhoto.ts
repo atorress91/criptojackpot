@@ -1,31 +1,9 @@
-import { UpdateImageProfileRequest } from '@/features/user-panel/types/updateImageProfileRequest';
-import { useState, useEffect, useRef } from 'react';
-import { StaticImageData } from 'next/image';
-import { useAuthStore } from '@/store/authStore';
-import { digitalOceanStorageService } from '@/services/digitalOceanStorageService';
-import { userService } from '@/services/userService';
-
-type ProfileImageType = StaticImageData | string;
-
-interface UseProfilePhotoReturn {
-  profileImage: ProfileImageType;
-  uploading: boolean;
-  uploadError: string | null;
-  fileInputRef: React.RefObject<HTMLInputElement>;
-  handleFileSelect: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  openFileSelector: () => void;
-  clearError: () => void;
-  resetToDefault: () => void;
-}
-
-interface UseProfilePhotoOptions {
-  defaultImage?: ProfileImageType;
-  maxFileSize?: number;
-  allowedTypes?: string[];
-  onUploadStart?: () => void;
-  onUploadSuccess?: (url: string) => void;
-  onUploadError?: (error: string) => void;
-}
+import {UpdateImageProfileRequest} from '@/features/user-panel/types/updateImageProfileRequest';
+import React, {useEffect, useRef, useState} from 'react';
+import {useAuthStore} from '@/store/authStore';
+import {digitalOceanStorageService} from '@/services/digitalOceanStorageService';
+import {userService} from '@/services/userService';
+import {ProfileImageType, UseProfilePhotoOptions, UseProfilePhotoReturn} from "@/interfaces/profilePhotoReturn";
 
 export const useProfilePhoto = (options: UseProfilePhotoOptions = {}): UseProfilePhotoReturn => {
   const {
@@ -67,7 +45,7 @@ export const useProfilePhoto = (options: UseProfilePhotoOptions = {}): UseProfil
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      handleProfilePhotoUpload(file);
+      handleProfilePhotoUpload(file).then();
     }
   };
 
@@ -83,8 +61,6 @@ export const useProfilePhoto = (options: UseProfilePhotoOptions = {}): UseProfil
 
     setUploading(true);
     onUploadStart?.();
-
-    const previousImage = profileImage;
 
     try {
       const uploadResult = await digitalOceanStorageService.uploadProfilePhoto(file, user?.id ?? 0);
@@ -114,7 +90,7 @@ export const useProfilePhoto = (options: UseProfilePhotoOptions = {}): UseProfil
       console.error('Error uploading profile photo:', error);
       setUploadError(errorMessage);
       onUploadError?.(errorMessage);
-      setProfileImage(previousImage);
+      setProfileImage(profileImage);
     } finally {
       setUploading(false);
       if (fileInputRef.current) {
