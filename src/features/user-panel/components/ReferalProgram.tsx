@@ -21,12 +21,7 @@ const ReferalProgram = () => {
 
   function copyToClipboard(e: React.MouseEvent<HTMLInputElement, MouseEvent>) {
     copyReferralLink();
-
-    if (!navigator.clipboard && textAreaRef.current) {
-      textAreaRef.current.select();
-      document.execCommand('copy');
-      e.currentTarget.focus();
-    }
+    e.currentTarget.focus();
   }
 
   async function handleGenerateNewCode() {

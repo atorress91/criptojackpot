@@ -1,5 +1,4 @@
-import { LinkSimple } from "@phosphor-icons/react";
-import { CalendarBlank, HandHeart, UsersFour } from "@phosphor-icons/react/dist/ssr";
+import {LinkSimpleIcon, CalendarBlankIcon, HandHeartIcon, UsersFourIcon } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 
 const ReferalSection = () => {
@@ -11,7 +10,7 @@ const ReferalSection = () => {
           <form className="d-flex border flex-sm-nowrap flex-wrap radius100 p-2 align-items-center justify-content-sm-between justify-content-center text-sm-start text-center w-100" data-copy="true">
             <div className="d-flex align-items-center gap-3 icon-text">
               <span className="c-icon s1-bg radius-circle d-center cmn-48">
-                <LinkSimple className="ph-bold ph-link nw1-clr fs-four"></LinkSimple>
+                <LinkSimpleIcon className="ph-bold ph-link nw1-clr fs-four"></LinkSimpleIcon>
               </span>
               <span className="n4-clr fw_600">Referral Link :</span>
             </div>
@@ -27,7 +26,7 @@ const ReferalSection = () => {
           <Link href="#0" className="deposit-box h-100 w-auto text-center d-center border radius24 d-center py-xxl-8 py-6 px-xxl-18 px-xl-15 px-lg-10 px-6">
             <span className="box">
               <span className="icon m-auto mb-xxl-5 mb-xl-4 mb-lg-3 mb-2 s1-bg radius-circle d-center">
-                <UsersFour className="ph ph-users-four fs-two n0-clr"></UsersFour>
+                <UsersFourIcon className="ph ph-users-four fs-two n0-clr"></UsersFourIcon>
               </span>
               <span className="n4-clr fs-three mb-2"> $2956.00 </span>
               <span className="n3-clr fw_600"> Earned Referral </span>
@@ -36,7 +35,7 @@ const ReferalSection = () => {
           <Link href="#0" className="deposit-box h-100 w-auto text-center d-center border radius24 d-center py-xxl-8 py-6 px-xxl-18 px-xl-15 px-lg-10 px-6">
             <span className="box">
               <span className="icon m-auto mb-xxl-5 mb-xl-4 mb-lg-3 mb-2 s1-bg radius-circle d-center">
-                <HandHeart className="ph ph-hand-heart fs-two n0-clr"></HandHeart>
+                <HandHeartIcon className="ph ph-hand-heart fs-two n0-clr"></HandHeartIcon>
               </span>
               <span className="n4-clr fs-three mb-2"> $2956.00 </span>
               <span className="n3-clr fw_600"> Last Month </span>
@@ -49,7 +48,7 @@ const ReferalSection = () => {
           <h3 className="user-title n4-clr">Your Partners:</h3>
           <form action="#0" className="min-maxdate d-flex align-items-center justify-content-between border radius100 py-xxl-3 py-2 px-xxl-6 px-5">
             <input type="text" placeholder="min - max date" />
-            <CalendarBlank className="ph-bold ph-calendar-blank"></CalendarBlank>
+            <CalendarBlankIcon className="ph-bold ph-calendar-blank"></CalendarBlankIcon>
           </form>
         </div>
         <div className="table-responsive">

@@ -1,4 +1,4 @@
-import { CaretRight } from "@phosphor-icons/react/dist/ssr";
+import { CaretRightIcon } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 
 const UserPanelSection = () => {
@@ -53,7 +53,7 @@ const UserPanelSection = () => {
           </li>
           <li>
             <Link href="#0" className="cmn-60 d-center radius-circle nw1-clr n2-bg">
-              <CaretRight className="ph ph-caret-right nw1-clr fs20"></CaretRight>
+              <CaretRightIcon className="ph ph-caret-right nw1-clr fs20"></CaretRightIcon>
             </Link>
           </li>
         </ul>

@@ -1,7 +1,7 @@
 'use client';
 
 import miller from 'public/images/man-global/devid-miller.png';
-import { Headset, Heart, Info, Lightning, SignOut, Ticket, Upload, Wallet } from '@phosphor-icons/react/dist/ssr';
+import { HeadsetIcon, HeartIcon, InfoIcon, LightningIcon, SignOutIcon, TicketIcon, UploadIcon, WalletIcon } from '@phosphor-icons/react/dist/ssr';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -60,7 +60,7 @@ const UserPanelSidebar = () => {
               }}
               title={uploading ? 'Subiendo imagen...' : 'Cambiar foto de perfil'}
             >
-              <Upload weight="bold" className="ph-bold ph-upload fs-five" />
+              <UploadIcon weight="bold" className="ph-bold ph-upload fs-five" />
             </span>
 
             <div className="thumb mb-xxl-5 mb-xl-4 mb-4 m-auto position-relative">
@@ -131,7 +131,7 @@ const UserPanelSidebar = () => {
                   className="py-xxl-3 py-2 px-xxl-5 px-xl-4 px-3 radius12 n4-clr fw_600 d-flex align-items-center gap-xxl-3 gap-2 user-text-inner w-full border-0 bg-transparent text-start"
                   aria-label="Cerrar sesión"
                 >
-                  <SignOut weight="bold" className="ph-bold ph-sign-out fs-five" />
+                  <SignOutIcon weight="bold" className="ph-bold ph-sign-out fs-five" />
                   Log Out
                 </button>
               </li>
@@ -149,43 +149,43 @@ const sidebarItems = [
   {
     id: 3434652,
     href: '/personal-info',
-    icon: <Info weight="bold" className="ph-bold ph-info fs-five" />,
+    icon: <InfoIcon weight="bold" className="ph-bold ph-info fs-five" />,
     text: 'Personal Information',
   },
   {
     id: 1343,
     href: '/user-panel',
-    icon: <Ticket weight="bold" className="ph-bold ph-ticket fs-five" />,
+    icon: <TicketIcon weight="bold" className="ph-bold ph-ticket fs-five" />,
     text: 'My Tickets',
   },
   {
     id: 334221,
     href: '/transaction',
-    icon: <Upload weight="bold" className="ph-bold ph-upload fs-five" />,
+    icon: <UploadIcon weight="bold" className="ph-bold ph-upload fs-five" />,
     text: 'Transactions',
   },
   {
     id: 4212,
     href: '/referal-program',
-    icon: <Lightning weight="bold" className="ph-bold ph-lightning fs-five" />,
+    icon: <LightningIcon weight="bold" className="ph-bold ph-lightning fs-five" />,
     text: 'Referral Program',
   },
   {
     id: 51212,
     href: '/wish-list',
-    icon: <Heart weight="bold" className="ph-bold ph-heart fs-five" />,
+    icon: <HeartIcon weight="bold" className="ph-bold ph-heart fs-five" />,
     text: 'Wishlist',
   },
   {
     id: 62342,
     href: '/payment',
-    icon: <Wallet weight="bold" className="ph-bold ph-wallet fs-five" />,
+    icon: <WalletIcon weight="bold" className="ph-bold ph-wallet fs-five" />,
     text: 'Payment Methods',
   },
   {
     id: 4447,
     href: '/#',
-    icon: <Headset weight="bold" className="ph-bold ph-headset fs-five" />,
+    icon: <HeadsetIcon weight="bold" className="ph-bold ph-headset fs-five" />,
     text: 'Help Center',
   },
 ];

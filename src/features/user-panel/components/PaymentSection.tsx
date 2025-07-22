@@ -3,7 +3,7 @@ import discoverCard from "public/images/howit/discover-card.png";
 import masterCard from "public/images/howit/master-card.png";
 import paypalCard from "public/images/howit/paypal-card.png";
 import visaCard from "public/images/howit/visa-card.png";
-import { PencilSimpleLine, Trash } from "@phosphor-icons/react/dist/ssr";
+import { PencilSimpleLineIcon, TrashIcon } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import MotionFade from "../../../components/motionEffect/MotionFade";
 
@@ -28,10 +28,10 @@ const PaymentSection = () => {
             </div>
             <div className="d-flex align-items-center gap-xl-6 gap-3">
               <button type="button">
-                <PencilSimpleLine weight="bold" className="ph-bold ph-pencil-simple-line n4-clr fs-four"></PencilSimpleLine>
+                <PencilSimpleLineIcon weight="bold" className="ph-bold ph-pencil-simple-line n4-clr fs-four"></PencilSimpleLineIcon>
               </button>
               <button type="button">
-                <Trash weight="bold" className="ph-bold ph-trash act4-clr fs-four"></Trash>
+                <TrashIcon weight="bold" className="ph-bold ph-trash act4-clr fs-four"></TrashIcon>
               </button>
             </div>
           </div>
@@ -45,10 +45,10 @@ const PaymentSection = () => {
             </div>
             <div className="d-flex align-items-center gap-xl-6 gap-3">
               <button type="button">
-                <PencilSimpleLine weight="bold" className="ph-bold ph-pencil-simple-line n4-clr fs-four"></PencilSimpleLine>
+                <PencilSimpleLineIcon weight="bold" className="ph-bold ph-pencil-simple-line n4-clr fs-four"></PencilSimpleLineIcon>
               </button>
               <button type="button">
-                <Trash weight="bold" className="ph-bold ph-trash act4-clr fs-four"></Trash>
+                <TrashIcon weight="bold" className="ph-bold ph-trash act4-clr fs-four"></TrashIcon>
               </button>
             </div>
           </div>
@@ -62,10 +62,10 @@ const PaymentSection = () => {
             </div>
             <div className="d-flex align-items-center gap-xl-6 gap-3">
               <button type="button">
-                <PencilSimpleLine weight="bold" className="ph-bold ph-pencil-simple-line n4-clr fs-four"></PencilSimpleLine>
+                <PencilSimpleLineIcon weight="bold" className="ph-bold ph-pencil-simple-line n4-clr fs-four"></PencilSimpleLineIcon>
               </button>
               <button type="button">
-                <Trash weight="bold" className="ph-bold ph-trash act4-clr fs-four"></Trash>
+                <TrashIcon weight="bold" className="ph-bold ph-trash act4-clr fs-four"></TrashIcon>
               </button>
             </div>
           </div>
@@ -79,10 +79,10 @@ const PaymentSection = () => {
             </div>
             <div className="d-flex align-items-center gap-xl-6 gap-3">
               <button type="button">
-                <PencilSimpleLine weight="bold" className="ph-bold ph-pencil-simple-line n4-clr fs-four"></PencilSimpleLine>
+                <PencilSimpleLineIcon weight="bold" className="ph-bold ph-pencil-simple-line n4-clr fs-four"></PencilSimpleLineIcon>
               </button>
               <button type="button">
-                <Trash weight="bold" className="ph-bold ph-trash act4-clr fs-four"></Trash>
+                <TrashIcon weight="bold" className="ph-bold ph-trash act4-clr fs-four"></TrashIcon>
               </button>
             </div>
           </div>
@@ -96,10 +96,10 @@ const PaymentSection = () => {
             </div>
             <div className="d-flex align-items-center gap-xl-6 gap-3">
               <button type="button">
-                <PencilSimpleLine weight="bold" className="ph-bold ph-pencil-simple-line n4-clr fs-four"></PencilSimpleLine>
+                <PencilSimpleLineIcon weight="bold" className="ph-bold ph-pencil-simple-line n4-clr fs-four"></PencilSimpleLineIcon>
               </button>
               <button type="button">
-                <Trash weight="bold" className="ph-bold ph-trash act4-clr fs-four"></Trash>
+                <TrashIcon weight="bold" className="ph-bold ph-trash act4-clr fs-four"></TrashIcon>
               </button>
             </div>
           </div>

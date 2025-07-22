@@ -1,4 +1,4 @@
-import { ArrowsDownUp, Check, DotsThree, Wallet } from "@phosphor-icons/react/dist/ssr";
+import { ArrowsDownUpIcon, CheckIcon, DotsThreeIcon, WalletIcon } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 
 const TransactionSection = () => {
@@ -16,7 +16,7 @@ const TransactionSection = () => {
             <Link href="#0" className="deposit-box text-center d-center border radius24 d-center">
               <span className="box">
                 <span className="icon mb-xxl-5 mb-xl-4 mb-lg-3 mb-2 s1-bg radius-circle d-center">
-                  <Wallet className="ph ph-wallet fs-three n0-clr"></Wallet>
+                  <WalletIcon className="ph ph-wallet fs-three n0-clr"></WalletIcon>
                 </span>
                 <span className="n3-clr fw_600">Deposit</span>
               </span>
@@ -24,7 +24,7 @@ const TransactionSection = () => {
             <Link href="#0" className="deposit-box text-center d-center border radius24 d-center">
               <span className="box">
                 <span className="icon mb-xxl-5 mb-xl-4 mb-lg-3 mb-2 s1-bg radius-circle d-center">
-                  <ArrowsDownUp className="ph ph-arrows-down-up fs-three n0-clr"></ArrowsDownUp>
+                  <ArrowsDownUpIcon className="ph ph-arrows-down-up fs-three n0-clr"></ArrowsDownUpIcon>
                 </span>
                 <span className="n3-clr fw_600">Withdraw</span>
               </span>
@@ -80,7 +80,7 @@ const TransactionSection = () => {
                       <div className="n3-clr">
                         <div className="dropdown dropstart">
                           <button className="s1-clr" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <DotsThree weight="bold" className="ph-bold ph-dots-three fs-four" />
+                            <DotsThreeIcon weight="bold" className="ph-bold ph-dots-three fs-four" />
                           </button>
                           <ul className="dropdown-menu">
                             {transaction.actions.map((action, actionIndex) => (
@@ -97,7 +97,7 @@ const TransactionSection = () => {
                       <div className="table-check position-relative">
                         <label className="checkbox-single">
                           <input type="checkbox" name="checkbox" readOnly checked={transaction.checkbox} className="d-none" />
-                          <span className="checkmark d-center">{transaction.checkbox && <Check />}</span>
+                          <span className="checkmark d-center">{transaction.checkbox && <CheckIcon />}</span>
                         </label>
                       </div>
                     )}

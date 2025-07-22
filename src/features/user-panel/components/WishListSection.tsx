@@ -2,7 +2,7 @@ import lc1 from "public/images/lottery/lc1.png";
 import lc3 from "public/images/lottery/lc3.png";
 import lc4 from "public/images/lottery/lc4.png";
 import lc5 from "public/images/lottery/lc5.png";
-import { ArrowUpRight, Barbell, BookmarkSimple, CaretRight, Clock, ShoppingCart, Star, StarHalf } from "@phosphor-icons/react/dist/ssr";
+import { ArrowUpRightIcon, BarbellIcon, BookmarkSimpleIcon, CaretRightIcon, ClockIcon, ShoppingCartIcon, StarIcon, StarHalfIcon } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import MotionFade from "../../../components/motionEffect/MotionFade";
 import Link from "next/link";
@@ -21,7 +21,7 @@ const WishListSection = () => {
                     <span className="n4-clr position-relative fw_700 fs-eight">{item.drawStatus}</span>
                   </span>
                   <span className="cmn-40 n0-bg radius-circle n0-hover">
-                    <ShoppingCart className="ph ph-bold ph-shopping-cart n4-clr fs-six"></ShoppingCart>
+                    <ShoppingCartIcon className="ph ph-bold ph-shopping-cart n4-clr fs-six"></ShoppingCartIcon>
                   </span>
                 </div>
                 <div className="thumb cus-z1 position-relative px-3 mb-xxl-10 mb-xl-8 mb-lg-6 mb-4">
@@ -44,36 +44,36 @@ const WishListSection = () => {
                       <div className="d-flex align-items-center gap-xl-3 gap-2">
                         <ul className="ratting d-flex align-items-center gap-1">
                           <li>
-                            <Star weight="fill" className="ph-fill ph-star fs-five act4-clr"></Star>
+                            <StarIcon weight="fill" className="ph-fill ph-star fs-five act4-clr"></StarIcon>
                           </li>
                           <li>
-                            <Star weight="fill" className="ph-fill ph-star fs-five act4-clr"></Star>
+                            <StarIcon weight="fill" className="ph-fill ph-star fs-five act4-clr"></StarIcon>
                           </li>
                           <li>
-                            <Star weight="fill" className="ph-fill ph-star fs-five act4-clr"></Star>
+                            <StarIcon weight="fill" className="ph-fill ph-star fs-five act4-clr"></StarIcon>
                           </li>
                           <li>
-                            <Star weight="fill" className="ph-fill ph-star fs-five act4-clr"></Star>
+                            <StarIcon weight="fill" className="ph-fill ph-star fs-five act4-clr"></StarIcon>
                           </li>
                           <li>
-                            <StarHalf weight="fill" className="ph-fill ph-star-half fs-five act4-clr"></StarHalf>
+                            <StarHalfIcon weight="fill" className="ph-fill ph-star-half fs-five act4-clr"></StarHalfIcon>
                           </li>
                         </ul>
                         <span className="n3-clr fw_600">{item.reviews} reviews</span>
                       </div>
                     </div>
                     <span className="cmn-40 radius-circle act4-border n0-fillhover">
-                      <BookmarkSimple weight="bold" className="ph-bold ph-bookmark-simple act4-clr"></BookmarkSimple>
+                      <BookmarkSimpleIcon weight="bold" className="ph-bold ph-bookmark-simple act4-clr"></BookmarkSimpleIcon>
                     </span>
                   </div>
                   <ul className="remaining-info px-xxl-6 px-xl-5 px-lg-4 px-3 py-xxl-5 py-xl-3 py-2 nw4-bb d-flex align-items-center gap-xxl-5 gap-lg-3 gap-2">
                     <li className="d-flex align-items-center gap-2">
-                      <Clock className="ph ph-clock fs-five n3-clr"></Clock>
+                      <ClockIcon className="ph ph-clock fs-five n3-clr"></ClockIcon>
                       <span className="n3-clr fw_600">{item.daysRemaining} Days</span>
                     </li>
                     <li className="vline-remaing"></li>
                     <li className="d-flex align-items-center gap-2">
-                      <Barbell className="ph ph-barbell fs-five n3-clr"></Barbell>
+                      <BarbellIcon className="ph ph-barbell fs-five n3-clr"></BarbellIcon>
                       <span className="n3-clr fw_600">{item.itemsRemaining} Remaining</span>
                     </li>
                   </ul>
@@ -83,7 +83,7 @@ const WishListSection = () => {
                     </h3>
                     <Link href="#0" className="cmn-40 radius-circle s1-bg s1-hover">
                       <span>
-                        <ArrowUpRight weight="bold" className="ph-bold ph-arrow-up-right n0-clr lh"></ArrowUpRight>
+                        <ArrowUpRightIcon weight="bold" className="ph-bold ph-arrow-up-right n0-clr lh"></ArrowUpRightIcon>
                       </span>
                     </Link>
                   </div>
@@ -110,7 +110,7 @@ const WishListSection = () => {
           </li>
           <li>
             <Link href="#0" className="cmn-60 d-center radius-circle nw1-clr n2-bg">
-              <CaretRight className="ph ph-caret-right nw1-clr fs20"></CaretRight>
+              <CaretRightIcon className="ph ph-caret-right nw1-clr fs20"></CaretRightIcon>
             </Link>
           </li>
         </ul>

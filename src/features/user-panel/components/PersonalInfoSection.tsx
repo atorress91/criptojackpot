@@ -1,5 +1,5 @@
 "use client";
-import { Eye, EyeSlash, Check } from "@phosphor-icons/react";
+import { EyeIcon, EyeSlashIcon, CheckIcon } from "@phosphor-icons/react";
 import MotionFade from "../../../components/motionEffect/MotionFade";
 import { usePersonalInfoForm } from "@/features/user-panel/hooks/usePersonalInfoForm";
 import { useTranslation } from "react-i18next";
@@ -89,9 +89,9 @@ export default function PersonalInfoSection() {
                         onChange={(e) => handleChange("password", e.target.value)}
                     />
                     {showPwd.password ? (
-                        <Eye onClick={() => setShowPwd(prev => ({ ...prev, password: false }))} className="field-icon toggle-password eye-icon" />
+                        <EyeIcon onClick={() => setShowPwd(prev => ({ ...prev, password: false }))} className="field-icon toggle-password eye-icon" />
                     ) : (
-                        <EyeSlash onClick={() => setShowPwd(prev => ({ ...prev, password: true }))} className="field-icon toggle-password eye-icon" />
+                        <EyeSlashIcon onClick={() => setShowPwd(prev => ({ ...prev, password: true }))} className="field-icon toggle-password eye-icon" />
                     )}
                   </div>
                 </div>
@@ -111,9 +111,9 @@ export default function PersonalInfoSection() {
                         onChange={(e) => handleChange("confirmPassword", e.target.value)}
                     />
                     {showPwd.confirmPassword ? (
-                        <Eye onClick={() => setShowPwd(prev => ({ ...prev, confirmPassword: false }))} className="field-icon toggle-password eye-icon" />
+                        <EyeIcon onClick={() => setShowPwd(prev => ({ ...prev, confirmPassword: false }))} className="field-icon toggle-password eye-icon" />
                     ) : (
-                        <EyeSlash onClick={() => setShowPwd(prev => ({ ...prev, confirmPassword: true }))} className="field-icon toggle-password eye-icon" />
+                        <EyeSlashIcon onClick={() => setShowPwd(prev => ({ ...prev, confirmPassword: true }))} className="field-icon toggle-password eye-icon" />
                     )}
                   </div>
                 </div>
@@ -123,7 +123,7 @@ export default function PersonalInfoSection() {
             <div className="border-top d-flex align-items-center justify-content-between pt-xxl-8 pt-6 mt-xxl-8 mt-6">
               <label className="checkbox-single">
                 <input type="checkbox" name="checkbox" className="d-none" />
-                <span className="checkmark d-center"><Check /></span>
+                <span className="checkmark d-center"><CheckIcon /></span>
                 <span className="fs-seven fw_600 title-item">{t('PERSONAL_INFO.subscribeNewsletter')}</span>
               </label>
               <button type="submit" className="kewta-btn kewta-alt d-inline-flex align-items-center">
