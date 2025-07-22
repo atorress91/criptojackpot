@@ -9,7 +9,7 @@ import Nft2HowItWork from "@/components/landing-nft2/Nft2HowItWork";
 import Nft2Testimonial from "@/components/landing-nft2/Nft2Testimonial";
 import NavbarBlack from "@/components/navbar/NavbarBlack";
 import { Metadata } from "next";
-import { nft1data } from "../../../../public/data/nft1PageData";
+import { nft1data } from "public/data/nft1PageData";
 
 export const metadata: Metadata = {
     title: "Landing NFT Two - Lottery & Giveaway NextJs Template",
