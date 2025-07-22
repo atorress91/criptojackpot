@@ -15,19 +15,19 @@ const resources = {
 };
 
 i18n
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    resources,
-    fallbackLng: 'es',
-    lng: 'es',
-    interpolation: {
-      escapeValue: false,
-    },
-    detection: {
-      order: ['localStorage', 'navigator'],
-      caches: ['localStorage'],
-    },
-  });
+    .use(LanguageDetector)
+    .use(initReactI18next)
+    .init({
+        resources,
+        fallbackLng: 'es',
+        lng: 'es',
+        interpolation: {
+            escapeValue: false,
+        },
+        detection: {
+            order: ['localStorage', 'navigator'],
+             caches: ['localStorage'],
+        },
+    }).then();
 
 export default i18n;
