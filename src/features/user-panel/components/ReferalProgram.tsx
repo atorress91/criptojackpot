@@ -8,6 +8,15 @@ import MotionFadeDownToTop from '@/components/motionEffect/MotionFadeDownToTop';
 import MotionFadeTopToDown from '@/components/motionEffect/MotionFadeTopToDown';
 import { useTranslation } from 'react-i18next';
 import Table from "@/components/table/Table";
+import {Referral} from "@/features/user-panel/types";
+
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', {
+    day: '2-digit',
+    month: 'long',
+  });
+};
 
 const ReferalProgram = () => {
   const { t } = useTranslation();
@@ -18,6 +27,8 @@ const ReferalProgram = () => {
     generateNewSecurityCode,
     isGenerating,
     hasSecurityCode,
+    referralData,
+    isReferralsLoading,
   } = useReferralProgram();
 
   function copyToClipboard(e: React.MouseEvent<HTMLInputElement, MouseEvent>) {
@@ -30,11 +41,19 @@ const ReferalProgram = () => {
   }
 
   const columns = [
-    { key: 'date', header: t('REFERRAL_PROGRAM.table.date') },
-    { key: 'level', header: t('REFERRAL_PROGRAM.table.level') },
-    { key: 'name', header: t('REFERRAL_PROGRAM.table.username') },
+    { key: 'registerDate', header: t('REFERRAL_PROGRAM.table.date') },
+    { key: 'fullName', header: t('REFERRAL_PROGRAM.table.username') },
     { key: 'email', header: t('REFERRAL_PROGRAM.table.email') },
+    { key: 'usedSecurityCode', header: t('REFERRAL_PROGRAM.table.securityCode') },
   ];
+
+  const tableData = React.useMemo(() => {
+    if (!referralData?.referrals) return [];
+    return referralData.referrals.map((ref: Referral) => ({
+      ...ref,
+      registerDate: formatDate(ref.registerDate),
+    }));
+  }, [referralData]);
 
   return (
       <div className="col-xxl-9 col-xl-8 col-lg-8">
@@ -98,7 +117,7 @@ const ReferalProgram = () => {
               <span className="icon m-auto mb-xxl-5 mb-xl-4 mb-lg-3 mb-2 s1-bg radius-circle d-center">
                 <UsersFourIcon className="ph ph-users-four fs-two n0-clr"></UsersFourIcon>
               </span>
-              <span className="n4-clr fs-three mb-2"> $2956.00 </span>
+              <span className="n4-clr fs-three mb-2"> ${referralData?.totalEarnings} </span>
               <span className="n3-clr fw_600 d-block"> {t('REFERRAL_PROGRAM.earnedReferral')} </span>
             </span>
             </Link>
@@ -110,7 +129,7 @@ const ReferalProgram = () => {
               <span className="icon m-auto mb-xxl-5 mb-xl-4 mb-lg-3 mb-2 s1-bg radius-circle d-center">
                 <HandHeartIcon className="ph ph-hand-heart fs-two n0-clr"></HandHeartIcon>
               </span>
-              <span className="n4-clr fs-three mb-2"> $2956.00 </span>
+              <span className="n4-clr fs-three mb-2"> ${referralData?.lastMonthEarnings} </span>
               <span className="n3-clr fw_600 d-block"> {t('REFERRAL_PROGRAM.lastMonth')} </span>
             </span>
             </Link>
@@ -127,80 +146,14 @@ const ReferalProgram = () => {
               <CalendarBlankIcon weight="bold" className="ph-bold ph-calendar-blank"></CalendarBlankIcon>
             </form>
           </div>
-          {/* Usa el componente de tabla reutilizable aquí */}
-          <Table columns={columns} data={tableData} />
+          {isReferralsLoading ? (
+              <div className="text-center p-5 n4-clr">Loading partners...</div>
+          ) : (
+              <Table columns={columns} data={tableData} />
+          )}
         </MotionFade>
       </div>
   );
 };
 
 export default ReferalProgram;
-
-const tableData = [
-  {
-    date: '01 April',
-    level: 'Level_01',
-    name: 'Ronald Richards',
-    email: 'tanya.hill@example.com',
-  },
-  {
-    date: '02 April',
-    level: 'Level_02',
-    name: 'Ralph Edward',
-    email: 'nathan.roberts@example.com',
-  },
-  {
-    date: '03 April',
-    level: 'Level_03',
-    name: 'Jerome Bell',
-    email: 'debbie.baker@example.com',
-  },
-  {
-    date: '04 April',
-    level: 'Level_04',
-    name: 'Arlene McCoy',
-    email: 'dolores.chambers@example.com',
-  },
-  {
-    date: '05 April',
-    level: 'Level_05',
-    name: 'Savannah Nguyen',
-    email: 'tanya.hill@example.com',
-  },
-  {
-    date: '01 April',
-    level: 'Level_01',
-    name: 'Ronald Richards',
-    email: 'felicia.reid@example.com',
-  },
-  {
-    date: '06 April',
-    level: 'Level_06',
-    name: 'Brooklyn Simmons',
-    email: 'willie.jennings@example.com',
-  },
-  {
-    date: '07 April',
-    level: 'Level_07',
-    name: 'Darrell Steward',
-    email: 'deanna.curtis@example.com',
-  },
-  {
-    date: '08 April',
-    level: 'Level_08',
-    name: 'Kathryn Murphy',
-    email: 'willie.jennings@example.com',
-  },
-  {
-    date: '09 April',
-    level: 'Level_09',
-    name: 'Guy Hawkins',
-    email: 'dolores.chambers@example.com',
-  },
-  {
-    date: '10 April',
-    level: 'Level_10',
-    name: 'Jacob Jones',
-    email: 'jessica.hanson@example.com',
-  },
-];

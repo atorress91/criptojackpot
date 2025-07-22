@@ -58,7 +58,7 @@
     "dateRangeFilter": "fecha mín - máx",
     "table": {
       "date": "Fecha",
-      "level": "Nivel",
+      "securityCode": "Código de Seguridad",
       "username": "Usuario",
       "email": "Correo"
     }
