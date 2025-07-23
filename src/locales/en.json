@@ -1,28 +1,4 @@
 {
-  "PERSONAL_INFO": {
-    "title": "Personal Details",
-    "firstName": "First Name",
-    "lastName": "Last Name",
-    "emailAddress": "Email Address",
-    "phoneNumber": "Phone Number",
-    "newPassword": "New Password",
-    "confirmPassword": "Confirm Password",
-    "subscribeNewsletter": "Subscribe me to Newsletter",
-    "updateProfile": "Update Profile",
-    "placeholders": {
-      "firstName": "First Name",
-      "lastName": "Last Name",
-      "email": "Email",
-      "phoneNumber": "Phone Number",
-      "newPassword": "New Password",
-      "confirmPassword": "Confirm Password"
-    },
-    "notifications": {
-      "passwordMismatch": "Password and confirmation do not match.",
-      "updateSuccess": "Profile updated successfully!",
-      "updateError": "Failed to update profile."
-    }
-  },
   "LOGIN": {
     "createAccount": "Create an account",
     "emailPlaceholder": "Email address",
@@ -42,26 +18,6 @@
     "passwordPlaceholder": "Enter Your Password...",
     "success": "Successfully authenticated",
     "title": "Login"
-  },
-  "REFERRAL_PROGRAM": {
-    "partners": "Partners:",
-    "yourPartners": "Your Partners:",
-    "referralLink": "Referral Link :",
-    "copyLink": "Copy Link",
-    "linkCopied": "Link Copied Successfully.",
-    "noSecurityCode": "No security code found. Contact support to get your referral code.",
-    "generateNewCodeSuccess": "New security code generated successfully.",
-    "generateNewCodeError": "Failed to generate new security code.",
-    "generateNewCodeTitle": "Generate new security code",
-    "earnedReferral": "Earned Referral",
-    "lastMonth": "Last Month",
-    "dateRangeFilter": "min - max date",
-    "table": {
-      "date": "Date",
-      "securityCode": "Security Code",
-      "username": "Username",
-      "email": "Email"
-    }
   },
   "NAVBAR": {
     "About Us": "About Us",
@@ -97,8 +53,52 @@
     "Basket": "Basket",
     "Join Now": "Join Now",
     "Login": "Login",
-    "User Panel": "User Panel",
-    "Logout": "Logout button"
+    "Logout": "Logout button",
+    "User Panel": "User Panel"
+  },
+  "PERSONAL_INFO": {
+    "confirmPassword": "Confirm Password",
+    "emailAddress": "Email Address",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "newPassword": "New Password",
+    "notifications": {
+      "passwordMismatch": "Password and confirmation do not match.",
+      "updateError": "Failed to update profile.",
+      "updateSuccess": "Profile updated successfully!"
+    },
+    "phoneNumber": "Phone Number",
+    "placeholders": {
+      "confirmPassword": "Confirm Password",
+      "email": "Email",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "newPassword": "New Password",
+      "phoneNumber": "Phone Number"
+    },
+    "subscribeNewsletter": "Subscribe me to Newsletter",
+    "title": "Personal Details",
+    "updateProfile": "Update Profile"
+  },
+  "REFERRAL_PROGRAM": {
+    "copyLink": "Copy Link",
+    "dateRangeFilter": "min - max date",
+    "earnedReferral": "Earned Referral",
+    "generateNewCodeError": "Failed to generate new security code.",
+    "generateNewCodeSuccess": "New security code generated successfully.",
+    "generateNewCodeTitle": "Generate new security code",
+    "lastMonth": "Last Month",
+    "linkCopied": "Link Copied Successfully.",
+    "noSecurityCode": "No security code found. Contact support to get your referral code.",
+    "partners": "Partners:",
+    "referralLink": "Referral Link :",
+    "table": {
+      "date": "Date",
+      "email": "Email",
+      "securityCode": "Security Code",
+      "username": "Username"
+    },
+    "yourPartners": "Your Partners:"
   },
   "REGISTER": {
     "addressPlaceholder": "Address",

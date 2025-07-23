@@ -1,28 +1,4 @@
 {
-  "PERSONAL_INFO": {
-    "title": "Datos Personales",
-    "firstName": "Nombre",
-    "lastName": "Apellido",
-    "emailAddress": "Correo Electrónico",
-    "phoneNumber": "Número de Teléfono",
-    "newPassword": "Nueva Contraseña",
-    "confirmPassword": "Confirmar Contraseña",
-    "subscribeNewsletter": "Suscribirme al Boletín",
-    "updateProfile": "Actualizar Perfil",
-    "placeholders": {
-      "firstName": "Nombre",
-      "lastName": "Apellido",
-      "email": "Correo",
-      "phoneNumber": "Número de Teléfono",
-      "newPassword": "Nueva Contraseña",
-      "confirmPassword": "Confirmar Contraseña"
-    },
-    "notifications": {
-      "passwordMismatch": "La contraseña y la confirmación no coinciden.",
-      "updateSuccess": "¡Perfil actualizado con éxito!",
-      "updateError": "Error al actualizar el perfil."
-    }
-  },
   "LOGIN": {
     "createAccount": "Crear una cuenta",
     "emailPlaceholder": "Dirección de correo electrónico",
@@ -42,26 +18,6 @@
     "passwordPlaceholder": "Ingresa tu contraseña...",
     "success": "Credenciales correctas",
     "title": "Iniciar sesión"
-  },
-  "REFERRAL_PROGRAM": {
-    "partners": "Socios:",
-    "yourPartners": "Tus Socios:",
-    "referralLink": "Enlace de Referido :",
-    "copyLink": "Copiar Enlace",
-    "linkCopied": "Enlace copiado con éxito.",
-    "noSecurityCode": "No se encontró código de seguridad. Contacta con soporte para obtener tu código de referido.",
-    "generateNewCodeSuccess": "Nuevo código de seguridad generado con éxito.",
-    "generateNewCodeError": "Error al generar nuevo código de seguridad.",
-    "generateNewCodeTitle": "Generar nuevo código de seguridad",
-    "earnedReferral": "Ganancias por Referidos",
-    "lastMonth": "Último Mes",
-    "dateRangeFilter": "fecha mín - máx",
-    "table": {
-      "date": "Fecha",
-      "securityCode": "Código de Seguridad",
-      "username": "Usuario",
-      "email": "Correo"
-    }
   },
   "NAVBAR": {
     "About Us": "Acerca de nosotros",
@@ -97,8 +53,52 @@
     "Basket": "Carrito",
     "Join Now": "Unirse",
     "Login": "Iniciar sesión",
-    "User Panel": "Panel de usuario",
-    "Logout": "Botón de salir"
+    "Logout": "Botón de salir",
+    "User Panel": "Panel de usuario"
+  },
+  "PERSONAL_INFO": {
+    "confirmPassword": "Confirmar Contraseña",
+    "emailAddress": "Correo Electrónico",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "newPassword": "Nueva Contraseña",
+    "notifications": {
+      "passwordMismatch": "La contraseña y la confirmación no coinciden.",
+      "updateError": "Error al actualizar el perfil.",
+      "updateSuccess": "¡Perfil actualizado con éxito!"
+    },
+    "phoneNumber": "Número de Teléfono",
+    "placeholders": {
+      "confirmPassword": "Confirmar Contraseña",
+      "email": "Correo",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "newPassword": "Nueva Contraseña",
+      "phoneNumber": "Número de Teléfono"
+    },
+    "subscribeNewsletter": "Suscribirme al Boletín",
+    "title": "Datos Personales",
+    "updateProfile": "Actualizar Perfil"
+  },
+  "REFERRAL_PROGRAM": {
+    "copyLink": "Copiar Enlace",
+    "dateRangeFilter": "fecha mín - máx",
+    "earnedReferral": "Ganancias por Referidos",
+    "generateNewCodeError": "Error al generar nuevo código de seguridad.",
+    "generateNewCodeSuccess": "Nuevo código de seguridad generado con éxito.",
+    "generateNewCodeTitle": "Generar nuevo código de seguridad",
+    "lastMonth": "Último Mes",
+    "linkCopied": "Enlace copiado con éxito.",
+    "noSecurityCode": "No se encontró código de seguridad. Contacta con soporte para obtener tu código de referido.",
+    "partners": "Socios:",
+    "referralLink": "Enlace de Referido :",
+    "table": {
+      "date": "Fecha",
+      "email": "Correo",
+      "securityCode": "Código de Seguridad",
+      "username": "Usuario"
+    },
+    "yourPartners": "Tus Socios:"
   },
   "REGISTER": {
     "addressPlaceholder": "Dirección",
