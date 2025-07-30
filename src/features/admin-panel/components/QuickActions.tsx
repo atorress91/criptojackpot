@@ -1,6 +1,6 @@
 'use client';
 
-import { Money, TrendUp } from '@phosphor-icons/react';
+import { MoneyIcon, TrendUpIcon } from '@phosphor-icons/react';
 import { Ticket, Users } from 'lucide-react';
 import Link from 'next/link';
 
@@ -26,13 +26,13 @@ const QuickActions = () => {
           </div>
           <div className="col-md-3">
             <Link href="/admin/reports" className="btn btn-outline-info w-100">
-              <TrendUp className="me-2" size={20} />
+              <TrendUpIcon className="me-2" size={20} />
               Generar Reporte
             </Link>
           </div>
           <div className="col-md-3">
             <Link href="/admin/announcements" className="btn btn-outline-warning w-100">
-              <Money className="me-2" size={20} />
+              <MoneyIcon className="me-2" size={20} />
               Nuevo Anuncio
             </Link>
           </div>

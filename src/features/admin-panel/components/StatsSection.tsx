@@ -1,6 +1,6 @@
 'use client';
 
-import { Money, Ticket, TrendUp, Users } from '@phosphor-icons/react';
+import { MoneyIcon, TicketIcon, TrendUpIcon, UsersIcon } from '@phosphor-icons/react';
 
 const StatsSection = () => {
   return (
@@ -15,7 +15,7 @@ const StatsSection = () => {
                 <small className="text-success">+12% este mes</small>
               </div>
               <div className="act4-bg rounded-circle p-3">
-                <Users size={32} className="text-white" />
+                <UsersIcon size={32} className="text-white" />
               </div>
             </div>
           </div>
@@ -32,7 +32,7 @@ const StatsSection = () => {
                 <small className="text-success">+8% este mes</small>
               </div>
               <div className="act4-bg rounded-circle p-3">
-                <Ticket size={32} className="text-white" />
+                <TicketIcon size={32} className="text-white" />
               </div>
             </div>
           </div>
@@ -49,7 +49,7 @@ const StatsSection = () => {
                 <small className="text-success">+15% este mes</small>
               </div>
               <div className="act4-bg rounded-circle p-3">
-                <Money size={32} className="text-white" />
+                <MoneyIcon size={32} className="text-white" />
               </div>
             </div>
           </div>
@@ -66,7 +66,7 @@ const StatsSection = () => {
                 <small className="text-danger">-2% este mes</small>
               </div>
               <div className="act4-bg rounded-circle p-3">
-                <TrendUp size={32} className="text-white" />
+                <TrendUpIcon size={32} className="text-white" />
               </div>
             </div>
           </div>

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { sidebarItems } from 'public/data/sidebarItems';
-import { IconProps, SignOut } from '@phosphor-icons/react';
+import { SignOutIcon } from '@phosphor-icons/react';
 import { useAuthStore } from '@/store/authStore';
 
 const AdminPanelSidebar = () => {
@@ -31,7 +31,7 @@ const AdminPanelSidebar = () => {
           {/* Admin Menu */}
           <ul className="user-sidebar d-grid gap-2">
             {sidebarItems.map(item => {
-              const Icon = item.Icon as React.ComponentType<IconProps>;
+              const Icon = item.Icon;
               return (
                 <li key={`sidebar-${item.id}`}>
                   <Link
@@ -52,7 +52,7 @@ const AdminPanelSidebar = () => {
                 onClick={handleLogout}
                 className="py-xxl-3 py-2 px-xxl-5 px-xl-4 px-3 radius12 n4-clr fw_600 d-flex align-items-center gap-xxl-3 gap-2 user-text-inner w-full"
               >
-                <SignOut weight="bold" className="ph-bold ph-sign-out fs-five me-2" />
+                <SignOutIcon weight="bold" className="ph-bold ph-sign-out fs-five me-2" />
                 <span>Cerrar Sesión</span>
               </button>
             </li>
