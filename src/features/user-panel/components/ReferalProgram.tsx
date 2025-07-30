@@ -70,20 +70,22 @@ const ReferalProgram = () => {
                 data-copy="true"
             >
               <div className="d-flex align-items-center gap-3 icon-text">
-              <span
+              <button
                   className={`c-icon s1-bg radius-circle d-center cmn-48 ${isGenerating ? 'opacity-50' : 'cursor-pointer'}`}
                   onClick={isGenerating ? undefined : handleGenerateNewCode}
+                  disabled={isGenerating}
+                  aria-label={t('REFERRAL_PROGRAM.generateNewCodeTitle')}
                   title={t('REFERRAL_PROGRAM.generateNewCodeTitle')}
                   style={{ cursor: isGenerating ? 'not-allowed' : 'pointer' }}
               >
                 {isGenerating ? (
-                    <div className="spinner-border spinner-border-sm text-light" role="status">
-                      <span className="visually-hidden">Loading...</span>
+                    <div className="spinner-border spinner-border-sm text-light">
+                      <output className="visually-hidden">Loading...</output>
                     </div>
                 ) : (
                     <LinkSimpleIcon weight="bold" className="ph-bold ph-link nw1-clr fs-four"></LinkSimpleIcon>
                 )}
-              </span>
+              </button>
                 <span className="n4-clr fw_600">{t('REFERRAL_PROGRAM.referralLink')}</span>
               </div>
               <span className="minput">
