@@ -18,207 +18,122 @@ import banner6 from "@/../public/images/banner/banner6.png";
 import banner7 from "@/../public/images/banner/banner7.png";
 import banner8 from "@/../public/images/banner/banner8.png";
 import banner9 from "@/../public/images/banner/banner9.png";
-import { CaretDown } from "@phosphor-icons/react/dist/ssr";
+import {CaretDownIcon} from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
-
 import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import {usePathname} from "next/navigation";
+import React, {useEffect, useState} from "react";
 
 type Props = {
     handleDropDown: (id: string) => void;
     dropdownId: string;
 };
 
-const AllHomePage = ({ handleDropDown, dropdownId }: Props) => {
+interface MenuItem {
+    href: string;
+    banner: any;
+    title: string;
+}
+
+interface MenuColumn {
+    id: string;
+    items: MenuItem[];
+}
+
+const AllHomePage = ({handleDropDown, dropdownId}: Props) => {
     const path = usePathname();
     const [active, setActive] = useState(false);
 
     useEffect(() => {
-        hrefs.some((href) => {
-            if (path === href) {
-                setActive(true);
-            }
-        });
-    });
+        const isActiveRoute = hrefs.includes(path);
+        setActive(isActiveRoute);
+    }, [path]);
+
+    const renderMenuItem = ({href, banner, title}: MenuItem) => (
+        <li key={href}>
+            <Link href={href} className="mega-menu-link">
+                <span className="mega-menu-thumb d-none d-xl-block">
+                    <Image src={banner} width={636} alt=""/>
+                </span>
+                <span className={`mega-span ${isPathActive(href)}`}>
+                    {title}
+                </span>
+            </Link>
+        </li>
+    );
+
+    const isPathActive = (href: string) => path === href ? "active" : "";
+
+    const getMenuColumns = (): MenuColumn[] => [
+        {
+            id: "car-realestate-column",
+            items: [
+                {href: "/", banner: banner1, title: "Car V-1"},
+                {href: "/landing-car", banner: banner2, title: "Car V-2"},
+                {href: "/landing-realestate1", banner: banner11, title: "Real Estate V-1"},
+                {href: "/landing-realestate2", banner: banner12, title: "Real Estate V-2"},
+            ]
+        },
+        {
+            id: "bike-nft-column",
+            items: [
+                {href: "/landing-bike1", banner: banner3, title: "Bike V-1"},
+                {href: "/landing-bike2", banner: banner4, title: "Bike V-2"},
+                {href: "/landing-nft1", banner: banner13, title: "NFT V-1"},
+                {href: "/landing-nft2", banner: banner14, title: "NFT V-2"},
+            ]
+        },
+        {
+            id: "bicycle-clothing-column",
+            items: [
+                {href: "/landing-bicycle1", banner: banner5, title: "Bicycle V-1"},
+                {href: "/landing-bicycle2", banner: banner6, title: "Bicycle V-2"},
+                {href: "/landing-clothing1", banner: banner15, title: "Clothing V-1"},
+                {href: "/landing-clothing2", banner: banner16, title: "Clothing V-2"},
+            ]
+        },
+        {
+            id: "jewelry-game-column",
+            items: [
+                {href: "/landing-jewellery1", banner: banner7, title: "Jewelry V-1"},
+                {href: "/landing-jewellery2", banner: banner8, title: "Jewelry V-2"},
+                {href: "/landing-compitition1", banner: banner7, title: "Game V-1"},
+                {href: "/landing-compitition2", banner: banner18, title: "Game V-2"},
+            ]
+        },
+        {
+            id: "electronic-lottery-column",
+            items: [
+                {href: "/landing-electornic1", banner: banner9, title: "Electronic V-1"},
+                {href: "/landing-electornic2", banner: banner10, title: "Electronic V-2"},
+                {href: "/landing-national1", banner: banner19, title: "Lottery V-1"},
+                {href: "/landing-national2", banner: banner20, title: "Lottery V-2"},
+            ]
+        },
+    ];
+
+    const getButtonClassName = () => `d-flex align-items-center position-relative ${active ? "active" : ""}`;
+    const getSubMenuClassName = () => `sub-menu mega-menu-style ${dropdownId === "home" ? "active-sub-menu" : ""}`;
 
     return (
         <li className="menu-item">
-            <div className="d-flex align-items-center" onClick={() => handleDropDown("home")}>
-                <button className={`position-relative ${active ? "active" : ""}`}>Home</button> <CaretDown />
-            </div>
-            <ul className={`sub-menu mega-menu-style ${dropdownId === "home" ? "active-sub-menu" : ""}`}>
+            <button
+                className={getButtonClassName()}
+                onClick={() => handleDropDown("home")}
+                aria-expanded={dropdownId === "home"}
+                aria-haspopup="menu"
+                type="button"
+            >
+                Home
+                <CaretDownIcon/>
+            </button>
+            <ul className={getSubMenuClassName()}>
                 <li className="menu-link">
-                    <ul>
-                        <li>
-                            <Link href="/" className="mega-menu-link">
-                <span className="mega-menu-thumb d-none d-xl-block">
-                  <Image src={banner1} width={636} alt="" />
-                </span>
-                                <span className={`mega-span ${path === "/" ? "active" : ""}`}> Car V-1 </span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="landing-car" className="mega-menu-link">
-                <span className="mega-menu-thumb d-none d-xl-block">
-                  <Image src={banner2} width={636} alt="" />
-                </span>
-                                <span className={`mega-span ${path === "/landing-car" ? "active" : ""}`}> Car V-2 </span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="landing-realestate1" className="mega-menu-link">
-                <span className="mega-menu-thumb d-none d-xl-block">
-                  <Image src={banner11} alt="" />
-                </span>
-                                <span className={`mega-span ${path === "/landing-realestate1" ? "active" : ""}`}> Real Estate V-1 </span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="landing-realestate2" className="mega-menu-link">
-                <span className="mega-menu-thumb d-none d-xl-block">
-                  <Image src={banner12} width={636} alt="" />
-                </span>
-                                <span className={`mega-span ${path === "/landing-realestate2" ? "active" : ""}`}> Real Estate V-1 </span>
-                            </Link>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>
-                            <Link href="landing-bike1" className="mega-menu-link">
-                <span className="mega-menu-thumb d-none d-xl-block">
-                  <Image src={banner3} width={636} alt="" />
-                </span>
-                                <span className={`mega-span ${path === "/landing-bike1" ? "active" : ""}`}> Bike V-1 </span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="landing-bike2" className="mega-menu-link">
-                <span className="mega-menu-thumb d-none d-xl-block">
-                  <Image src={banner4} width={636} alt="" />
-                </span>
-                                <span className={`mega-span ${path === "/landing-bike2" ? "active" : ""}`}> Bike V-2 </span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="landing-nft1" className="mega-menu-link">
-                <span className="mega-menu-thumb d-none d-xl-block">
-                  <Image src={banner13} width={636} alt="" />
-                </span>
-                                <span className={`mega-span ${path === "/landing-nft1" ? "active" : ""}`}> NFT V-1 </span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="landing-nft2" className="mega-menu-link">
-                <span className="mega-menu-thumb d-none d-xl-block">
-                  <Image src={banner14} width={636} alt="" />
-                </span>
-                                <span className={`mega-span ${path === "/landing-nft2" ? "active" : ""}`}> NFT V-2 </span>
-                            </Link>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>
-                            <Link href="landing-bicycle1" className="mega-menu-link">
-                <span className="mega-menu-thumb d-none d-xl-block">
-                  <Image src={banner5} width={636} alt="" />
-                </span>
-                                <span className={`mega-span ${path === "/landing-bicycle1" ? "active" : ""}`}> Bicycle V-1 </span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="landing-bicycle2" className="mega-menu-link">
-                <span className="mega-menu-thumb d-none d-xl-block">
-                  <Image src={banner6} width={636} alt="" />
-                </span>
-                                <span className={`mega-span ${path === "/landing-bicycle2" ? "active" : ""}`}> Bicycle V-2 </span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="landing-clothing1" className="mega-menu-link">
-                <span className="mega-menu-thumb d-none d-xl-block">
-                  <Image src={banner15} width={636} alt="" />
-                </span>
-                                <span className={`mega-span ${path === "/landing-clothing1" ? "active" : ""}`}> Clothing V-1 </span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="landing-clothing2" className="mega-menu-link">
-                <span className="mega-menu-thumb d-none d-xl-block">
-                  <Image src={banner16} width={636} alt="" />
-                </span>
-                                <span className={`mega-span ${path === "/landing-clothing2" ? "active" : ""}`}> Clothing V-2 </span>
-                            </Link>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>
-                            <Link href="landing-jewellery1" className="mega-menu-link">
-                <span className="mega-menu-thumb d-none d-xl-block">
-                  <Image src={banner7} width={636} alt="" />
-                </span>
-                                <span className={`mega-span ${path === "/landing-jewellery1" ? "active" : ""}`}> Jewelry V-1 </span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="landing-jewellery2" className="mega-menu-link">
-                <span className="mega-menu-thumb d-none d-xl-block">
-                  <Image src={banner8} width={636} alt="" />
-                </span>
-                                <span className={`mega-span ${path === "/landing-jewellery2" ? "active" : ""}`}> Jewelry V-2 </span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="landing-compitition1" className="mega-menu-link">
-                <span className="mega-menu-thumb d-none d-xl-block">
-                  <Image src={banner7} width={636} alt="" />
-                </span>
-                                <span className={`mega-span ${path === "/landing-compitition1" ? "active" : ""}`}> Game V-1 </span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="landing-compitition2" className="mega-menu-link">
-                <span className="mega-menu-thumb d-none d-xl-block">
-                  <Image src={banner18} width={636} alt="" />
-                </span>
-                                <span className={`mega-span ${path === "/landing-compitition2" ? "active" : ""}`}> Game V-2 </span>
-                            </Link>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>
-                            <Link href="landing-electornic1" className="mega-menu-link">
-                <span className="mega-menu-thumb d-none d-xl-block">
-                  <Image src={banner9} width={636} alt="" />
-                </span>
-                                <span className={`mega-span ${path === "/landing-electornic1" ? "active" : ""}`}> Electronic V-1 </span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="landing-electornic2" className="mega-menu-link">
-                <span className="mega-menu-thumb d-none d-xl-block">
-                  <Image src={banner10} width={636} alt="" />
-                </span>
-                                <span className={`mega-span ${path === "/landing-electornic2" ? "active" : ""}`}> Electronic V-2 </span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="landing-national1" className="mega-menu-link">
-                <span className="mega-menu-thumb d-none d-xl-block">
-                  <Image src={banner19} width={636} alt="" />
-                </span>
-                                <span className={`mega-span ${path === "/landing-national1" ? "active" : ""}`}> Lottery V-1 </span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="landing-national2" className="mega-menu-link">
-                <span className="mega-menu-thumb d-none d-xl-block">
-                  <Image src={banner20} width={636} alt="" />
-                </span>
-                                <span className={`mega-span ${path === "/landing-national2" ? "active" : ""}`}> Lottery V-2 </span>
-                            </Link>
-                        </li>
-                    </ul>
+                    {getMenuColumns().map((column) => (
+                        <ul key={column.id}>
+                            {column.items.map(renderMenuItem)}
+                        </ul>
+                    ))}
                 </li>
             </ul>
         </li>
