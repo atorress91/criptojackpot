@@ -103,7 +103,6 @@
 }
 .banner-content-v1 {
   padding: 120px 0 95px;
-  // position: relative;
   z-index: 1;
   .bn-pra {
     font-size: 18px;
@@ -821,7 +820,6 @@
       transition: all 0.4s;
       padding-left: 10px;
       text-align: center;
-      transition: all 0.5s;
     }
   }
   .doble-cont {
@@ -2905,7 +2903,6 @@
   }
   @include maxQuery(767) {
     margin-top: 35px;
-    // max-width: 380px;
     width: 100%;
     .place-bidwrap {
       width: 100%;
@@ -3548,7 +3545,6 @@
       max-width: 300px;
       position: initial;
       width: 100%;
-      margin-left: 14px;
       margin: 24px auto -80px auto;
     }
   }
@@ -4059,5 +4055,3 @@
   }
 }
 
-.modal-video-close-btn {
-}
