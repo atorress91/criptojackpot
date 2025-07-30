@@ -1,16 +1,18 @@
 "use client";
-import { Bodies, Bounds, Engine, Events, Mouse, MouseConstraint, Render, World } from "matter-js";
-import { useEffect, useRef } from "react";
+import {Bodies, Bounds, Engine, Events, Mouse, MouseConstraint, Render, Runner, World} from "matter-js";
+import {useEffect, useRef} from "react";
 
 const AnimationCardTwo = () => {
   const canvasRef = useRef<HTMLDivElement>(null);
-  const instance = useRef<any | Render>(null);
+  const instance = useRef<Render | null>(null);
+  const runnerRef = useRef<Runner | null>(null);
 
   useEffect(() => {
     const containerElement = canvasRef.current!;
     const containerWidth = containerElement.clientWidth;
     const containerHeight = containerElement.clientHeight;
     const engine = Engine.create();
+    
     if (canvasRef.current && !instance.current) {
       instance.current = Render.create({
         element: containerElement,
@@ -24,9 +26,8 @@ const AnimationCardTwo = () => {
         },
       });
     }
-    // create an engine
 
-    // create a renderer
+    if (!instance.current) return;
 
     // Add the renderer to the DOM
     Render.run(instance.current);
@@ -217,31 +218,35 @@ const AnimationCardTwo = () => {
     Events.on(mouseConstraint, "mouseup", function (event) {
       const mouseConstraint = event.source;
       const bodies = engine.world.bodies;
-      for (let i = 0; i < bodies.length; i++) {
-        const body = bodies[i];
-        if (click === true) {
-          if (Bounds.contains(body.bounds, mouseConstraint.mouse.position)) {
+      for (const element of bodies) {
+        if (click) {
+          if (Bounds.contains(element.bounds, mouseConstraint.mouse.position)) {
             break;
           }
         }
       }
       if (!mouseConstraint.body) {
-        for (let i = 0; i < bodies.length; i++) {
-          const body = bodies[i];
-          if (click === true) {
-            if (Bounds.contains(body.bounds, mouseConstraint.mouse.position)) {
+        for (const element of bodies) {
+          if (click) {
+            if (Bounds.contains(element.bounds, mouseConstraint.mouse.position)) {
               break;
             }
           }
         }
       }
     });
-    // run the engine
-    Engine.run(engine);
-    // run the renderer
+    
+    // Create and run the runner (modern way)
+    runnerRef.current = Runner.create();
+    Runner.run(runnerRef.current, engine);
 
     return () => {
-      Render.stop(instance.current);
+      if (instance.current) {
+        Render.stop(instance.current);
+      }
+      if (runnerRef.current) {
+        Runner.stop(runnerRef.current);
+      }
       Engine.clear(engine);
     };
   }, []);
