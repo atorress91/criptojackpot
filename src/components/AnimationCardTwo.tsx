@@ -1,5 +1,5 @@
 "use client";
-import {Bodies, Bounds, Engine, Events, Mouse, MouseConstraint, Render, Runner, World} from "matter-js";
+import Matter, {Bodies, Bounds, Engine, Events, Mouse, MouseConstraint, Render, Runner, World} from "matter-js";
 import {useEffect, useRef} from "react";
 
 const AnimationCardTwo = () => {
@@ -12,6 +12,84 @@ const AnimationCardTwo = () => {
     const containerWidth = containerElement.clientWidth;
     const containerHeight = containerElement.clientHeight;
     const engine = Engine.create();
+
+    // Helper function to create bounds
+    const createBounds = (containerWidth: number, containerHeight: number) => {
+      return {
+        ground: Bodies.rectangle(containerWidth / 2 + 160, containerHeight + 80, containerWidth + 320, 160, { render: { fillStyle: "#fff" }, isStatic: true }),
+        wallLeft: Bodies.rectangle(-80, containerHeight / 2, 160, containerHeight, { isStatic: true }),
+        wallRight: Bodies.rectangle(containerWidth + 80, containerHeight / 2, 160, 1200, { isStatic: true }),
+        roof: Bodies.rectangle(containerWidth / 2 + 160, -80, containerWidth + 320, 160, { isStatic: true })
+      };
+    };
+
+    // Helper function to create sprite body
+    const createSpriteBody = (x: number, y: number, width: number, height: number, texture: string, radius: number = 20) => {
+      return Bodies.rectangle(x, y, width, height, {
+        chamfer: { radius },
+        render: {
+          sprite: {
+            texture,
+            xScale: 1,
+            yScale: 1,
+          },
+        },
+      });
+    };
+
+    // Helper function to create all categories
+    const createCategories = (containerWidth: number) => {
+      const centerX = containerWidth / 2;
+      
+      return [
+        createSpriteBody(centerX + 150, 500, 164, 56, "./images/mattericon/t1.png"),
+        createSpriteBody(centerX - 150, 460, 122, 56, "./images/mattericon/t2.png"),
+        createSpriteBody(centerX + 250, 420, 204, 56, "./images/mattericon/t3.png"),
+        createSpriteBody(centerX - 75, 380, 204, 56, "./images/mattericon/t4.png"),
+        createSpriteBody(centerX - 74, 540, 194, 56, "./images/mattericon/t5.png"),
+        createSpriteBody(centerX + 174, 490, 216, 56, "./images/mattericon/t6.png"),
+        createSpriteBody(centerX - 142, 440, 167, 56, "./images/mattericon/t7.png"),
+        createSpriteBody(centerX - 10, 260, 260, 56, "./images/mattericon/t8.png"),
+        createSpriteBody(centerX - 242, 420, 174, 56, "./images/mattericon/t9.png"),
+        createSpriteBody(centerX + 60, 300, 285, 56, "./images/mattericon/t10.png"),
+        createSpriteBody(centerX, 320, 170, 56, "./images/mattericon/t11.png"),
+        createSpriteBody(centerX - 59, 260, 60, 56, "./images/mattericon/t12.png"),
+        createSpriteBody(centerX + 110, 260, 110, 56, "./images/mattericon/t13.png")
+      ];
+    };
+
+    // Helper function to check if mouse is over any body
+    const findBodyUnderMouse = (bodies: Matter.Body[], mousePosition: Matter.Vector) => {
+      return bodies.find(element => Bounds.contains(element.bounds, mousePosition));
+    };
+
+    // Helper function to setup mouse events
+    const setupMouseEvents = (mouseConstraint: MouseConstraint, engine: Engine) => {
+      let click = false;
+      
+      const handleMouseDown = () => (click = true);
+      const handleMouseMove = () => (click = false);
+      
+      document.addEventListener("mousedown", handleMouseDown);
+      document.addEventListener("mousemove", handleMouseMove);
+
+      Events.on(mouseConstraint, "mouseup", function (event) {
+        if (!click) return;
+
+        const mouseConstraint = event.source;
+        const bodies = engine.world.bodies;
+        const bodyUnderMouse = findBodyUnderMouse(bodies, mouseConstraint.mouse.position);
+        
+        if (bodyUnderMouse) {
+          // Handle body click
+        }
+      });
+
+      return () => {
+        document.removeEventListener("mousedown", handleMouseDown);
+        document.removeEventListener("mousemove", handleMouseMove);
+      };
+    };
     
     if (canvasRef.current && !instance.current) {
       instance.current = Render.create({
@@ -33,214 +111,37 @@ const AnimationCardTwo = () => {
     Render.run(instance.current);
 
     // add mouse control
-    const mouse = Mouse.create(instance.current.canvas),
-      mouseConstraint = MouseConstraint.create(engine, {
-        mouse: mouse,
-        constraint: {
-          stiffness: 0.2,
-          render: {
-            visible: false,
-          },
-        },
-      });
-
-    // Add bodies to the world
-    // create bounds
-    const ground = Bodies.rectangle(containerWidth / 2 + 160, containerHeight + 80, containerWidth + 320, 160, { render: { fillStyle: "#fff" }, isStatic: true });
-    const wallLeft = Bodies.rectangle(-80, containerHeight / 2, 160, containerHeight, { isStatic: true });
-    const wallRight = Bodies.rectangle(containerWidth + 80, containerHeight / 2, 160, 1200, { isStatic: true });
-    const roof = Bodies.rectangle(containerWidth / 2 + 160, -80, containerWidth + 320, 160, { isStatic: true });
-    const radius = 20;
-    // create objects
-
-    // tagVideo & design
-    const categories1 = Bodies.rectangle(containerWidth / 2 + 150, 500, 164, 56, {
-      chamfer: { radius: radius },
-      render: {
-        sprite: {
-          texture: "./images/mattericon/t1.png",
-          xScale: 1,
-          yScale: 1,
-        },
-      },
-    });
-    const categories2 = Bodies.rectangle(containerWidth / 2 - 150, 460, 122, 56, {
-      chamfer: { radius: radius },
-      render: {
-        sprite: {
-          texture: "./images/mattericon/t2.png",
-          xScale: 1,
-          yScale: 1,
+    const mouse = Mouse.create(instance.current.canvas);
+    const mouseConstraint = MouseConstraint.create(engine, {
+      mouse: mouse,
+      constraint: {
+        stiffness: 0.2,
+        render: {
+          visible: false,
         },
       },
     });
 
-    const categories3 = Bodies.rectangle(containerWidth / 2 + 250, 420, 204, 56, {
-      chamfer: { radius: radius },
-      render: {
-        sprite: {
-          texture: "./images/mattericon/t3.png",
-          xScale: 1,
-          yScale: 1,
-        },
-      },
-    });
-
-    const categories4 = Bodies.rectangle(containerWidth / 2 - 75, 380, 204, 56, {
-      chamfer: { radius: radius },
-      render: {
-        sprite: {
-          texture: "./images/mattericon/t4.png",
-          xScale: 1,
-          yScale: 1,
-        },
-      },
-    });
-    // video
-    const categories5 = Bodies.rectangle(containerWidth / 2 - 74, 540, 194, 56, {
-      chamfer: { radius: radius },
-      render: {
-        sprite: {
-          texture: "./images/mattericon/t5.png",
-          xScale: 1,
-          yScale: 1,
-        },
-      },
-    });
-    const categories6 = Bodies.rectangle(containerWidth / 2 + 174, 490, 216, 56, {
-      chamfer: { radius: radius },
-      render: {
-        sprite: {
-          texture: "./images/mattericon/t6.png",
-          xScale: 1,
-          yScale: 1,
-        },
-      },
-    });
-    const categories7 = Bodies.rectangle(containerWidth / 2 - 142, 440, 167, 56, {
-      chamfer: { radius: radius },
-      render: {
-        sprite: {
-          texture: "./images/mattericon/t7.png",
-          xScale: 1,
-          yScale: 1,
-        },
-      },
-    });
-    const categories8 = Bodies.rectangle(containerWidth / 2 - 10, 260, 260, 56, {
-      chamfer: { radius: radius },
-      render: {
-        sprite: {
-          texture: "./images/mattericon/t8.png",
-          xScale: 1,
-          yScale: 1,
-        },
-      },
-    });
-    //misc
-    const categories9 = Bodies.rectangle(containerWidth / 2 - 242, 420, 174, 56, {
-      chamfer: { radius: radius },
-      render: {
-        sprite: {
-          texture: "./images/mattericon/t9.png",
-          xScale: 1,
-          yScale: 1,
-        },
-      },
-    });
-    const categories10 = Bodies.rectangle(containerWidth / 2 + 60, 300, 285, 56, {
-      chamfer: { radius: radius },
-      render: {
-        sprite: {
-          texture: "./images/mattericon/t10.png",
-          xScale: 1,
-          yScale: 1,
-        },
-      },
-    });
-    const categories11 = Bodies.rectangle(containerWidth / 2, 320, 170, 56, {
-      chamfer: { radius: radius },
-      render: {
-        sprite: {
-          texture: "./images/mattericon/t11.png",
-          xScale: 1,
-          yScale: 1,
-        },
-      },
-    });
-    const categories12 = Bodies.rectangle(containerWidth / 2 - 59, 260, 60, 56, {
-      chamfer: { radius: radius },
-      render: {
-        sprite: {
-          texture: "./images/mattericon/t12.png",
-          xScale: 1,
-          yScale: 1,
-        },
-      },
-    });
-    const categories13 = Bodies.rectangle(containerWidth / 2 + 110, 260, 110, 56, {
-      chamfer: { radius: radius },
-      render: {
-        sprite: {
-          texture: "./images/mattericon/t13.png",
-          xScale: 1,
-          yScale: 1,
-        },
-      },
-    });
+    // Create bounds and categories
+    const bounds = createBounds(containerWidth, containerHeight);
+    const categories = createCategories(containerWidth);
 
     // Add created bodies to the world
     World.add(engine.world, [
       mouseConstraint,
-      ground,
-      wallLeft,
-      wallRight,
-      roof,
-      categories1,
-      categories2,
-      categories3,
-      categories4,
-      categories5,
-      categories6,
-      categories7,
-      categories8,
-      categories9,
-      categories10,
-      categories11,
-      categories12,
-      categories13,
+      ...Object.values(bounds),
+      ...categories,
     ]);
 
-    let click = false;
-    document.addEventListener("mousedown", () => (click = true));
-    document.addEventListener("mousemove", () => (click = false));
-    // Create a On-Mouseup Event-Handler
-    Events.on(mouseConstraint, "mouseup", function (event) {
-      const mouseConstraint = event.source;
-      const bodies = engine.world.bodies;
-      for (const element of bodies) {
-        if (click) {
-          if (Bounds.contains(element.bounds, mouseConstraint.mouse.position)) {
-            break;
-          }
-        }
-      }
-      if (!mouseConstraint.body) {
-        for (const element of bodies) {
-          if (click) {
-            if (Bounds.contains(element.bounds, mouseConstraint.mouse.position)) {
-              break;
-            }
-          }
-        }
-      }
-    });
+    // Setup mouse events
+    const cleanupMouseEvents = setupMouseEvents(mouseConstraint, engine);
     
     // Create and run the runner (modern way)
     runnerRef.current = Runner.create();
     Runner.run(runnerRef.current, engine);
 
     return () => {
+      cleanupMouseEvents();
       if (instance.current) {
         Render.stop(instance.current);
       }
