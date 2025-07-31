@@ -28,7 +28,7 @@ class UserService extends BaseService {
   }
 
   async getAllUsers(excludeUserId?: number): Promise<User[]> {
-    return this.getAll<User>({path: `exclude`, params: {excludeUserId}});
+    return this.getAll<User>({path: `get-all-users/`, params: {excludeUserId}});
   }
 }
 
