@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 
 import { Response } from '@/interfaces/response';
 import { useAuthStore } from '@/store/authStore';
+import {GetAllOptions} from "@/interfaces/getAllOptions";
 
 export abstract class BaseService {
   protected apiClient: AxiosInstance;
@@ -44,7 +45,7 @@ export abstract class BaseService {
         return config;
       },
       error => {
-        return Promise.reject(error);
+        return Promise.reject(error instanceof Error ? error : new Error(String(error)));
       }
     );
 
@@ -59,7 +60,7 @@ export abstract class BaseService {
               window.location.href = '/login?error=session_expired';
             }
           }
-          return Promise.reject(error);
+          return Promise.reject(error instanceof Error ? error : new Error(String(error)));
         }
     );
   }
@@ -87,9 +88,15 @@ export abstract class BaseService {
     throw new Error(errorMessage);
   }
 
-  protected async getAll<T>(): Promise<T[]> {
+  protected async getAll<T>(options: GetAllOptions = {}): Promise<T[]> {
+    const { path = '', params } = options;
     try {
-      const response = await this.apiClient.get<Response<T[]>>(`${this.endpoint}`);
+      let finalUrl = this.endpoint;
+      if (path) {
+        finalUrl = finalUrl + '/' + path;
+      }
+      const response = await this.apiClient.get<Response<T[]>>(finalUrl, { params });
+
       return this.handleResponse(response);
     } catch (error) {
       throw this.handleError(error as AxiosError<Response<any>>);
