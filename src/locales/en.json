@@ -131,5 +131,30 @@
     "termsCheckbox": "I agree to the terms and conditions",
     "termsLink": "Terms of Service and Privacy Policy.",
     "title": "Get started absolutely free"
+  },
+  "USERS_ADMIN": {
+    "title": "User Administration",
+    "usersList": "User List",
+    "loading": "Loading...",
+    "noUsers": "No users to display.",
+    "notAvailable": "N/A",
+    "errors": {
+      "loadingError": "Error loading users. Please try again."
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "columns": {
+      "id": "ID",
+      "name": "Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "phone": "Phone",
+      "country": "Country",
+      "city": "City",
+      "status": "Status",
+      "role": "Role"
+    }
   }
 }

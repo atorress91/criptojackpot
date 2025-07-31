@@ -5,20 +5,22 @@ import Table from '@/components/table/Table';
 import { TableColumn } from '@/components/table';
 import {User} from "@/interfaces/user";
 import {useUsers} from "@/features/admin-panel/hooks/useUsers";
+import { useTranslation } from 'react-i18next';
 
 const UsersAdminPage: React.FC = () => {
     const { users, isLoading, isError, error } = useUsers();
+    const { t } = useTranslation();
 
     const columns: TableColumn[] = [
-        { key: 'id', header: 'ID' },
-        { key: 'name', header: 'Nombre' },
-        { key: 'lastName', header: 'Apellido' },
-        { key: 'email', header: 'Email' },
-        { key: 'phone', header: 'Teléfono' },
-        { key: 'country', header: 'País' },
-        { key: 'city', header: 'Ciudad' },
-        { key: 'status', header: 'Estado' },
-        { key: 'role', header: 'Rol' }
+        { key: 'id', header: t('USERS_ADMIN.columns.id') },
+        { key: 'name', header: t('USERS_ADMIN.columns.name') },
+        { key: 'lastName', header: t('USERS_ADMIN.columns.lastName') },
+        { key: 'email', header: t('USERS_ADMIN.columns.email') },
+        { key: 'phone', header: t('USERS_ADMIN.columns.phone') },
+        { key: 'country', header: t('USERS_ADMIN.columns.country') },
+        { key: 'city', header: t('USERS_ADMIN.columns.city') },
+        { key: 'status', header: t('USERS_ADMIN.columns.status') },
+        { key: 'role', header: t('USERS_ADMIN.columns.role') }
     ];
 
     // Transform users data to match the table format
@@ -27,36 +29,36 @@ const UsersAdminPage: React.FC = () => {
         name: user.name,
         lastName: user.lastName,
         email: user.email,
-        phone: user.phone || 'N/A',
-        country: user.country?.name || 'N/A',
-        city: user.city || 'N/A',
-        status: user.status ? 'Activo' : 'Inactivo',
-        role: user.role?.name || 'N/A'
+        phone: user.phone || t('USERS_ADMIN.notAvailable'),
+        country: user.country?.name || t('USERS_ADMIN.notAvailable'),
+        city: user.city || t('USERS_ADMIN.notAvailable'),
+        status: user.status ? t('USERS_ADMIN.status.active') : t('USERS_ADMIN.status.inactive'),
+        role: user.role?.name || t('USERS_ADMIN.notAvailable')
     })) || [];
 
     // Extract content rendering logic into separate functions
     const renderLoadingContent = () => (
         <div className="text-center py-5">
             <div className="spinner-border text-primary">
-                <output className="visually-hidden">Cargando...</output>
+                <output className="visually-hidden">{t('USERS_ADMIN.loading')}</output>
             </div>
         </div>
     );
 
     const renderErrorContent = () => (
         <div className="alert alert-danger" role="alert">
-            {error?.message || 'Error al cargar los usuarios. Por favor, intente nuevamente.'}
+            {error?.message || t('USERS_ADMIN.errors.loadingError')}
         </div>
     );
 
     const renderSuccessContent = () => (
         <div className="card border-0 shadow-sm mb-6">
             <div className="card-header bg-white py-4">
-                <h5 className="mb-0">Lista de Usuarios</h5>
+                <h5 className="mb-0">{t('USERS_ADMIN.usersList')}</h5>
             </div>
             <div className="card-body">
                 {(users?.length || 0) === 0 ? (
-                    <p className="text-center py-4">No hay usuarios para mostrar.</p>
+                    <p className="text-center py-4">{t('USERS_ADMIN.noUsers')}</p>
                 ) : (
                     <Table columns={columns} data={tableData} />
                 )}
@@ -80,7 +82,7 @@ const UsersAdminPage: React.FC = () => {
     return (
         <div className="col-lg-9">
             <div className="user-panel-wrapper">
-                <h3 className="n4-clr fw_700 mb-xxl-10 mb-6">Administración de Usuarios</h3>
+                <h3 className="n4-clr fw_700 mb-xxl-10 mb-6">{t('USERS_ADMIN.title')}</h3>
                 {renderContent()}
             </div>
         </div>

@@ -131,5 +131,30 @@
     "termsCheckbox": "Acepto los términos y condiciones",
     "termsLink": "Términos de servicio y Política de privacidad.",
     "title": "Empezar es totalmente gratis"
+  },
+  "USERS_ADMIN": {
+    "title": "Administración de Usuarios",
+    "usersList": "Lista de Usuarios",
+    "loading": "Cargando...",
+    "noUsers": "No hay usuarios para mostrar.",
+    "notAvailable": "N/A",
+    "errors": {
+      "loadingError": "Error al cargar los usuarios. Por favor, intente nuevamente."
+    },
+    "status": {
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "columns": {
+      "id": "ID",
+      "name": "Nombre",
+      "lastName": "Apellido",
+      "email": "Email",
+      "phone": "Teléfono",
+      "country": "País",
+      "city": "Ciudad",
+      "status": "Estado",
+      "role": "Rol"
+    }
   }
 }
