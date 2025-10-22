@@ -46,8 +46,8 @@ const LoginSection = () => {
                       </div>
                     </div>
                     <div className="col-lg-12">
-                      <div className="form-cmn">
-                        <div className="ps-grp position-relative">
+                      <div className="position-relative">
+                        <div className="form-cmn">
                           <input
                             type={isPasswordShow ? 'text' : 'password'}
                             name="password"
@@ -55,15 +55,35 @@ const LoginSection = () => {
                             onChange={handleInputChange}
                             className="password-field"
                             placeholder={t('LOGIN.passwordPlaceholder')}
+                            style={{ paddingRight: '45px' }}
                           />
-                          <span
-                            onClick={togglePasswordVisibility}
-                            style={{ cursor: 'pointer' }}
-                            className="position-absolute top-50 end-0 translate-middle-y"
-                          >
-                            {!isPasswordShow ? <EyeSlashIcon size={18} /> : <EyeIcon size={18} />}
-                          </span>
                         </div>
+                        <button
+                          type="button"
+                          onClick={togglePasswordVisibility}
+                          aria-label={isPasswordShow ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                          style={{
+                            cursor: 'pointer',
+                            position: 'absolute',
+                            right: '15px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            zIndex: 100,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            pointerEvents: 'auto',
+                            background: 'transparent',
+                            border: 'none',
+                            padding: 0,
+                          }}
+                        >
+                          {isPasswordShow ? (
+                            <EyeIcon size={20} weight="bold" style={{ color: '#ffffff' }} />
+                          ) : (
+                            <EyeSlashIcon size={20} weight="bold" style={{ color: '#ffffff' }} />
+                          )}
+                        </button>
                       </div>
                     </div>
                     <Link

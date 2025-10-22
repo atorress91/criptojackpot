@@ -123,33 +123,45 @@ const RegisterSection = ({ referralCode }: RegisterSectionProps) => {
 
                     {/* Password */}
                     <div className="col-12">
-                      <div className="form-cmn">
-                        <div className="ps-grp position-relative">
+                      <div className="position-relative">
+                        <div className="form-cmn">
                           <input
                             type={isPasswordShow ? 'text' : 'password'}
                             name="password"
                             value={formData.password}
                             onChange={handleInputChange}
-                            className="password-field py-2 w-100 pe-5"
+                            className="py-2 w-100"
                             placeholder={t('REGISTER.passwordPlaceholder')}
+                            style={{ paddingRight: '45px' }}
                             required
                           />
-                          <span
-                            className="position-absolute top-50 translate-middle-y"
-                            style={{
-                              cursor: 'pointer',
-                              right: '15px',
-                              zIndex: 10,
-                            }}
-                            onClick={togglePasswordVisibility}
-                          >
-                            {!isPasswordShow ? (
-                              <EyeSlashIcon size={18} className="n4-clr" />
-                            ) : (
-                              <EyeIcon size={18} className="n4-clr" />
-                            )}
-                          </span>
                         </div>
+                        <button
+                          type="button"
+                          onClick={togglePasswordVisibility}
+                          aria-label={isPasswordShow ? t('REGISTER.hidePassword') : t('REGISTER.showPassword')}
+                          style={{
+                            cursor: 'pointer',
+                            position: 'absolute',
+                            right: '15px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            zIndex: 100,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            background: 'transparent',
+                            border: 'none',
+                            padding: 0,
+                            lineHeight: 0,
+                          }}
+                        >
+                          {isPasswordShow ? (
+                            <EyeIcon size={20} weight="bold" style={{ color: '#ffffff' }} />
+                          ) : (
+                            <EyeSlashIcon size={20} weight="bold" style={{ color: '#ffffff' }} />
+                          )}
+                        </button>
                       </div>
                     </div>
 
