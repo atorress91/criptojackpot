@@ -19,7 +19,11 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
   const router = useRouter();
   const showNotification = useNotificationStore(state => state.show);
 
-  const { data: countries = [], isLoading: isLoadingCountries, error: countriesError } = useQuery({
+  const {
+    data: countries = [],
+    isLoading: isLoadingCountries,
+    error: countriesError,
+  } = useQuery({
     queryKey: ['countries'],
     queryFn: () => countryService.getAllCountries(),
     staleTime: Infinity,
@@ -65,14 +69,14 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (name === 'phone') {
-      setFormData(prev => ({ ...prev, [name]: value.replace(/\D/g, '') }));
+      setFormData(prev => ({ ...prev, [name]: value.replaceAll(/\D/g, '') }));
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
   };
 
   const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const country = countries.find(c => c.id === parseInt(e.target.value)) || null;
+    const country = countries.find(c => c.id === Number.parseInt(e.target.value, 10)) || null;
     setSelectedCountry(country);
   };
 

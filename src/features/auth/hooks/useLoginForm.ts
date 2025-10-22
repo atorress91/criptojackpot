@@ -9,62 +9,62 @@ import { authService } from '@/services/authService';
 import { useAuthStore } from '@/store/authStore';
 import { useNotificationStore } from '@/store/notificationStore';
 import { AuthRequest, LoginFormData } from '@/features/auth/types';
-import {validateLoginForm} from "@/features/auth/validators/loginValidations";
+import { validateLoginForm } from '@/features/auth/validators/loginValidations';
 
 export const useLoginForm = () => {
-    const { t } = useTranslation();
-    const router = useRouter();
-    const showNotification = useNotificationStore(state => state.show);
-    const setAuthData = useAuthStore(state => state.login);
+  const { t } = useTranslation();
+  const router = useRouter();
+  const showNotification = useNotificationStore(state => state.show);
+  const setAuthData = useAuthStore(state => state.login);
 
-    const [formData, setFormData] = useState<LoginFormData>({
-        email: '',
-        password: '',
-    });
-    const [isPasswordShow, setIsPasswordShow] = useState(false);
+  const [formData, setFormData] = useState<LoginFormData>({
+    email: '',
+    password: '',
+  });
+  const [isPasswordShow, setIsPasswordShow] = useState(false);
 
-    const loginMutation = useMutation({
-        mutationFn: (credentials: AuthRequest) => authService.authenticate(credentials),
-        onSuccess: data => {
-            setAuthData(data);
-            showNotification('success', t('LOGIN.success'), t('LOGIN.welcome'));
+  const loginMutation = useMutation({
+    mutationFn: (credentials: AuthRequest) => authService.authenticate(credentials),
+    onSuccess: data => {
+      setAuthData(data);
+      showNotification('success', t('LOGIN.success'), t('LOGIN.welcome'));
 
-            if (data.role?.name === 'admin') {
-                router.push('/admin');
-            } else {
-                router.push('/user-panel');
-            }
-        },
-        onError: (error: any) => {
-            const errorMessage = error?.message || t('LOGIN.errors.invalidCredentials');
-            showNotification('error', t('LOGIN.errors.loginFailed'), errorMessage);
-        },
-    });
+      if (data.role?.name === 'admin') {
+        router.push('/admin');
+      } else {
+        router.push('/user-panel');
+      }
+    },
+    onError: (error: any) => {
+      const errorMessage = error?.message || t('LOGIN.errors.invalidCredentials');
+      showNotification('error', t('LOGIN.errors.loginFailed'), errorMessage);
+    },
+  });
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-    };
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
 
-    const togglePasswordVisibility = () => {
-        setIsPasswordShow(prev => !prev);
-    };
+  const togglePasswordVisibility = () => {
+    setIsPasswordShow(prev => !prev);
+  };
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!validateLoginForm(formData, t, showNotification)) {
-            return;
-        }
-        loginMutation.mutate(formData);
-    };
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validateLoginForm(formData, t, showNotification)) {
+      return;
+    }
+    loginMutation.mutate(formData);
+  };
 
-    return {
-        formData,
-        isPasswordShow,
-        isLoading: loginMutation.isPending,
-        error: loginMutation.error ? (loginMutation.error as any).response?.data?.message || 'Error' : null,
-        handleInputChange,
-        togglePasswordVisibility,
-        handleSubmit,
-    };
+  return {
+    formData,
+    isPasswordShow,
+    isLoading: loginMutation.isPending,
+    error: loginMutation.error ? loginMutation.error.response?.data?.message || 'Error' : null,
+    handleInputChange,
+    togglePasswordVisibility,
+    handleSubmit,
+  };
 };
