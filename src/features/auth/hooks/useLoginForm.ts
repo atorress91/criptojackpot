@@ -61,7 +61,7 @@ export const useLoginForm = () => {
     formData,
     isPasswordShow,
     isLoading: loginMutation.isPending,
-    error: loginMutation.error ? loginMutation.error.response?.data?.message || 'Error' : null,
+    error: loginMutation.error ? loginMutation.error.message || 'Error' : null,
     handleInputChange,
     togglePasswordVisibility,
     handleSubmit,

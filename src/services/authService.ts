@@ -24,6 +24,17 @@ class AuthService extends BaseService {
       throw this.handleError(error as AxiosError<Response<any>>);
     }
   }
+
+  async confirmEmail(token: string): Promise<{ message: string }> {
+    try {
+      const response = await this.apiClient.post<Response<{ message: string }>>(
+        `${this.endpoint}/confirm-email/${token}`
+      );
+      return this.handleResponse(response);
+    } catch (error) {
+      throw this.handleError(error as AxiosError<Response<any>>);
+    }
+  }
 }
 
 export const authService = new AuthService();

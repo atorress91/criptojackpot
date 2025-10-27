@@ -1,4 +1,16 @@
 {
+  "CONFIRM_EMAIL": {
+    "title": "Confirmar correo electrónico",
+    "verifying": "Verificando tu correo electrónico...",
+    "success": "¡Correo electrónico confirmado exitosamente!",
+    "successMessage": "Tu cuenta ha sido activada. Ahora puedes iniciar sesión.",
+    "error": "Error al confirmar el correo electrónico",
+    "errorMessage": "El enlace de confirmación es inválido o ha expirado.",
+    "invalidToken": "Token de confirmación inválido",
+    "alreadyConfirmed": "Este correo electrónico ya ha sido confirmado",
+    "goToLogin": "Ir a iniciar sesión",
+    "tryAgain": "Intentar nuevamente"
+  },
   "FORGOT_PASSWORD": {
     "backToLogin": "Volver al inicio de sesión",
     "description": "Ingresa tu dirección de correo electrónico y te enviaremos instrucciones para restablecer tu contraseña.",

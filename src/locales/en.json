@@ -1,4 +1,16 @@
 {
+  "CONFIRM_EMAIL": {
+    "title": "Confirm Email",
+    "verifying": "Verifying your email...",
+    "success": "Email confirmed successfully!",
+    "successMessage": "Your account has been activated. You can now log in.",
+    "error": "Error confirming email",
+    "errorMessage": "The confirmation link is invalid or has expired.",
+    "invalidToken": "Invalid confirmation token",
+    "alreadyConfirmed": "This email has already been confirmed",
+    "goToLogin": "Go to Login",
+    "tryAgain": "Try Again"
+  },
   "FORGOT_PASSWORD": {
     "backToLogin": "Back to Login",
     "description": "Enter your email address and we'll send you instructions to reset your password.",
