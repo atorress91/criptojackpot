@@ -4,6 +4,7 @@ import {UpdateImageProfileRequest} from '@/features/user-panel/types/updateImage
 import {GenerateNewSecurityCodeRequest} from '@/features/user-panel/types/generateNewSecurityCodeRequest';
 import {UpdateUserRequest} from '@/features/user-panel/types/updateUserRequest';
 import {RequestPasswordResetRequest} from "@/features/auth/types/requestPasswordResetRequest";
+import {ResetPasswordWithCodeRequest} from "@/features/auth/types/resetPasswordWithCodeRequest";
 
 class UserService extends BaseService {
     protected endpoint: string = 'user';
@@ -34,6 +35,10 @@ class UserService extends BaseService {
 
     async requestPasswordReset(request: RequestPasswordResetRequest): Promise<void> {
         return this.createWithParams<RequestPasswordResetRequest, void>(request, `request-password-reset`);
+    }
+
+    async resetPassword(request: ResetPasswordWithCodeRequest): Promise<void> {
+        return this.createWithParams<ResetPasswordWithCodeRequest, void>(request, `reset-password-with-code`);
     }
 }
 

@@ -147,6 +147,28 @@
     "termsLink": "Términos de servicio y Política de privacidad.",
     "title": "Empezar es totalmente gratis"
   },
+  "RESET_PASSWORD": {
+    "backToLogin": "Volver al inicio de sesión",
+    "confirmPasswordPlaceholder": "Confirmar nueva contraseña",
+    "description": "Ingresa el código de seguridad que recibiste por correo y tu nueva contraseña.",
+    "emailLabel": "Correo electrónico",
+    "errors": {
+      "confirmPasswordRequired": "La confirmación de contraseña es requerida",
+      "noEmailFound": "No se encontró el correo electrónico. Por favor, solicita el código de nuevo.",
+      "passwordRequired": "La nueva contraseña es requerida",
+      "passwordTooShort": "La contraseña debe tener al menos 8 caracteres",
+      "passwordsMismatch": "Las contraseñas no coinciden",
+      "resetFailed": "Error al restablecer la contraseña",
+      "securityCodeRequired": "El código de seguridad es requerido",
+      "serverError": "Error del servidor. Por favor, intenta más tarde."
+    },
+    "loading": "Restableciendo...",
+    "newPasswordPlaceholder": "Nueva contraseña",
+    "resetButton": "Restablecer contraseña",
+    "securityCodePlaceholder": "Código de seguridad",
+    "success": "¡Contraseña restablecida con éxito! Redirigiendo al login...",
+    "title": "Restablecer contraseña"
+  },
   "USERS_ADMIN": {
     "title": "Administración de Usuarios",
     "usersList": "Lista de Usuarios",

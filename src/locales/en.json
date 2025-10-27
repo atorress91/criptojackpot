@@ -147,6 +147,28 @@
     "termsLink": "Terms of Service and Privacy Policy.",
     "title": "Get started absolutely free"
   },
+  "RESET_PASSWORD": {
+    "backToLogin": "Back to Login",
+    "confirmPasswordPlaceholder": "Confirm new password",
+    "description": "Enter the security code you received by email and your new password.",
+    "emailLabel": "Email",
+    "errors": {
+      "confirmPasswordRequired": "Password confirmation is required",
+      "noEmailFound": "Email not found. Please request the code again.",
+      "passwordRequired": "New password is required",
+      "passwordTooShort": "Password must be at least 8 characters long",
+      "passwordsMismatch": "Passwords do not match",
+      "resetFailed": "Failed to reset password",
+      "securityCodeRequired": "Security code is required",
+      "serverError": "Server error. Please try again later."
+    },
+    "loading": "Resetting...",
+    "newPasswordPlaceholder": "New password",
+    "resetButton": "Reset Password",
+    "securityCodePlaceholder": "Security code",
+    "success": "Password reset successfully! Redirecting to login...",
+    "title": "Reset Password"
+  },
   "USERS_ADMIN": {
     "title": "User Administration",
     "usersList": "User List",

@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useNotificationStore } from '@/store/notificationStore';
+import { useAuthStore } from '@/store/authStore';
 import { userService } from '@/services/userService';
 
 interface ForgotPasswordFormData {
@@ -16,6 +17,7 @@ export const useForgotPasswordForm = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const showNotification = useNotificationStore(state => state.show);
+  const setResetPasswordEmail = useAuthStore(state => state.setResetPasswordEmail);
 
   const [formData, setFormData] = useState<ForgotPasswordFormData>({
     email: '',
@@ -27,11 +29,10 @@ export const useForgotPasswordForm = () => {
     },
     onSuccess: () => {
       showNotification('success', t('FORGOT_PASSWORD.success'), '');
-      setFormData({ email: '' });
-      // Opcional: redirigir al login después de unos segundos
-      setTimeout(() => {
-        router.push('/login');
-      }, 3000);
+      // Guardar el email en el store para usarlo en reset-password
+      setResetPasswordEmail(formData.email);
+      // Redirigir inmediatamente a reset-password
+      router.push('/reset-password');
     },
     onError: (error: any) => {
       const errorMessage = error?.message || t('FORGOT_PASSWORD.errors.serverError');

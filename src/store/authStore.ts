@@ -8,6 +8,7 @@ export const useAuthStore = create<AuthState>()(
             user: null,
             token: null,
             isAuthenticated: false,
+            resetPasswordEmail: null,
 
             login: userData => {
                 set({
@@ -22,6 +23,7 @@ export const useAuthStore = create<AuthState>()(
                     user: null,
                     token: null,
                     isAuthenticated: false,
+                    resetPasswordEmail: null,
                 });
                 if (typeof window !== 'undefined') {
                     localStorage.removeItem('auth-storage');
@@ -33,6 +35,14 @@ export const useAuthStore = create<AuthState>()(
                     user: state.user ? { ...state.user, ...user } : user,
                 }));
             },
+
+            setResetPasswordEmail: email => {
+                set({ resetPasswordEmail: email });
+            },
+
+            clearResetPasswordEmail: () => {
+                set({ resetPasswordEmail: null });
+            },
         }),
         {
             name: 'auth-storage',
@@ -40,6 +50,7 @@ export const useAuthStore = create<AuthState>()(
                 user: state.user,
                 token: state.token,
                 isAuthenticated: state.isAuthenticated,
+                resetPasswordEmail: state.resetPasswordEmail,
             }),
         }
     )
