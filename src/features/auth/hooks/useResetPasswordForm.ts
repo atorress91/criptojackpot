@@ -56,9 +56,8 @@ export const useResetPasswordForm = () => {
         router.push('/login');
       }, 2000);
     },
-    onError: (error: any) => {
-      const errorMessage = error?.message || t('RESET_PASSWORD.errors.serverError');
-      showNotification('error', t('RESET_PASSWORD.errors.resetFailed'), errorMessage);
+    onError: () => {
+      showNotification('error', t('RESET_PASSWORD.errors.resetFailed'), '');
     },
   });
 

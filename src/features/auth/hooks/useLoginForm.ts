@@ -35,9 +35,8 @@ export const useLoginForm = () => {
         router.push('/user-panel');
       }
     },
-    onError: (error: any) => {
-      const errorMessage = error?.message || t('LOGIN.errors.invalidCredentials');
-      showNotification('error', t('LOGIN.errors.loginFailed'), errorMessage);
+    onError: () => {
+      showNotification('error', t('LOGIN.errors.invalidCredentials'), '');
     },
   });
 

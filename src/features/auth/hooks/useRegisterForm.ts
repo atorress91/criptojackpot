@@ -32,7 +32,7 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
 
   useEffect(() => {
     if (countriesError) {
-      showNotification('error', t('REGISTER.errors.serverError'), t('REGISTER.errors.countryLoadError'));
+      showNotification('error', t('REGISTER.errors.countryLoadError'), '');
     }
   }, [countriesError, showNotification, t]);
 
@@ -60,8 +60,7 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
       }, 800);
     },
     onError: (error: any) => {
-      const errorMessage = error.message || t('REGISTER.errors.serverError');
-      showNotification('error', t('REGISTER.errors.serverError'), errorMessage);
+      showNotification('error', t('REGISTER.errors.serverError'), '');
       console.error('Registration error:', error);
     },
   });

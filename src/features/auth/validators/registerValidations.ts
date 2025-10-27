@@ -12,18 +12,18 @@ export const validateRegisterForm = (
 ): boolean => {
 
     if (!formData.email || !formData.password || !formData.name || !formData.lastName || !selectedCountry) {
-        showNotification('error', t('REGISTER.errors.invalidData'), t('REGISTER.errors.requiredFields'));
+        showNotification('error', t('REGISTER.errors.requiredFields'), '');
         return false;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-        showNotification('error', t('REGISTER.errors.invalidData'), t('REGISTER.errors.invalidEmailFormat'));
+        showNotification('error', t('REGISTER.errors.invalidEmailFormat'), '');
         return false;
     }
 
     if (formData.password.length < 8) {
-        showNotification('error', t('REGISTER.errors.invalidData'), t('REGISTER.errors.weakPassword'));
+        showNotification('error', t('REGISTER.errors.weakPassword'), '');
         return false;
     }
 

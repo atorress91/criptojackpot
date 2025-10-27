@@ -46,15 +46,14 @@ export function usePersonalInfoForm() {
         userService.updateUserAsync(userData.id, userData.data),
     onSuccess: (updatedUserData) => {
       updateUser(updatedUserData);
-      showNotification('success', 'Success', t('PERSONAL_INFO.notifications.updateSuccess'));
+      showNotification('success', t('PERSONAL_INFO.notifications.updateSuccess'), '');
 
       // invalidar queries
       queryClient.invalidateQueries({queryKey:['user', user?.id]}).then();
     },
     onError: (error: any) => {
       console.error('Failed to update profile:', error);
-      const errorMessage = error?.message || t('PERSONAL_INFO.notifications.updateError');
-      showNotification('error', 'Error', errorMessage);
+      showNotification('error', t('PERSONAL_INFO.notifications.updateError'), '');
     },
   });
 
@@ -66,7 +65,7 @@ export function usePersonalInfoForm() {
     e.preventDefault();
 
     if (formData.password && formData.password !== formData.confirmPassword) {
-      showNotification('error', 'Error', t('PERSONAL_INFO.notifications.passwordMismatch'));
+      showNotification('error', t('PERSONAL_INFO.notifications.passwordMismatch'), '');
       return;
     }
 

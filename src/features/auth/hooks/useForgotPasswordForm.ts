@@ -35,8 +35,7 @@ export const useForgotPasswordForm = () => {
       router.push('/reset-password');
     },
     onError: (error: any) => {
-      const errorMessage = error?.message || t('FORGOT_PASSWORD.errors.serverError');
-      showNotification('error', t('FORGOT_PASSWORD.errors.serverError'), errorMessage);
+      showNotification('error', t('FORGOT_PASSWORD.errors.serverError'), '');
     },
   });
 

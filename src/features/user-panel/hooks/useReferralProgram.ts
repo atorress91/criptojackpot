@@ -41,18 +41,18 @@ export const useReferralProgram = () => {
         },
         onSuccess: (updatedUser) => {
             updateUser(updatedUser);
-            showNotification('success', t('COMMON.success'), 'New security code generated successfully!');
+            showNotification('success', t('REFERRAL_PROGRAM.generateNewCodeSuccess'), '');
         },
         onError: (error) => {
             console.error('Error generating new security code:', error);
-            showNotification('error', t('COMMON.error'), 'Failed to generate new security code.');
+            showNotification('error', t('REFERRAL_PROGRAM.generateNewCodeError'), '');
         }
     });
 
     const copyToClipboard = () => {
         if (referralLink) {
             navigator.clipboard.writeText(referralLink).then();
-            showNotification('success', t('COMMON.success'), 'Referral link copied to clipboard!');
+            showNotification('success', t('REFERRAL_PROGRAM.linkCopied'), '');
         }
     };
 

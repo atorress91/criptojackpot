@@ -10,13 +10,13 @@ export const validateLoginForm = (
 ): boolean => {
 
     if (!formData.email || !formData.password) {
-        showNotification('error', t('LOGIN.errors.invalidData'), t('LOGIN.errors.requiredFields'));
+        showNotification('error', t('LOGIN.errors.requiredFields'), '');
         return false;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-        showNotification('error', t('LOGIN.errors.invalidEmailFormat'), t('LOGIN.errors.invalidEmailFormat'));
+        showNotification('error', t('LOGIN.errors.invalidEmailFormat'), '');
         return false;
     }
 
