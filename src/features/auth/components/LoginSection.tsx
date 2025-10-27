@@ -88,7 +88,7 @@ const LoginSection = () => {
                     </div>
                     <Link
                       href="/forgot-password"
-                      className="d-flex text-decoration-underline act4-texthover justify-content-end fw_600 n4-clr fs-eight mt-xxl-6 mt-3"
+                      className="d-flex text-decoration-underline act4-texthover justify-content-end fw_600 fs-eight mt-xxl-6 mt-3 s1-texthover"
                     >
                       {t('LOGIN.forgetPassword')}
                     </Link>
