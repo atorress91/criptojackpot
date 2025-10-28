@@ -27,7 +27,7 @@ export const useLoginForm = () => {
     mutationFn: (credentials: AuthRequest) => getAuthService().authenticate(credentials),
     onSuccess: data => {
       setAuthData(data);
-      showNotification('success', t('LOGIN.success'), t('LOGIN.welcome'));
+      showNotification('success', t('LOGIN.success'), '');
 
       if (data.role?.name === 'admin') {
         router.push('/admin');
