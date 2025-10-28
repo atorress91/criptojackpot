@@ -53,8 +53,11 @@ const UsersAdminPage: React.FC = () => {
 
     const renderSuccessContent = () => (
         <div className="card border-0 shadow-sm mb-6">
-            <div className="card-header bg-white py-4">
+            <div className="card-header bg-white py-4 d-flex justify-content-between align-items-center">
                 <h5 className="mb-0">{t('USERS_ADMIN.usersList')}</h5>
+                <a href="/admin/users/create" className="btn btn-primary">
+                    {t('USERS_ADMIN.createUser') || 'Crear usuario'}
+                </a>
             </div>
             <div className="card-body">
                 {(users?.length || 0) === 0 ? (

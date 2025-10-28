@@ -1,39 +1,30 @@
 'use client';
 
-import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import React, { FormEvent, useCallback, useEffect, useState } from 'react';
+import React, { FormEvent, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { getCountryService, getUserService } from '@/di/serviceLocator';
 import { useNotificationStore } from '@/store/notificationStore';
 import { Country } from '@/interfaces/country';
 import { RegisterFormData } from '@/interfaces/registerFormData';
 import { UseRegisterFormReturn } from '@/features/auth/types';
 import { User } from '@/interfaces/user';
 import { validateRegisterForm } from '../validators/registerValidations';
+import { useCreateUser } from './useCreateUser';
 
 export const useRegisterForm = (): UseRegisterFormReturn => {
   const { t } = useTranslation();
   const router = useRouter();
   const showNotification = useNotificationStore(state => state.show);
 
-  const {
-    data: countries = [],
-    isLoading: isLoadingCountries,
-    error: countriesError,
-  } = useQuery({
-    queryKey: ['countries'],
-    queryFn: () => getCountryService().getAllCountries(),
-    staleTime: Infinity,
-    retry: false,
+  const { countries, isLoadingCountries, createUser, isCreating, error } = useCreateUser({
+    onSuccess: () => {
+      setTimeout(() => {
+        router.push('/login');
+      }, 800);
+    },
+    showNotifications: true,
   });
-
-  useEffect(() => {
-    if (countriesError) {
-      showNotification('error', t('REGISTER.errors.countryLoadError'), '');
-    }
-  }, [countriesError, showNotification, t]);
 
   const [formData, setFormData] = useState<Omit<RegisterFormData, 'countryId'>>({
     name: '',
@@ -50,19 +41,6 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [isPasswordShow, setIsPasswordShow] = useState(false);
 
-  const registerMutation = useMutation({
-    mutationFn: (userData: User) => getUserService().createUser(userData),
-    onSuccess: () => {
-      showNotification('success', t('REGISTER.success'), t('REGISTER.successMessage'));
-      setTimeout(() => {
-        router.push('/login');
-      }, 800);
-    },
-    onError: (error: any) => {
-      showNotification('error', t('REGISTER.errors.serverError'), '');
-      console.error('Registration error:', error);
-    },
-  });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -97,11 +75,11 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
       countryId: selectedCountry?.id ?? 0,
       statePlace: formData.state,
       status: true,
-      roleId: 2,
+      roleId: 2, // Siempre rol Cliente para registro público
       country: selectedCountry || undefined,
     };
 
-    registerMutation.mutate(userData);
+    createUser(userData);
   };
 
   return {
@@ -109,9 +87,9 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
     countries,
     selectedCountry,
     isPasswordShow,
-    isLoading: registerMutation.isPending, // Solo mostrar loading cuando se está enviando el formulario
-    isLoadingCountries, // Estado de carga de países
-    error: registerMutation.error ? (registerMutation.error as Error).message : null,
+    isLoading: isCreating,
+    isLoadingCountries,
+    error,
     handleInputChange,
     handleCountryChange,
     togglePasswordVisibility,

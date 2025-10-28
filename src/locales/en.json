@@ -185,6 +185,7 @@
   "USERS_ADMIN": {
     "title": "User Administration",
     "usersList": "User List",
+    "createUser": "Create user",
     "loading": "Loading...",
     "noUsers": "No users to display.",
     "notAvailable": "N/A",
@@ -205,6 +206,26 @@
       "city": "City",
       "status": "Status",
       "role": "Role"
+    },
+    "create": {
+      "title": "Create user",
+      "formTitle": "New user",
+      "selectCountry": "Select a country",
+      "state": "State/Province",
+      "address": "Address",
+      "identification": "Identification",
+      "password": "Password"
+    },
+    "placeholders": {
+      "name": "Name",
+      "lastName": "Last Name",
+      "password": "Minimum 6 characters"
     }
+  },
+  "COMMON": {
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "save": "Save"
   }
 }
