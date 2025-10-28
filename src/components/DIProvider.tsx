@@ -2,29 +2,16 @@
 
 import 'reflect-metadata';
 import '@/di/init';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 /**
  * Wrapper que asegura que Dependency Injection esté inicializado
- * antes de renderizar los componentes hijos
+ * antes de renderizar los componentes hijos.
+ *
+ * La inicialización es síncrona (ocurre al importar los módulos),
+ * por lo que simplemente renderizamos los hijos directamente.
  */
-export function DIProvider({ children }: { children: React.ReactNode }) {
-  const [isInitialized, setIsInitialized] = useState(false);
-
-  useEffect(() => {
-    // Forzar la inicialización en el cliente
-    setIsInitialized(true);
-  }, []);
-
-  // En SSR, renderizar inmediatamente
-  if (typeof globalThis.window) {
-    return <>{children}</>;
-  }
-
-  // En cliente, esperar a que esté inicializado
-  if (!isInitialized) {
-    return null;
-  }
+export function DIProvider({ children }: Readonly<{ children: React.ReactNode }>) {
 
   return <>{children}</>;
 }

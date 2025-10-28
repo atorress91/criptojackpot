@@ -39,7 +39,12 @@ export abstract class BaseService {
         }
 
         if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
+          config.headers.set('Authorization', `Bearer ${token}`);
+        }
+
+        if (typeof window !== 'undefined') {
+          const language = localStorage.getItem('i18nextLng') || 'en';
+          config.headers.set('Accept-Language', language.split('-')[0]);
         }
 
         return config;

@@ -109,7 +109,8 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
     countries,
     selectedCountry,
     isPasswordShow,
-    isLoading: isLoadingCountries || registerMutation.isPending,
+    isLoading: registerMutation.isPending, // Solo mostrar loading cuando se está enviando el formulario
+    isLoadingCountries, // Estado de carga de países
     error: registerMutation.error ? (registerMutation.error as Error).message : null,
     handleInputChange,
     handleCountryChange,

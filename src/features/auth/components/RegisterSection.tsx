@@ -20,6 +20,7 @@ const RegisterSection = ({ referralCode }: RegisterSectionProps) => {
     selectedCountry,
     isPasswordShow,
     isLoading,
+    isLoadingCountries,
     error,
     handleInputChange,
     handleCountryChange,
@@ -173,10 +174,11 @@ const RegisterSection = ({ referralCode }: RegisterSectionProps) => {
                           className="form-select py-2 w-100"
                           onChange={handleCountryChange}
                           value={selectedCountry?.id || ''}
+                          disabled={isLoadingCountries}
                           required
                         >
                           <option value="" disabled>
-                            {t('REGISTER.selectCountry')}
+                            {isLoadingCountries ? t('REGISTER.loadingCountries') : t('REGISTER.selectCountry')}
                           </option>
                           {countries.map(country => (
                             <option key={country.id} value={country.id}>

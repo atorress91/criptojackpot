@@ -147,6 +147,7 @@
     "identificationPlaceholder": "Identification",
     "lastNamePlaceholder": "Last name",
     "loading": "Loading...",
+    "loadingCountries": "Loading countries...",
     "namePlaceholder": "Name",
     "passwordPlaceholder": "Enter Your Password...",
     "phonePlaceholder": "Phone",

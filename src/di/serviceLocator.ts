@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import '@/di/container';
 import { container } from 'tsyringe';
 import { AuthService } from '@/services/authService';
 import { UserService } from '@/services/userService';

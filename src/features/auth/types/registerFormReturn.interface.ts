@@ -8,6 +8,7 @@ export interface UseRegisterFormReturn {
     selectedCountry: Country | null;
     isPasswordShow: boolean;
     isLoading: boolean;
+    isLoadingCountries: boolean;
     error: string | null;
     handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     handleCountryChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
