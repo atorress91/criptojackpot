@@ -1,9 +1,10 @@
 "use client";
 
-import { digitalOceanStorageService } from "@/services/digitalOceanStorageService";
+import { DigitalOceanStorageService } from "@/services/digitalOceanStorageService";
+import { container } from "tsyringe";
 import { Upload } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const ImageUploader: React.FC<{
     onUploadComplete: (url: string) => void;
@@ -23,6 +24,7 @@ const ImageUploader: React.FC<{
 
         setUploading(true);
         try {
+            const digitalOceanStorageService = container.resolve(DigitalOceanStorageService);
             const uploadedFiles = await digitalOceanStorageService.uploadMultipleFiles(
                 Array.from(files),
                 userId
@@ -61,10 +63,10 @@ const ImageUploader: React.FC<{
 
                     {uploading && (
                         <div className="text-primary mt-3">
-                            <div className="spinner-border text-primary" role="status">
+                            <div className="spinner-border text-primary" aria-hidden="true">
                                 <span className="visually-hidden">Subiendo...</span>
                             </div>
-                            <p className="mt-2">Subiendo...</p>
+                            <output className="mt-2 d-block">Subiendo...</output>
                         </div>
                     )}
                 </div>
