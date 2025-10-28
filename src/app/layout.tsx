@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+import '@/di/init';
 import '@/../node_modules/react-modal-video/scss/modal-video.scss';
 import Bootstrap from '@/components/Bootstrap';
 import Cursor from '@/components/Cursor';
@@ -9,8 +11,8 @@ import '../styles/scss/style.scss';
 import React from "react";
 
 export const metadata: Metadata = {
-  title: 'Lottovibe - Lottery & Giveaway NextJs Template',
-  description: 'Lottery & Giveaway NextJs Template',
+  title: 'Criptojackpot App',
+  description: 'Lottery & Giveaway',
 };
 
 export default function RootLayout({

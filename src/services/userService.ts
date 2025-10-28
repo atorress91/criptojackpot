@@ -5,7 +5,9 @@ import {GenerateNewSecurityCodeRequest} from '@/features/user-panel/types/genera
 import {UpdateUserRequest} from '@/features/user-panel/types/updateUserRequest';
 import {RequestPasswordResetRequest} from "@/features/auth/types/requestPasswordResetRequest";
 import {ResetPasswordWithCodeRequest} from "@/features/auth/types/resetPasswordWithCodeRequest";
+import { injectable } from 'tsyringe';
 
+@injectable()
 class UserService extends BaseService {
     protected endpoint: string = 'user';
 
@@ -42,4 +44,4 @@ class UserService extends BaseService {
     }
 }
 
-export const userService = new UserService();
+export { UserService };

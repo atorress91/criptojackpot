@@ -1,6 +1,8 @@
 import { User } from '@/interfaces/user';
 import { useAuthStore } from '@/store/authStore';
+import { injectable } from 'tsyringe';
 
+@injectable()
 export class TokenService {
   static getToken(): string | null {
     return useAuthStore.getState().token;

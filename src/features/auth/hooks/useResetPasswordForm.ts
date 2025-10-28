@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useNotificationStore } from '@/store/notificationStore';
 import { useAuthStore } from '@/store/authStore';
-import { userService } from '@/services/userService';
+import { getUserService } from '@/di/serviceLocator';
 
 interface ResetPasswordFormData {
   securityCode: string;
@@ -41,7 +41,7 @@ export const useResetPasswordForm = () => {
 
   const resetPasswordMutation = useMutation({
     mutationFn: async (data: { email: string; securityCode: string; newPassword: string; confirmPassword: string }) => {
-      await userService.resetPassword({
+      await getUserService().resetPassword({
         email: data.email,
         securityCode: data.securityCode,
         password: data.newPassword,

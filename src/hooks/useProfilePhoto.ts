@@ -1,8 +1,7 @@
 import {UpdateImageProfileRequest} from '@/features/user-panel/types/updateImageProfileRequest';
 import React, {useEffect, useRef, useState} from 'react';
 import {useAuthStore} from '@/store/authStore';
-import {digitalOceanStorageService} from '@/services/digitalOceanStorageService';
-import {userService} from '@/services/userService';
+import { getDigitalOceanStorageService, getUserService } from '@/di/serviceLocator';
 import {ProfileImageType, UseProfilePhotoOptions, UseProfilePhotoReturn} from "@/interfaces/profilePhotoReturn";
 
 export const useProfilePhoto = (options: UseProfilePhotoOptions = {}): UseProfilePhotoReturn => {
@@ -63,7 +62,7 @@ export const useProfilePhoto = (options: UseProfilePhotoOptions = {}): UseProfil
     onUploadStart?.();
 
     try {
-      const uploadResult = await digitalOceanStorageService.uploadProfilePhoto(file, user?.id ?? 0);
+      const uploadResult = await getDigitalOceanStorageService().uploadProfilePhoto(file, user?.id ?? 0);
       const url = new URL(uploadResult);
       const imageRelativePath = url.pathname.replace('/cryptojackpot/', '');
 
@@ -75,9 +74,9 @@ export const useProfilePhoto = (options: UseProfilePhotoOptions = {}): UseProfil
 
         try {
           if (user?.id !== undefined) {
-            const user = await userService.updateImageProfile(updateImageProfile);
-            setProfileImage(user.imagePath ?? '');
-            updateUser(user);
+            const updatedUser = await getUserService().updateImageProfile(updateImageProfile);
+            setProfileImage(updatedUser.imagePath ?? '');
+            updateUser(updatedUser);
           }
         } catch (backendError) {
           console.warn('Error updating user profile in backend:', backendError);
@@ -90,6 +89,7 @@ export const useProfilePhoto = (options: UseProfilePhotoOptions = {}): UseProfil
       console.error('Error uploading profile photo:', error);
       setUploadError(errorMessage);
       onUploadError?.(errorMessage);
+      setProfileImage(profileImage);
       setProfileImage(profileImage);
     } finally {
       setUploading(false);

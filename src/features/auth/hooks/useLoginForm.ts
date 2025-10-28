@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { authService } from '@/services/authService';
+import { getAuthService } from '@/di/serviceLocator';
 import { useAuthStore } from '@/store/authStore';
 import { useNotificationStore } from '@/store/notificationStore';
 import { AuthRequest, LoginFormData } from '@/features/auth/types';
@@ -24,7 +24,7 @@ export const useLoginForm = () => {
   const [isPasswordShow, setIsPasswordShow] = useState(false);
 
   const loginMutation = useMutation({
-    mutationFn: (credentials: AuthRequest) => authService.authenticate(credentials),
+    mutationFn: (credentials: AuthRequest) => getAuthService().authenticate(credentials),
     onSuccess: data => {
       setAuthData(data);
       showNotification('success', t('LOGIN.success'), t('LOGIN.welcome'));

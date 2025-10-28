@@ -1,4 +1,5 @@
 import {BaseService} from './baseService';
+import { injectable } from 'tsyringe';
 
 interface UploadRequest {
   fileName: string;
@@ -13,6 +14,7 @@ interface UploadResponse {
   cdnUrl: string;
 }
 
+@injectable()
 export class DigitalOceanStorageService extends BaseService {
   protected endpoint: string = 'digitaloceanstorage';
 
@@ -20,14 +22,13 @@ export class DigitalOceanStorageService extends BaseService {
    * Sube un archivo usando presigned URL del backend
    */
   async uploadFile(file: File, userId: number): Promise<UploadResponse> {
-    try {
-      // Validación básica
+
       if (!file.type.startsWith('image/')) {
-        throw new Error('Solo se permiten archivos de imagen');
+          throw new Error('Solo se permiten archivos de imagen');
       }
 
       if (file.size > 10 * 1024 * 1024) { // 10MB
-        throw new Error('El archivo es demasiado grande (máximo 10MB)');
+          throw new Error('El archivo es demasiado grande (máximo 10MB)');
       }
 
       // Usar solo el nombre original - el backend generará el nombre único
@@ -35,17 +36,17 @@ export class DigitalOceanStorageService extends BaseService {
 
       // Solicitar presigned URL al backend (incluye userId)
       const presignedUrl = await this.getPresignedUploadUrl({
-        fileName: originalFileName,
-        contentType: file.type,
-        expirationMinutes: 15,
-        userId: userId,
+          fileName: originalFileName,
+          contentType: file.type,
+          expirationMinutes: 15,
+          userId: userId,
       });
 
       // Subir archivo directamente a Digital Ocean
       await this.uploadToDigitalOcean(presignedUrl, file);
 
       // Construir URLs de respuesta
-      const fileUrl = presignedUrl.split('?')[0]; // Remover query params
+      const fileUrl = presignedUrl.split('?')[0];
       const cdnUrl = fileUrl.replace(
           'cryptojackpot.nyc3.digitaloceanspaces.com',
           'cryptojackpot.nyc3.cdn.digitaloceanspaces.com'
@@ -55,17 +56,10 @@ export class DigitalOceanStorageService extends BaseService {
       const fileName = fileUrl.split('/').slice(-2).join('/'); // profile-photos/user-123-...
 
       return {
-        fileName,
-        fileUrl,
-        cdnUrl,
+          fileName,
+          fileUrl,
+          cdnUrl,
       };
-    } catch (error) {
-      console.error('Error uploading file:', error);
-      if (error instanceof Error) {
-        throw new Error(`Error al subir el archivo: ${error.message}`);
-      }
-      throw new Error('Error desconocido al subir el archivo');
-    }
   }
 
   /**
@@ -110,5 +104,3 @@ export class DigitalOceanStorageService extends BaseService {
     }
   }
 }
-
-export const digitalOceanStorageService = new DigitalOceanStorageService();

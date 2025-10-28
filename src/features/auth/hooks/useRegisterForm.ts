@@ -5,8 +5,7 @@ import { useRouter } from 'next/navigation';
 import React, { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { countryService } from '@/services/countryService';
-import { userService } from '@/services/userService';
+import { getCountryService, getUserService } from '@/di/serviceLocator';
 import { useNotificationStore } from '@/store/notificationStore';
 import { Country } from '@/interfaces/country';
 import { RegisterFormData } from '@/interfaces/registerFormData';
@@ -25,7 +24,7 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
     error: countriesError,
   } = useQuery({
     queryKey: ['countries'],
-    queryFn: () => countryService.getAllCountries(),
+    queryFn: () => getCountryService().getAllCountries(),
     staleTime: Infinity,
     retry: false,
   });
@@ -52,7 +51,7 @@ export const useRegisterForm = (): UseRegisterFormReturn => {
   const [isPasswordShow, setIsPasswordShow] = useState(false);
 
   const registerMutation = useMutation({
-    mutationFn: (userData: User) => userService.createUser(userData),
+    mutationFn: (userData: User) => getUserService().createUser(userData),
     onSuccess: () => {
       showNotification('success', t('REGISTER.success'), t('REGISTER.successMessage'));
       setTimeout(() => {

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useAuthStore } from '@/store/authStore';
-import { userService } from '@/services/userService';
+import { getUserService } from '@/di/serviceLocator';
 import {AxiosError} from "axios";
 
 export function useSessionValidator() {
@@ -13,7 +13,7 @@ export function useSessionValidator() {
         queryFn: async () => {
             if (!userId) return null;
 
-            const freshUserData = await userService.getUserById(userId);
+            const freshUserData = await getUserService().getUserById(userId);
 
             updateUser(freshUserData);
             return freshUserData;

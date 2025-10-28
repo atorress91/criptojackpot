@@ -2,8 +2,10 @@ import { AuthRequest } from '@/features/auth/types/authRequest';
 import { Response } from '@/interfaces/response';
 import { User } from '@/interfaces/user';
 import { AxiosError } from 'axios';
+import { injectable } from 'tsyringe';
 import { BaseService } from './baseService';
 
+@injectable()
 class AuthService extends BaseService {
   protected override endpoint = 'auth';
 
@@ -37,4 +39,4 @@ class AuthService extends BaseService {
   }
 }
 
-export const authService = new AuthService();
+export { AuthService };

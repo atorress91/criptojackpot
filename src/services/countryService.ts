@@ -1,8 +1,10 @@
 import { Country } from '@/interfaces/country';
 import { Response } from '@/interfaces/response';
 import { AxiosError } from 'axios';
+import { injectable } from 'tsyringe';
 import { BaseService } from './baseService';
 
+@injectable()
 class CountryService extends BaseService {
   protected override endpoint = 'country';
 
@@ -20,4 +22,4 @@ class CountryService extends BaseService {
   }
 }
 
-export const countryService = new CountryService();
+export { CountryService };

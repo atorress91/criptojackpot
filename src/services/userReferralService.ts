@@ -1,6 +1,8 @@
 import {BaseService} from "@/services/baseService";
 import {UserReferralStats} from "@/features/user-panel/types";
+import { injectable } from 'tsyringe';
 
+@injectable()
 class UserReferralService extends BaseService {
     protected endpoint: string = 'userReferral';
 
@@ -9,4 +11,4 @@ class UserReferralService extends BaseService {
     }
 }
 
-export const userReferralService = new UserReferralService();
+export { UserReferralService };

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { authService } from '@/services/authService';
+import { getAuthService } from '@/di/serviceLocator';
 import { useNotificationStore } from '@/store/notificationStore';
 
 export const useConfirmEmail = (token: string) => {
@@ -14,7 +14,7 @@ export const useConfirmEmail = (token: string) => {
   const showNotification = useNotificationStore(state => state.show);
 
   const confirmEmailMutation = useMutation({
-    mutationFn: (confirmationToken: string) => authService.confirmEmail(confirmationToken),
+    mutationFn: (confirmationToken: string) => getAuthService().confirmEmail(confirmationToken),
     onSuccess: () => {
       showNotification('success', t('CONFIRM_EMAIL.success'), t('CONFIRM_EMAIL.successMessage'));
       setTimeout(() => {
