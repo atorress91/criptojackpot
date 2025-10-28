@@ -2,7 +2,7 @@
 
 import { useAuthStore } from '@/store/authStore';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 type AuthGuardProps = {
   children: React.ReactNode;

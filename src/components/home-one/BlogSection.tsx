@@ -53,7 +53,7 @@ const BlogSection = ({ sectionBg, blogCardsData = data }: BlogProps) => {
       {/* <!--blog body Header--> */}
       <div className="container">
         <div className="row g-6">
-          {blogCardsData?.map((blogCard, index) => (
+          {blogCardsData?.map((blogCard) => (
             <BlogCard
               key={`${blogCard.title}-${blogCard.date}`}
               imageUrl={blogCard.imageUrl}

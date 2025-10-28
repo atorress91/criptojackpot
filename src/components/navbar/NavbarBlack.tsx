@@ -3,20 +3,19 @@ import globalNft from '@/../public/images/global/global-nft.png';
 import globalNft2 from '@/../public/images/global/global-nft2.png';
 import logoWhite from '@/../public/images/logo/BlackOrange.png';
 
-import { ShoppingCartSimple, SignOut } from '@phosphor-icons/react';
-import { ArrowRight, CaretDown, User } from '@phosphor-icons/react/dist/ssr';
+import { ShoppingCartSimpleIcon, SignOutIcon } from '@phosphor-icons/react';
+import { ArrowRightIcon, CaretDownIcon, UserIcon } from '@phosphor-icons/react/dist/ssr';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { navbarData } from '../../../public/data/navbarData';
+import { navbarData } from 'public/data/navbarData';
 import AllHomePage from './AllHomePage';
 import LanguageSelector from '../languageSelector/LanguageSelector';
 import { useAuthStore } from '@/store/authStore';
-const Select = dynamic(() => import('react-select'), { ssr: false });
-
+dynamic(() => import('react-select'), { ssr: false });
 const NavbarBlack = () => {
   const { t } = useTranslation();
   const pathName = usePathname();
@@ -96,7 +95,7 @@ const NavbarBlack = () => {
                           <button className={`position-relative ${isActive ? 'active' : ''}`}>
                             {menuTitleKey ? t(menuTitleKey) : menuTitle}
                           </button>{' '}
-                          <CaretDown />
+                          <CaretDownIcon />
                         </div>
                         <ul className={`sub-menu ${dropdownId === id ? 'active-sub-menu' : ''}`}>
                           {menuItems.map(({ id, title, titleKey, menuItemPath }) => (
@@ -122,14 +121,14 @@ const NavbarBlack = () => {
                   <ul className="d-flex head-card align-items-center gap-3">
                     <li>
                       <Link href="basket" className="cmn-circle" title={t('NAVBAR-BLACK.Basket')}>
-                        <ShoppingCartSimple className="ti ti-shopping-cart-plus"></ShoppingCartSimple>
+                        <ShoppingCartSimpleIcon className="ti ti-shopping-cart-plus"></ShoppingCartSimpleIcon>
                       </Link>
                       <span className="badge-seri">04</span>
                     </li>
                     {isAuthenticated && (
                       <li>
                         <Link href="user-panel" className="cmn-circle" title={t('NAVBAR-BLACK.User Panel')}>
-                          <User className="ti ti-user" />
+                          <UserIcon className="ti ti-user" />
                         </Link>
                       </li>
                     )}
@@ -149,17 +148,17 @@ const NavbarBlack = () => {
                         cursor: 'pointer',
                       }}
                     >
-                      <SignOut size={24} weight="bold" />
+                      <SignOutIcon size={24} weight="bold" />
                     </button>
                   ) : (
                     <Link href="/login" className="kewta-btn d-inline-flex align-items-center">
                       <span className="kew-text p1-border n0-clr">{t('NAVBAR-BLACK.Join Now')}</span>
                       <div className="kew-arrow p1-bg">
                         <div className="kt-one">
-                          <ArrowRight className="ti ti-arrow-right n4-clr" />
+                          <ArrowRightIcon className="ti ti-arrow-right n4-clr" />
                         </div>
                         <div className="kt-two">
-                          <ArrowRight className="ti ti-arrow-right n4-clr" />
+                          <ArrowRightIcon className="ti ti-arrow-right n4-clr" />
                         </div>
                       </div>
                     </Link>
