@@ -8,6 +8,7 @@ import { CountryService } from '@/services/countryService';
 import { TokenService } from '@/services/tokenService';
 import { UserReferralService } from '@/services/userReferralService';
 import { DigitalOceanStorageService } from '@/services/digitalOceanStorageService';
+import { RoleService } from '@/services/roleService';
 
 // Función para inicializar el contenedor
 export function initializeContainer() {
@@ -18,6 +19,7 @@ export function initializeContainer() {
   container.registerSingleton<TokenService>('TokenService', TokenService);
   container.registerSingleton<UserReferralService>('UserReferralService', UserReferralService);
   container.registerSingleton<DigitalOceanStorageService>('DigitalOceanStorageService', DigitalOceanStorageService);
+  container.registerSingleton<RoleService>('RoleService', RoleService);
 }
 
 // Inicializar inmediatamente

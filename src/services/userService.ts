@@ -5,7 +5,6 @@ import {GenerateNewSecurityCodeRequest} from '@/features/user-panel/types/genera
 import {UpdateUserRequest} from '@/features/user-panel/types/updateUserRequest';
 import {RequestPasswordResetRequest} from "@/features/auth/types/requestPasswordResetRequest";
 import {ResetPasswordWithCodeRequest} from "@/features/auth/types/resetPasswordWithCodeRequest";
-import { Role } from '@/interfaces/role';
 import { injectable } from 'tsyringe';
 
 @injectable()
@@ -34,10 +33,6 @@ class UserService extends BaseService {
 
     async getAllUsers(excludeUserId?: number): Promise<User[]> {
         return this.getAll<User>({path: `get-all-users/`, params: {excludeUserId}});
-    }
-
-    async getAllRoles(): Promise<Role[]> {
-        return this.getAll<Role>({path: `role/`});
     }
 
     async requestPasswordReset(request: RequestPasswordResetRequest): Promise<void> {
