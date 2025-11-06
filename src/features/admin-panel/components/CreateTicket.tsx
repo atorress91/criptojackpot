@@ -3,7 +3,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
-import { useCreateTicketForm } from '@/features/admin-panel/hooks/useCreateTicketForm';
+import { useCreateTicketForm } from '@/features/admin-panel/hooks';
 import Image from 'next/image';
 
 const CreateTicket: React.FC = () => {

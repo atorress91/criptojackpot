@@ -22,7 +22,7 @@ export const useTickets = (filters?: TicketFilters) => {
     queryFn: async () => {
       const ticketService = getTicketService();
       const response = await ticketService.getTickets(filters);
-      return response.data || [];
+      return response || [];
     },
   });
 

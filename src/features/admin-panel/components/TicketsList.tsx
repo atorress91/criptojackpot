@@ -3,7 +3,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
-import { useTickets } from '@/features/admin-panel/hooks/useTickets';
+import { useTickets } from '@/features/admin-panel/hooks';
 import { Ticket } from '@/interfaces/ticket';
 import Image from 'next/image';
 
