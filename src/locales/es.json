@@ -226,6 +226,83 @@
     "cancel": "Cancelar",
     "loading": "Cargando...",
     "saving": "Guardando...",
-    "save": "Guardar"
+    "save": "Guardar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "error": "Error"
+  },
+  "TICKETS_ADMIN": {
+    "title": "Gestión de Tickets",
+    "create": {
+      "title": "Crear Ticket",
+      "formTitle": "Nuevo Ticket de Sorteo",
+      "button": "Crear Ticket",
+      "submit": "Crear Ticket",
+      "success": "Ticket creado exitosamente",
+      "successMessage": "El ticket se ha creado y está disponible",
+      "error": "Error al crear el ticket. Intente nuevamente."
+    },
+    "list": {
+      "title": "Lista de Tickets de Sorteo"
+    },
+    "fields": {
+      "name": "Nombre del Ticket",
+      "description": "Descripción",
+      "price": "Precio por Entrada",
+      "totalTickets": "Total de Tickets",
+      "drawDate": "Fecha del Sorteo",
+      "drawTime": "Hora del Sorteo",
+      "status": "Estado",
+      "image": "Imagen del Ticket",
+      "preview": "Vista Previa"
+    },
+    "placeholders": {
+      "name": "Ej: Digital Dreamscapes",
+      "description": "Descripción del sorteo"
+    },
+    "help": {
+      "status": "Los tickets activos estarán disponibles para compra inmediata",
+      "image": "Tamaño recomendado: 368x383 píxeles. Formatos: JPG, PNG, WEBP"
+    },
+    "status": {
+      "active": "Activo",
+      "closed": "Cerrado",
+      "upcoming": "Próximamente",
+      "completed": "Completado"
+    },
+    "columns": {
+      "image": "Imagen",
+      "name": "Nombre",
+      "price": "Precio",
+      "drawDate": "Sorteo",
+      "tickets": "Tickets",
+      "sold": "Vendidos",
+      "status": "Estado",
+      "actions": "Acciones"
+    },
+    "empty": "No hay tickets creados",
+    "emptyMessage": "Comienza creando tu primer ticket de sorteo",
+    "confirmDelete": "¿Estás seguro de eliminar el ticket?",
+    "delete": {
+      "success": "Ticket eliminado",
+      "successMessage": "El ticket se ha eliminado correctamente",
+      "error": "Error al eliminar el ticket"
+    },
+    "updateStatus": {
+      "success": "Estado actualizado",
+      "successMessage": "El estado del ticket se ha actualizado",
+      "error": "Error al actualizar el estado"
+    },
+    "errors": {
+      "nameRequired": "El nombre es requerido",
+      "priceInvalid": "El precio debe ser mayor a 0",
+      "totalTicketsInvalid": "El total de tickets debe ser mayor a 0",
+      "drawDateRequired": "La fecha del sorteo es requerida",
+      "drawTimeRequired": "La hora del sorteo es requerida",
+      "drawDatePast": "La fecha del sorteo debe ser en el futuro",
+      "imageRequired": "La imagen es requerida",
+      "invalidImageType": "Formato de imagen no válido. Use JPG, PNG o WEBP",
+      "imageTooLarge": "La imagen es demasiado grande. Máximo 5MB"
+    }
   }
 }

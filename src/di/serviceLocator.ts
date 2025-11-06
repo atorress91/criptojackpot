@@ -8,6 +8,7 @@ import { TokenService } from '@/services/tokenService';
 import { UserReferralService } from '@/services/userReferralService';
 import { DigitalOceanStorageService } from '@/services/digitalOceanStorageService';
 import { RoleService } from '@/services/roleService';
+import { TicketService } from '@/services/ticketService';
 
 // Tipos de servicio para inyección
 export type ServiceType =
@@ -17,7 +18,8 @@ export type ServiceType =
   | 'TokenService'
   | 'UserReferralService'
   | 'DigitalOceanStorageService'
-  | 'RoleService';
+  | 'RoleService'
+  | 'TicketService';
 
 /**
  * Función helper para obtener servicios del contenedor de DI
@@ -37,7 +39,9 @@ export const getAuthService = (): AuthService => container.resolve<AuthService>(
 export const getUserService = (): UserService => container.resolve<UserService>('UserService');
 export const getCountryService = (): CountryService => container.resolve<CountryService>('CountryService');
 export const getTokenService = (): TokenService => container.resolve<TokenService>('TokenService');
-export const getUserReferralService = (): UserReferralService => container.resolve<UserReferralService>('UserReferralService');
-export const getDigitalOceanStorageService = (): DigitalOceanStorageService => container.resolve<DigitalOceanStorageService>('DigitalOceanStorageService');
+export const getUserReferralService = (): UserReferralService =>
+  container.resolve<UserReferralService>('UserReferralService');
+export const getDigitalOceanStorageService = (): DigitalOceanStorageService =>
+  container.resolve<DigitalOceanStorageService>('DigitalOceanStorageService');
 export const getRoleService = (): RoleService => container.resolve<RoleService>('RoleService');
-
+export const getTicketService = (): TicketService => container.resolve<TicketService>('TicketService');

@@ -226,6 +226,83 @@
     "cancel": "Cancel",
     "loading": "Loading...",
     "saving": "Saving...",
-    "save": "Save"
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "error": "Error"
+  },
+  "TICKETS_ADMIN": {
+    "title": "Ticket Management",
+    "create": {
+      "title": "Create Ticket",
+      "formTitle": "New Raffle Ticket",
+      "button": "Create Ticket",
+      "submit": "Create Ticket",
+      "success": "Ticket created successfully",
+      "successMessage": "The ticket has been created and is available",
+      "error": "Error creating ticket. Please try again."
+    },
+    "list": {
+      "title": "Raffle Tickets List"
+    },
+    "fields": {
+      "name": "Ticket Name",
+      "description": "Description",
+      "price": "Price per Entry",
+      "totalTickets": "Total Tickets",
+      "drawDate": "Draw Date",
+      "drawTime": "Draw Time",
+      "status": "Status",
+      "image": "Ticket Image",
+      "preview": "Preview"
+    },
+    "placeholders": {
+      "name": "E.g: Digital Dreamscapes",
+      "description": "Raffle description"
+    },
+    "help": {
+      "status": "Active tickets will be available for immediate purchase",
+      "image": "Recommended size: 368x383 pixels. Formats: JPG, PNG, WEBP"
+    },
+    "status": {
+      "active": "Active",
+      "closed": "Closed",
+      "upcoming": "Upcoming",
+      "completed": "Completed"
+    },
+    "columns": {
+      "image": "Image",
+      "name": "Name",
+      "price": "Price",
+      "drawDate": "Draw",
+      "tickets": "Tickets",
+      "sold": "Sold",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "empty": "No tickets created",
+    "emptyMessage": "Start by creating your first raffle ticket",
+    "confirmDelete": "Are you sure you want to delete this ticket?",
+    "delete": {
+      "success": "Ticket deleted",
+      "successMessage": "The ticket has been deleted successfully",
+      "error": "Error deleting ticket"
+    },
+    "updateStatus": {
+      "success": "Status updated",
+      "successMessage": "The ticket status has been updated",
+      "error": "Error updating status"
+    },
+    "errors": {
+      "nameRequired": "Name is required",
+      "priceInvalid": "Price must be greater than 0",
+      "totalTicketsInvalid": "Total tickets must be greater than 0",
+      "drawDateRequired": "Draw date is required",
+      "drawTimeRequired": "Draw time is required",
+      "drawDatePast": "Draw date must be in the future",
+      "imageRequired": "Image is required",
+      "invalidImageType": "Invalid image format. Use JPG, PNG or WEBP",
+      "imageTooLarge": "Image is too large. Maximum 5MB"
+    }
   }
 }

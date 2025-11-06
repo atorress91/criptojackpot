@@ -9,6 +9,7 @@ import { TokenService } from '@/services/tokenService';
 import { UserReferralService } from '@/services/userReferralService';
 import { DigitalOceanStorageService } from '@/services/digitalOceanStorageService';
 import { RoleService } from '@/services/roleService';
+import { TicketService } from '@/services/ticketService';
 
 // Función para inicializar el contenedor
 export function initializeContainer() {
@@ -20,12 +21,10 @@ export function initializeContainer() {
   container.registerSingleton<UserReferralService>('UserReferralService', UserReferralService);
   container.registerSingleton<DigitalOceanStorageService>('DigitalOceanStorageService', DigitalOceanStorageService);
   container.registerSingleton<RoleService>('RoleService', RoleService);
+  container.registerSingleton<TicketService>('TicketService', TicketService);
 }
 
 // Inicializar inmediatamente
 initializeContainer();
 
 export { container } from 'tsyringe';
-
-
-
