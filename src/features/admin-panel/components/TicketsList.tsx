@@ -74,6 +74,7 @@ const TicketsList: React.FC = () => {
                     <tr>
                       <th style={{ width: '100px' }}>{t('TICKETS_ADMIN.columns.image', 'Imagen')}</th>
                       <th>{t('TICKETS_ADMIN.columns.name', 'Nombre')}</th>
+                      <th>{t('TICKETS_ADMIN.columns.prize', 'Premio')}</th>
                       <th>{t('TICKETS_ADMIN.columns.price', 'Precio')}</th>
                       <th>{t('TICKETS_ADMIN.columns.drawDate', 'Sorteo')}</th>
                       <th>{t('TICKETS_ADMIN.columns.tickets', 'Tickets')}</th>
@@ -98,6 +99,16 @@ const TicketsList: React.FC = () => {
                         <td>
                           <div className="fw-semibold">{ticket.name}</div>
                           <small className="text-muted">{ticket.description?.substring(0, 50)}...</small>
+                        </td>
+                        <td>
+                          {ticket.prize ? (
+                            <div>
+                              <div className="fw-semibold text-primary">{ticket.prize.name}</div>
+                              <small className="text-muted">${ticket.prize.value.toLocaleString()}</small>
+                            </div>
+                          ) : (
+                            <span className="text-muted">-</span>
+                          )}
                         </td>
                         <td>
                           <span className="fw-bold text-success">${ticket.price.toFixed(2)}</span>

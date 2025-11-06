@@ -250,6 +250,7 @@
       "description": "Description",
       "price": "Price per Entry",
       "totalTickets": "Total Tickets",
+      "prize": "Raffle Prize",
       "drawDate": "Draw Date",
       "drawTime": "Draw Time",
       "status": "Status",
@@ -258,11 +259,14 @@
     },
     "placeholders": {
       "name": "E.g: Digital Dreamscapes",
-      "description": "Raffle description"
+      "description": "Raffle description",
+      "selectPrize": "Select a prize"
     },
     "help": {
       "status": "Active tickets will be available for immediate purchase",
-      "image": "Recommended size: 368x383 pixels. Formats: JPG, PNG, WEBP"
+      "image": "Recommended size: 368x383 pixels. Formats: JPG, PNG, WEBP",
+      "noPrizes": "No prizes available.",
+      "createPrize": "Create one now"
     },
     "status": {
       "active": "Active",
@@ -273,6 +277,7 @@
     "columns": {
       "image": "Image",
       "name": "Name",
+      "prize": "Prize",
       "price": "Price",
       "drawDate": "Draw",
       "tickets": "Tickets",
@@ -297,6 +302,7 @@
       "nameRequired": "Name is required",
       "priceInvalid": "Price must be greater than 0",
       "totalTicketsInvalid": "Total tickets must be greater than 0",
+      "prizeRequired": "You must select a prize",
       "drawDateRequired": "Draw date is required",
       "drawTimeRequired": "Draw time is required",
       "drawDatePast": "Draw date must be in the future",

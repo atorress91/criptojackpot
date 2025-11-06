@@ -250,6 +250,7 @@
       "description": "Descripción",
       "price": "Precio por Entrada",
       "totalTickets": "Total de Tickets",
+      "prize": "Premio del Sorteo",
       "drawDate": "Fecha del Sorteo",
       "drawTime": "Hora del Sorteo",
       "status": "Estado",
@@ -258,11 +259,14 @@
     },
     "placeholders": {
       "name": "Ej: Digital Dreamscapes",
-      "description": "Descripción del sorteo"
+      "description": "Descripción del sorteo",
+      "selectPrize": "Seleccione un premio"
     },
     "help": {
       "status": "Los tickets activos estarán disponibles para compra inmediata",
-      "image": "Tamaño recomendado: 368x383 píxeles. Formatos: JPG, PNG, WEBP"
+      "image": "Tamaño recomendado: 368x383 píxeles. Formatos: JPG, PNG, WEBP",
+      "noPrizes": "No hay premios disponibles.",
+      "createPrize": "Crear uno ahora"
     },
     "status": {
       "active": "Activo",
@@ -273,6 +277,7 @@
     "columns": {
       "image": "Imagen",
       "name": "Nombre",
+      "prize": "Premio",
       "price": "Precio",
       "drawDate": "Sorteo",
       "tickets": "Tickets",
@@ -297,6 +302,7 @@
       "nameRequired": "El nombre es requerido",
       "priceInvalid": "El precio debe ser mayor a 0",
       "totalTicketsInvalid": "El total de tickets debe ser mayor a 0",
+      "prizeRequired": "Debe seleccionar un premio",
       "drawDateRequired": "La fecha del sorteo es requerida",
       "drawTimeRequired": "La hora del sorteo es requerida",
       "drawDatePast": "La fecha del sorteo debe ser en el futuro",

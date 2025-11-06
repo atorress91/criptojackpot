@@ -7,10 +7,13 @@ import { useCreateTicketForm } from '@/features/admin-panel/hooks';
 import Image from 'next/image';
 
 const CreateTicket: React.FC = () => {
-  const { formData, imagePreview, isSubmitting, handleInputChange, handleImageChange, handleSubmit } =
+  const { formData, prizes, imagePreview, isSubmitting, handleInputChange, handleImageChange, handleSubmit } =
     useCreateTicketForm();
 
   const { t } = useTranslation();
+
+  // Encontrar el premio seleccionado para mostrar info
+  const selectedPrize = prizes?.find(p => p.id === formData.prizeId);
 
   return (
     <div className="col-lg-9">
@@ -90,6 +93,59 @@ const CreateTicket: React.FC = () => {
                   min="1"
                   required
                 />
+              </div>
+
+              {/* Premio Asociado */}
+              <div className="col-md-12">
+                <label className="form-label fw-semibold">
+                  {t('TICKETS_ADMIN.fields.prize', 'Premio del Sorteo')} <span className="text-danger">*</span>
+                </label>
+                <select
+                  name="prizeId"
+                  className="form-select"
+                  value={formData.prizeId || ''}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">{t('TICKETS_ADMIN.placeholders.selectPrize', 'Seleccione un premio')}</option>
+                  {prizes?.map(prize => (
+                    <option key={prize.id} value={prize.id}>
+                      {prize.name} - ${prize.value.toLocaleString()} ({prize.category})
+                    </option>
+                  ))}
+                </select>
+                {!prizes || prizes.length === 0 ? (
+                  <div className="form-text text-warning">
+                    <i className="fas fa-exclamation-triangle me-2"></i>
+                    {t('TICKETS_ADMIN.help.noPrizes', 'No hay premios disponibles.')}{' '}
+                    <Link href="/admin/prizes/create" className="text-primary">
+                      {t('TICKETS_ADMIN.help.createPrize', 'Crear uno ahora')}
+                    </Link>
+                  </div>
+                ) : selectedPrize ? (
+                  <div className="alert alert-info mt-2 mb-0">
+                    <div className="d-flex align-items-center gap-3">
+                      {selectedPrize.imageUrl && (
+                        <Image
+                          src={selectedPrize.imageUrl}
+                          alt={selectedPrize.name}
+                          width={60}
+                          height={60}
+                          className="rounded"
+                          style={{ objectFit: 'cover' }}
+                        />
+                      )}
+                      <div>
+                        <strong>{selectedPrize.name}</strong>
+                        <div className="small text-muted">{selectedPrize.description}</div>
+                        <div className="small">
+                          <span className="badge bg-success me-2">Valor: ${selectedPrize.value.toLocaleString()}</span>
+                          <span className="badge bg-info">{selectedPrize.category}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
               </div>
 
               {/* Fecha y Hora del Sorteo */}

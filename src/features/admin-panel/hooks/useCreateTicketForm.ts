@@ -3,16 +3,26 @@
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { useNotificationStore } from '@/store/notificationStore';
 import { CreateTicketData } from '@/interfaces/ticket';
-import { getTicketService } from '@/di/serviceLocator';
+import { Prize } from '@/interfaces/prize';
+import { getTicketService, getPrizeService } from '@/di/serviceLocator';
 
 export const useCreateTicketForm = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const showNotification = useNotificationStore(state => state.show);
+
+  // Obtener lista de premios disponibles
+  const { data: prizes = [] } = useQuery<Prize[], Error>({
+    queryKey: ['prizes'],
+    queryFn: async () => {
+      const prizeService = getPrizeService();
+      return prizeService.getPrizes();
+    },
+  });
 
   const [formData, setFormData] = useState<CreateTicketData>({
     name: '',
@@ -23,6 +33,7 @@ export const useCreateTicketForm = () => {
     drawTime: '',
     totalTickets: 0,
     status: 'active',
+    prizeId: undefined,
   });
 
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -176,6 +187,10 @@ export const useCreateTicketForm = () => {
     submitData.append('drawTime', formData.drawTime);
     submitData.append('status', formData.status);
 
+    if (formData.prizeId) {
+      submitData.append('prizeId', formData.prizeId);
+    }
+
     if (formData.image) {
       submitData.append('image', formData.image);
     }
@@ -186,6 +201,7 @@ export const useCreateTicketForm = () => {
 
   return {
     formData,
+    prizes,
     imagePreview,
     isSubmitting: createTicketMutation.isPending,
     handleInputChange,

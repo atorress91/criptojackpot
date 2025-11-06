@@ -10,6 +10,7 @@ import { UserReferralService } from '@/services/userReferralService';
 import { DigitalOceanStorageService } from '@/services/digitalOceanStorageService';
 import { RoleService } from '@/services/roleService';
 import { TicketService } from '@/services/ticketService';
+import { PrizeService } from '@/services/prizeService';
 
 // Función para inicializar el contenedor
 export function initializeContainer() {
@@ -22,6 +23,7 @@ export function initializeContainer() {
   container.registerSingleton<DigitalOceanStorageService>('DigitalOceanStorageService', DigitalOceanStorageService);
   container.registerSingleton<RoleService>('RoleService', RoleService);
   container.registerSingleton<TicketService>('TicketService', TicketService);
+  container.registerSingleton<PrizeService>('PrizeService', PrizeService);
 }
 
 // Inicializar inmediatamente

@@ -9,6 +9,7 @@ import { UserReferralService } from '@/services/userReferralService';
 import { DigitalOceanStorageService } from '@/services/digitalOceanStorageService';
 import { RoleService } from '@/services/roleService';
 import { TicketService } from '@/services/ticketService';
+import { PrizeService } from '@/services/prizeService';
 
 // Tipos de servicio para inyección
 export type ServiceType =
@@ -19,7 +20,8 @@ export type ServiceType =
   | 'UserReferralService'
   | 'DigitalOceanStorageService'
   | 'RoleService'
-  | 'TicketService';
+  | 'TicketService'
+  | 'PrizeService';
 
 /**
  * Función helper para obtener servicios del contenedor de DI
@@ -45,3 +47,4 @@ export const getDigitalOceanStorageService = (): DigitalOceanStorageService =>
   container.resolve<DigitalOceanStorageService>('DigitalOceanStorageService');
 export const getRoleService = (): RoleService => container.resolve<RoleService>('RoleService');
 export const getTicketService = (): TicketService => container.resolve<TicketService>('TicketService');
+export const getPrizeService = (): PrizeService => container.resolve<PrizeService>('PrizeService');

@@ -1,3 +1,5 @@
+import { Prize } from './prize';
+
 export interface Ticket {
   id: string;
   name: string;
@@ -11,6 +13,8 @@ export interface Ticket {
   remainingTickets: number;
   percentageSold: number;
   status: 'active' | 'closed' | 'upcoming' | 'completed';
+  prizeId?: string;
+  prize?: Prize; // Información del premio asociado
   createdAt: Date;
   updatedAt: Date;
 }
@@ -24,6 +28,7 @@ export interface CreateTicketData {
   drawTime: string;
   totalTickets: number;
   status: 'active' | 'upcoming';
+  prizeId?: string; // ID del premio asociado
 }
 
 export interface UpdateTicketData extends Partial<CreateTicketData> {
