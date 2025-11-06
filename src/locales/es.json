@@ -310,5 +310,74 @@
       "invalidImageType": "Formato de imagen no válido. Use JPG, PNG o WEBP",
       "imageTooLarge": "La imagen es demasiado grande. Máximo 5MB"
     }
+  },
+  "PRIZES_ADMIN": {
+    "title": "Gestión de Premios",
+    "create": {
+      "title": "Crear Premio",
+      "formTitle": "Nuevo Premio",
+      "button": "Crear Premio",
+      "submit": "Crear Premio",
+      "success": "Premio creado exitosamente",
+      "successMessage": "El premio se ha creado y está disponible",
+      "error": "Error al crear el premio. Intente nuevamente."
+    },
+    "list": {
+      "title": "Lista de Premios"
+    },
+    "fields": {
+      "name": "Nombre del Premio",
+      "description": "Descripción",
+      "value": "Valor del Premio",
+      "category": "Categoría",
+      "brand": "Marca",
+      "model": "Modelo",
+      "image": "Imagen del Premio",
+      "preview": "Vista Previa"
+    },
+    "placeholders": {
+      "name": "Ej: iPhone 15 Pro Max",
+      "description": "Descripción detallada del premio",
+      "brand": "Ej: Apple, Samsung, BMW",
+      "model": "Ej: Pro Max, S24 Ultra"
+    },
+    "help": {
+      "value": "Valor comercial del premio",
+      "brand": "Opcional: Marca del producto",
+      "model": "Opcional: Modelo específico",
+      "image": "Tamaño recomendado: 800x800 píxeles. Formatos: JPG, PNG, WEBP"
+    },
+    "categories": {
+      "electronics": "Electrónicos",
+      "jewelry": "Joyería",
+      "vehicles": "Vehículos",
+      "realEstate": "Bienes Raíces",
+      "luxury": "Artículos de Lujo",
+      "cash": "Efectivo",
+      "other": "Otro"
+    },
+    "columns": {
+      "image": "Imagen",
+      "name": "Nombre",
+      "category": "Categoría",
+      "value": "Valor",
+      "brand": "Marca/Modelo",
+      "actions": "Acciones"
+    },
+    "empty": "No hay premios creados",
+    "emptyMessage": "Comienza creando tu primer premio para los sorteos",
+    "confirmDelete": "¿Estás seguro de eliminar este premio?",
+    "delete": {
+      "success": "Premio eliminado",
+      "successMessage": "El premio se ha eliminado correctamente",
+      "error": "Error al eliminar el premio"
+    },
+    "errors": {
+      "nameRequired": "El nombre es requerido",
+      "valueInvalid": "El valor debe ser mayor a 0",
+      "imageRequired": "La imagen es requerida",
+      "invalidImageType": "Formato de imagen no válido. Use JPG, PNG o WEBP",
+      "imageTooLarge": "La imagen es demasiado grande. Máximo 5MB"
+    }
   }
 }

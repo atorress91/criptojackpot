@@ -310,5 +310,74 @@
       "invalidImageType": "Invalid image format. Use JPG, PNG or WEBP",
       "imageTooLarge": "Image is too large. Maximum 5MB"
     }
+  },
+  "PRIZES_ADMIN": {
+    "title": "Prize Management",
+    "create": {
+      "title": "Create Prize",
+      "formTitle": "New Prize",
+      "button": "Create Prize",
+      "submit": "Create Prize",
+      "success": "Prize created successfully",
+      "successMessage": "The prize has been created and is available",
+      "error": "Error creating prize. Please try again."
+    },
+    "list": {
+      "title": "Prize List"
+    },
+    "fields": {
+      "name": "Prize Name",
+      "description": "Description",
+      "value": "Prize Value",
+      "category": "Category",
+      "brand": "Brand",
+      "model": "Model",
+      "image": "Prize Image",
+      "preview": "Preview"
+    },
+    "placeholders": {
+      "name": "E.g: iPhone 15 Pro Max",
+      "description": "Detailed prize description",
+      "brand": "E.g: Apple, Samsung, BMW",
+      "model": "E.g: Pro Max, S24 Ultra"
+    },
+    "help": {
+      "value": "Commercial value of the prize",
+      "brand": "Optional: Product brand",
+      "model": "Optional: Specific model",
+      "image": "Recommended size: 800x800 pixels. Formats: JPG, PNG, WEBP"
+    },
+    "categories": {
+      "electronics": "Electronics",
+      "jewelry": "Jewelry",
+      "vehicles": "Vehicles",
+      "realEstate": "Real Estate",
+      "luxury": "Luxury Items",
+      "cash": "Cash",
+      "other": "Other"
+    },
+    "columns": {
+      "image": "Image",
+      "name": "Name",
+      "category": "Category",
+      "value": "Value",
+      "brand": "Brand/Model",
+      "actions": "Actions"
+    },
+    "empty": "No prizes created",
+    "emptyMessage": "Start by creating your first prize for the raffles",
+    "confirmDelete": "Are you sure you want to delete this prize?",
+    "delete": {
+      "success": "Prize deleted",
+      "successMessage": "The prize has been deleted successfully",
+      "error": "Error deleting prize"
+    },
+    "errors": {
+      "nameRequired": "Name is required",
+      "valueInvalid": "Value must be greater than 0",
+      "imageRequired": "Image is required",
+      "invalidImageType": "Invalid image format. Use JPG, PNG or WEBP",
+      "imageTooLarge": "Image is too large. Maximum 5MB"
+    }
   }
 }
