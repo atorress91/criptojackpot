@@ -16,7 +16,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onAddToCart, onB
     const drawDate = new Date(ticket.drawDate);
     const diff = drawDate.getTime() - now.getTime();
     const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-    return days > 0 ? days : 0;
+    return Math.max(days, 0);
   };
 
   // Formatear la fecha del sorteo
@@ -27,6 +27,12 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onAddToCart, onB
   };
 
   const daysRemaining = calculateDaysRemaining();
+
+  // Formatear texto de días restantes
+  const formatDaysRemaining = () => {
+    if (daysRemaining < 1) return 'Hoy';
+    return `${daysRemaining} ${daysRemaining === 1 ? 'Day' : 'Days'}`;
+  };
 
   return (
     <div className="ticket-card">
@@ -78,21 +84,18 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onAddToCart, onB
 
           <div className="d-flex align-items-center justify-content-between mb-3">
             <div>
-              <span className="text-danger fs-4 fw-bold">${ticket.price.toFixed(2)}</span>
-              <small className="text-muted ms-2">PER ENTRY</small>
-            </div>
-          </div>
-
-          <div className="d-flex justify-content-between mb-2">
-            <div className="d-flex align-items-center">
-              <i className="far fa-clock me-2"></i>
-              <span className="small">
-                {daysRemaining < 1 ? 'Hoy' : `${daysRemaining} ${daysRemaining === 1 ? 'Day' : 'Days'}`}
-              </span>
-            </div>
-            <div className="d-flex align-items-center">
-              <i className="fas fa-ticket-alt me-2"></i>
-              <span className="small">{ticket.remainingTickets} Remaining</span>
+              <div className="d-flex align-items-center">
+                <i className="far fa-clock me-2"></i>
+                <span className="small">{formatDaysRemaining()}</span>
+              </div>
+              <div className="d-flex align-items-center">
+                <i className="far fa-clock me-2"></i>
+                <span className="small">{formatDaysRemaining()}</span>
+              </div>
+              <div className="d-flex align-items-center">
+                <i className="fas fa-ticket-alt me-2"></i>
+                <span className="small">{ticket.remainingTickets} Remaining</span>
+              </div>
             </div>
           </div>
 
