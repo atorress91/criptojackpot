@@ -110,7 +110,7 @@ const CreateTicket: React.FC = () => {
                   <option value="">{t('TICKETS_ADMIN.placeholders.selectPrize', 'Seleccione un premio')}</option>
                   {prizes?.map(prize => (
                     <option key={prize.id} value={prize.id}>
-                      {prize.name} - ${prize.value.toLocaleString()} ({prize.category})
+                      {prize.name} - ${prize.estimatedValue.toLocaleString()}
                     </option>
                   ))}
                 </select>
@@ -122,12 +122,13 @@ const CreateTicket: React.FC = () => {
                       {t('TICKETS_ADMIN.help.createPrize', 'Crear uno ahora')}
                     </Link>
                   </div>
-                ) : selectedPrize ? (
+                ) : null}
+                {selectedPrize && (
                   <div className="alert alert-info mt-2 mb-0">
                     <div className="d-flex align-items-center gap-3">
-                      {selectedPrize.imageUrl && (
+                      {selectedPrize.mainImageUrl && (
                         <Image
-                          src={selectedPrize.imageUrl}
+                          src={selectedPrize.mainImageUrl}
                           alt={selectedPrize.name}
                           width={60}
                           height={60}
@@ -139,13 +140,15 @@ const CreateTicket: React.FC = () => {
                         <strong>{selectedPrize.name}</strong>
                         <div className="small text-muted">{selectedPrize.description}</div>
                         <div className="small">
-                          <span className="badge bg-success me-2">Valor: ${selectedPrize.value.toLocaleString()}</span>
-                          <span className="badge bg-info">{selectedPrize.category}</span>
+                          <span className="badge bg-success me-2">
+                            Valor: ${selectedPrize.estimatedValue.toLocaleString()}
+                          </span>
+                          <span className="badge bg-info">Tier {selectedPrize.tier}</span>
                         </div>
                       </div>
                     </div>
                   </div>
-                ) : null}
+                )}
               </div>
 
               {/* Fecha y Hora del Sorteo */}
