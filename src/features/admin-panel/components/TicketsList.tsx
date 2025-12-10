@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useTickets } from '@/features/admin-panel/hooks';
 import { Ticket } from '@/interfaces/ticket';
 import Image from 'next/image';
+import { Plus, Pencil, Trash2, Ticket as TicketIcon, Calendar, Clock } from 'lucide-react';
 
 const TicketsList: React.FC = () => {
   const { t } = useTranslation();
@@ -57,7 +58,7 @@ const TicketsList: React.FC = () => {
         <div className="d-flex justify-content-between align-items-center mb-xxl-10 mb-6">
           <h3 className="n4-clr fw_700 mb-0">{t('TICKETS_ADMIN.title', 'Gestión de Tickets')}</h3>
           <Link href="/admin/tickets/create" className="btn btn-primary">
-            <i className="fas fa-plus me-2"></i>
+            <Plus size={18} className="me-2" />
             {t('TICKETS_ADMIN.create.button', 'Crear Ticket')}
           </Link>
         </div>
@@ -117,11 +118,11 @@ const TicketsList: React.FC = () => {
                         </td>
                         <td>
                           <div>
-                            <i className="far fa-calendar me-1"></i>
+                            <Calendar size={14} className="me-1" />
                             {new Date(ticket.drawDate).toLocaleDateString()}
                           </div>
                           <small className="text-muted">
-                            <i className="far fa-clock me-1"></i>
+                            <Clock size={12} className="me-1" />
                             {ticket.drawTime}
                           </small>
                         </td>
@@ -154,7 +155,7 @@ const TicketsList: React.FC = () => {
                               className="btn btn-outline-primary"
                               title={t('COMMON.edit', 'Editar')}
                             >
-                              <i className="fas fa-edit"></i>
+                              <Pencil size={14} />
                             </Link>
                             <button
                               type="button"
@@ -163,7 +164,7 @@ const TicketsList: React.FC = () => {
                               disabled={isDeleting}
                               title={t('COMMON.delete', 'Eliminar')}
                             >
-                              <i className="fas fa-trash"></i>
+                              <Trash2 size={14} />
                             </button>
                           </div>
                         </td>
@@ -174,13 +175,13 @@ const TicketsList: React.FC = () => {
               </div>
             ) : (
               <div className="text-center py-5">
-                <i className="fas fa-ticket-alt fa-3x text-muted mb-3"></i>
+                <TicketIcon size={48} className="text-muted mb-3" />
                 <h5 className="text-muted">{t('TICKETS_ADMIN.empty', 'No hay tickets creados')}</h5>
                 <p className="text-muted mb-4">
                   {t('TICKETS_ADMIN.emptyMessage', 'Comienza creando tu primer ticket de sorteo')}
                 </p>
                 <Link href="/admin/tickets/create" className="btn btn-primary">
-                  <i className="fas fa-plus me-2"></i>
+                  <Plus size={18} className="me-2" />
                   {t('TICKETS_ADMIN.create.button', 'Crear Ticket')}
                 </Link>
               </div>

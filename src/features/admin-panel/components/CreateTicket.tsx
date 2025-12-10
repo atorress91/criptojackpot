@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { useCreateTicketForm } from '@/features/admin-panel/hooks';
 import Image from 'next/image';
+import { AlertTriangle, Clock, Ticket } from 'lucide-react';
 
 const CreateTicket: React.FC = () => {
   const { formData, prizes, imagePreview, isSubmitting, handleInputChange, handleImageChange, handleSubmit } =
@@ -116,7 +117,7 @@ const CreateTicket: React.FC = () => {
                 </select>
                 {!prizes || prizes.length === 0 ? (
                   <div className="form-text text-warning">
-                    <i className="fas fa-exclamation-triangle me-2"></i>
+                    <AlertTriangle size={16} className="me-2" />
                     {t('TICKETS_ADMIN.help.noPrizes', 'No hay premios disponibles.')}{' '}
                     <Link href="/admin/prizes/create" className="text-primary">
                       {t('TICKETS_ADMIN.help.createPrize', 'Crear uno ahora')}
@@ -248,11 +249,11 @@ const CreateTicket: React.FC = () => {
                           </h5>
                           <div className="d-flex gap-3 mb-2">
                             <div>
-                              <i className="fas fa-clock me-2"></i>
+                              <Clock size={14} className="me-2" />
                               <small>Sorteo programado</small>
                             </div>
                             <div>
-                              <i className="fas fa-ticket-alt me-2"></i>
+                              <Ticket size={14} className="me-2" />
                               <small>{formData.totalTickets || 0} Total</small>
                             </div>
                           </div>

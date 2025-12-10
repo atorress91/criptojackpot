@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useCreatePrizeForm } from '@/features/admin-panel/hooks';
 import { PrizeType } from '@/interfaces/prize';
 import Image from 'next/image';
+import { Plus, X, Trash2 } from 'lucide-react';
 
 const CreatePrize: React.FC = () => {
   const {
@@ -302,14 +303,14 @@ const CreatePrize: React.FC = () => {
                   </div>
                   <div className="col-md-2">
                     <button type="button" className="btn btn-outline-primary w-100" onClick={handleAddImage}>
-                      <i className="fas fa-plus"></i>
+                      <Plus size={18} />
                     </button>
                   </div>
                 </div>
                 {formData.additionalImages.length > 0 && (
                   <div className="d-flex flex-wrap gap-2">
                     {formData.additionalImages.map((img, index) => (
-                      <div key={index} className="position-relative">
+                      <div key={img.imageUrl} className="position-relative">
                         <Image
                           src={img.imageUrl}
                           alt={img.caption || `Image ${index + 1}`}
@@ -324,7 +325,7 @@ const CreatePrize: React.FC = () => {
                           onClick={() => handleRemoveAdditionalImage(index)}
                           style={{ transform: 'translate(25%, -25%)' }}
                         >
-                          <i className="fas fa-times"></i>
+                          <X size={14} />
                         </button>
                       </div>
                     ))}
@@ -358,7 +359,7 @@ const CreatePrize: React.FC = () => {
                   </div>
                   <div className="col-md-2">
                     <button type="button" className="btn btn-outline-primary w-100" onClick={handleAddSpecification}>
-                      <i className="fas fa-plus"></i>
+                      <Plus size={18} />
                     </button>
                   </div>
                 </div>
@@ -383,7 +384,7 @@ const CreatePrize: React.FC = () => {
                                 className="btn btn-sm btn-outline-danger"
                                 onClick={() => handleRemoveSpecification(key)}
                               >
-                                <i className="fas fa-trash"></i>
+                                <Trash2 size={14} />
                               </button>
                             </td>
                           </tr>

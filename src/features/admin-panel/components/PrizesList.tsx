@@ -8,6 +8,7 @@ import { Prize, PrizeType } from '@/interfaces/prize';
 import Table from '@/components/table/Table';
 import { TableColumn } from '@/components/table';
 import Image from 'next/image';
+import { Plus, Truck, Download, Pencil, Eye, Gift } from 'lucide-react';
 
 const PrizesList: React.FC = () => {
   const { t } = useTranslation();
@@ -77,13 +78,13 @@ const PrizesList: React.FC = () => {
       <div className="d-flex flex-column gap-1">
         {prize.isDeliverable && (
           <span className="badge bg-light text-success">
-            <i className="fas fa-truck me-1"></i>
+            <Truck size={12} className="me-1" />
             {t('PRIZES_ADMIN.deliverable', 'Entregable')}
           </span>
         )}
         {prize.isDigital && (
           <span className="badge bg-light text-info">
-            <i className="fas fa-download me-1"></i>
+            <Download size={12} className="me-1" />
             {t('PRIZES_ADMIN.digital', 'Digital')}
           </span>
         )}
@@ -96,10 +97,10 @@ const PrizesList: React.FC = () => {
           className="btn btn-outline-primary"
           title={t('COMMON.edit', 'Editar')}
         >
-          <i className="fas fa-edit"></i>
+          <Pencil size={14} />
         </Link>
         <Link href={`/admin/prizes/${prize.id}`} className="btn btn-outline-secondary" title={t('COMMON.view', 'Ver')}>
-          <i className="fas fa-eye"></i>
+          <Eye size={14} />
         </Link>
       </div>
     ),
@@ -172,7 +173,7 @@ const PrizesList: React.FC = () => {
         <div className="d-flex justify-content-between align-items-center mb-xxl-10 mb-6">
           <h3 className="n4-clr fw_700 mb-0">{t('PRIZES_ADMIN.title', 'Gestión de Premios')}</h3>
           <Link href="/admin/prizes/create" className="btn btn-primary">
-            <i className="fas fa-plus me-2"></i>
+            <Plus size={18} className="me-2" />
             {t('PRIZES_ADMIN.create.button', 'Crear Premio')}
           </Link>
         </div>
@@ -192,13 +193,13 @@ const PrizesList: React.FC = () => {
               </>
             ) : (
               <div className="text-center py-5">
-                <i className="fas fa-gift fa-3x text-muted mb-3"></i>
+                <Gift size={48} className="text-muted mb-3" />
                 <h5 className="text-muted">{t('PRIZES_ADMIN.empty', 'No hay premios creados')}</h5>
                 <p className="text-muted mb-4">
                   {t('PRIZES_ADMIN.emptyMessage', 'Comienza creando tu primer premio para los sorteos')}
                 </p>
                 <Link href="/admin/prizes/create" className="btn btn-primary">
-                  <i className="fas fa-plus me-2"></i>
+                  <Plus size={18} className="me-2" />
                   {t('PRIZES_ADMIN.create.button', 'Crear Premio')}
                 </Link>
               </div>
