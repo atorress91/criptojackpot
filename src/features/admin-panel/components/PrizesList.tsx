@@ -111,38 +111,44 @@ const PrizesList: React.FC = () => {
     const pages = [];
     for (let i = 1; i <= pagination.totalPages; i++) {
       pages.push(
-        <li key={i} className={`page-item ${pagination.pageNumber === i ? 'active' : ''}`}>
-          <button className="page-link" onClick={() => goToPage(i)}>
-            {i}
-          </button>
-        </li>
+        <button
+          key={i}
+          onClick={() => goToPage(i)}
+          className={`btn ${pagination.pageNumber === i ? 'btn-primary' : 'btn-outline-secondary'}`}
+          style={{ minWidth: '40px' }}
+        >
+          {i}
+        </button>
       );
     }
 
     return (
-      <nav aria-label="Prizes pagination">
-        <ul className="pagination justify-content-center mb-0">
-          <li className={`page-item ${pagination.pageNumber === 1 ? 'disabled' : ''}`}>
-            <button
-              className="page-link"
-              onClick={() => goToPage(pagination.pageNumber - 1)}
-              disabled={pagination.pageNumber === 1}
-            >
-              {t('COMMON.previous', 'Anterior')}
-            </button>
-          </li>
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+        <div className="text-muted">
+          {t('COMMON.showing', 'Mostrando')} <strong>{(pagination.pageNumber - 1) * pagination.pageSize + 1}</strong> -{' '}
+          <strong>{Math.min(pagination.pageNumber * pagination.pageSize, pagination.totalCount)}</strong>{' '}
+          {t('COMMON.of', 'de')} <strong>{pagination.totalCount}</strong> {t('COMMON.results', 'resultados')}
+        </div>
+        <div className="btn-group" aria-label="Paginación">
+          <button
+            className="btn btn-outline-secondary"
+            onClick={() => goToPage(pagination.pageNumber - 1)}
+            disabled={pagination.pageNumber === 1}
+            title={t('COMMON.previous', 'Anterior')}
+          >
+            ←
+          </button>
           {pages}
-          <li className={`page-item ${pagination.pageNumber === pagination.totalPages ? 'disabled' : ''}`}>
-            <button
-              className="page-link"
-              onClick={() => goToPage(pagination.pageNumber + 1)}
-              disabled={pagination.pageNumber === pagination.totalPages}
-            >
-              {t('COMMON.next', 'Siguiente')}
-            </button>
-          </li>
-        </ul>
-      </nav>
+          <button
+            className="btn btn-outline-secondary"
+            onClick={() => goToPage(pagination.pageNumber + 1)}
+            disabled={pagination.pageNumber === pagination.totalPages}
+            title={t('COMMON.next', 'Siguiente')}
+          >
+            →
+          </button>
+        </div>
+      </div>
     );
   };
 
@@ -182,7 +188,7 @@ const PrizesList: React.FC = () => {
             {prizes && prizes.length > 0 ? (
               <>
                 <Table columns={columns} data={tableData} />
-                <div className="p-3 border-top">{renderPagination()}</div>
+                <div className="p-4 border-top bg-light">{renderPagination()}</div>
               </>
             ) : (
               <div className="text-center py-5">
