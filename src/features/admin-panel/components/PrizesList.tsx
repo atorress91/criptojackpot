@@ -4,43 +4,146 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { usePrizes } from '@/features/admin-panel/hooks';
-import { Prize } from '@/interfaces/prize';
+import { Prize, PrizeType } from '@/interfaces/prize';
+import Table from '@/components/table/Table';
+import { TableColumn } from '@/components/table';
 import Image from 'next/image';
 
 const PrizesList: React.FC = () => {
   const { t } = useTranslation();
-  const { prizes, isLoading, deletePrize, isDeleting } = usePrizes();
+  const { prizes, isLoading, pagination, goToPage } = usePrizes({ pageNumber: 1, pageSize: 10 });
 
-  const handleDelete = async (id: string, name: string) => {
-    if (globalThis.confirm(t('PRIZES_ADMIN.confirmDelete', `¿Estás seguro de eliminar el premio "${name}"?`))) {
-      await deletePrize(id);
+  const getPrizeTypeBadge = (type: PrizeType) => {
+    const badges: Record<PrizeType, string> = {
+      [PrizeType.Cash]: 'badge bg-success',
+      [PrizeType.Physical]: 'badge bg-primary',
+      [PrizeType.Digital]: 'badge bg-info',
+      [PrizeType.Experience]: 'badge bg-warning text-dark',
+    };
+    return badges[type] || 'badge bg-secondary';
+  };
+
+  const getPrizeTypeText = (type: PrizeType) => {
+    const texts: Record<PrizeType, string> = {
+      [PrizeType.Cash]: t('PRIZES_ADMIN.types.cash', 'Efectivo'),
+      [PrizeType.Physical]: t('PRIZES_ADMIN.types.physical', 'Físico'),
+      [PrizeType.Digital]: t('PRIZES_ADMIN.types.digital', 'Digital'),
+      [PrizeType.Experience]: t('PRIZES_ADMIN.types.experience', 'Experiencia'),
+    };
+    return texts[type] || String(type);
+  };
+
+  const columns: TableColumn[] = [
+    { key: 'image', header: t('PRIZES_ADMIN.columns.image', 'Imagen') },
+    { key: 'name', header: t('PRIZES_ADMIN.columns.name', 'Nombre') },
+    { key: 'type', header: t('PRIZES_ADMIN.columns.type', 'Tipo') },
+    { key: 'value', header: t('PRIZES_ADMIN.columns.value', 'Valor') },
+    { key: 'tier', header: t('PRIZES_ADMIN.columns.tier', 'Nivel') },
+    { key: 'deliverable', header: t('PRIZES_ADMIN.columns.deliverable', 'Entregable') },
+    { key: 'actions', header: t('PRIZES_ADMIN.columns.actions', 'Acciones') },
+  ];
+
+  const tableData = prizes.map((prize: Prize) => ({
+    id: prize.id,
+    image: (
+      <Image
+        src={prize.mainImageUrl || '/images/placeholder.jpg'}
+        alt={prize.name}
+        width={60}
+        height={60}
+        className="rounded"
+        style={{ objectFit: 'cover' }}
+      />
+    ),
+    name: (
+      <div>
+        <div className="fw-semibold">{prize.name}</div>
+        <small className="text-muted">{prize.description?.substring(0, 40)}...</small>
+      </div>
+    ),
+    type: <span className={getPrizeTypeBadge(prize.type)}>{getPrizeTypeText(prize.type)}</span>,
+    value: (
+      <div>
+        <span className="fw-bold text-success">${prize.estimatedValue.toLocaleString()}</span>
+        {prize.cashAlternative && (
+          <div>
+            <small className="text-muted">Alt: ${prize.cashAlternative.toLocaleString()}</small>
+          </div>
+        )}
+      </div>
+    ),
+    tier: <span className="badge bg-secondary">Tier {prize.tier}</span>,
+    deliverable: (
+      <div className="d-flex flex-column gap-1">
+        {prize.isDeliverable && (
+          <span className="badge bg-light text-success">
+            <i className="fas fa-truck me-1"></i>
+            {t('PRIZES_ADMIN.deliverable', 'Entregable')}
+          </span>
+        )}
+        {prize.isDigital && (
+          <span className="badge bg-light text-info">
+            <i className="fas fa-download me-1"></i>
+            {t('PRIZES_ADMIN.digital', 'Digital')}
+          </span>
+        )}
+      </div>
+    ),
+    actions: (
+      <div className="btn-group btn-group-sm">
+        <Link
+          href={`/admin/prizes/${prize.id}/edit`}
+          className="btn btn-outline-primary"
+          title={t('COMMON.edit', 'Editar')}
+        >
+          <i className="fas fa-edit"></i>
+        </Link>
+        <Link href={`/admin/prizes/${prize.id}`} className="btn btn-outline-secondary" title={t('COMMON.view', 'Ver')}>
+          <i className="fas fa-eye"></i>
+        </Link>
+      </div>
+    ),
+  }));
+
+  const renderPagination = () => {
+    if (pagination.totalPages <= 1) return null;
+
+    const pages = [];
+    for (let i = 1; i <= pagination.totalPages; i++) {
+      pages.push(
+        <li key={i} className={`page-item ${pagination.pageNumber === i ? 'active' : ''}`}>
+          <button className="page-link" onClick={() => goToPage(i)}>
+            {i}
+          </button>
+        </li>
+      );
     }
-  };
 
-  const getCategoryBadge = (category: string) => {
-    const badges: Record<string, string> = {
-      electronics: 'badge bg-primary',
-      jewelry: 'badge bg-warning text-dark',
-      vehicles: 'badge bg-danger',
-      'real-estate': 'badge bg-success',
-      luxury: 'badge bg-info',
-      cash: 'badge bg-dark',
-      other: 'badge bg-secondary',
-    };
-    return badges[category] || 'badge bg-secondary';
-  };
-
-  const getCategoryText = (category: string) => {
-    const texts: Record<string, string> = {
-      electronics: t('PRIZES_ADMIN.categories.electronics', 'Electrónicos'),
-      jewelry: t('PRIZES_ADMIN.categories.jewelry', 'Joyería'),
-      vehicles: t('PRIZES_ADMIN.categories.vehicles', 'Vehículos'),
-      'real-estate': t('PRIZES_ADMIN.categories.realEstate', 'Bienes Raíces'),
-      luxury: t('PRIZES_ADMIN.categories.luxury', 'Artículos de Lujo'),
-      cash: t('PRIZES_ADMIN.categories.cash', 'Efectivo'),
-      other: t('PRIZES_ADMIN.categories.other', 'Otro'),
-    };
-    return texts[category] || category;
+    return (
+      <nav aria-label="Prizes pagination">
+        <ul className="pagination justify-content-center mb-0">
+          <li className={`page-item ${pagination.pageNumber === 1 ? 'disabled' : ''}`}>
+            <button
+              className="page-link"
+              onClick={() => goToPage(pagination.pageNumber - 1)}
+              disabled={pagination.pageNumber === 1}
+            >
+              {t('COMMON.previous', 'Anterior')}
+            </button>
+          </li>
+          {pages}
+          <li className={`page-item ${pagination.pageNumber === pagination.totalPages ? 'disabled' : ''}`}>
+            <button
+              className="page-link"
+              onClick={() => goToPage(pagination.pageNumber + 1)}
+              disabled={pagination.pageNumber === pagination.totalPages}
+            >
+              {t('COMMON.next', 'Siguiente')}
+            </button>
+          </li>
+        </ul>
+      </nav>
+    );
   };
 
   if (isLoading) {
@@ -69,81 +172,18 @@ const PrizesList: React.FC = () => {
         </div>
 
         <div className="card border-0 shadow-sm">
-          <div className="card-header bg-white py-3">
+          <div className="card-header bg-white py-3 d-flex justify-content-between align-items-center">
             <h5 className="mb-0">{t('PRIZES_ADMIN.list.title', 'Lista de Premios')}</h5>
+            <small className="text-muted">
+              {t('PRIZES_ADMIN.totalCount', 'Total')}: {pagination.totalCount}
+            </small>
           </div>
           <div className="card-body p-0">
             {prizes && prizes.length > 0 ? (
-              <div className="table-responsive">
-                <table className="table table-hover mb-0">
-                  <thead className="table-light">
-                    <tr>
-                      <th style={{ width: '100px' }}>{t('PRIZES_ADMIN.columns.image', 'Imagen')}</th>
-                      <th>{t('PRIZES_ADMIN.columns.name', 'Nombre')}</th>
-                      <th>{t('PRIZES_ADMIN.columns.category', 'Categoría')}</th>
-                      <th>{t('PRIZES_ADMIN.columns.value', 'Valor')}</th>
-                      <th>{t('PRIZES_ADMIN.columns.brand', 'Marca/Modelo')}</th>
-                      <th style={{ width: '150px' }}>{t('PRIZES_ADMIN.columns.actions', 'Acciones')}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {prizes.map((prize: Prize) => (
-                      <tr key={prize.id}>
-                        <td>
-                          <Image
-                            src={prize.imageUrl || '/images/placeholder.jpg'}
-                            alt={prize.name}
-                            width={80}
-                            height={80}
-                            className="rounded"
-                            style={{ objectFit: 'cover' }}
-                          />
-                        </td>
-                        <td>
-                          <div className="fw-semibold">{prize.name}</div>
-                          <small className="text-muted">{prize.description?.substring(0, 50)}...</small>
-                        </td>
-                        <td>
-                          <span className={getCategoryBadge(prize.category)}>{getCategoryText(prize.category)}</span>
-                        </td>
-                        <td>
-                          <span className="fw-bold text-success fs-5">${prize.value.toLocaleString()}</span>
-                        </td>
-                        <td>
-                          {prize.brand || prize.model ? (
-                            <div>
-                              {prize.brand && <div className="fw-semibold">{prize.brand}</div>}
-                              {prize.model && <small className="text-muted">{prize.model}</small>}
-                            </div>
-                          ) : (
-                            <span className="text-muted">-</span>
-                          )}
-                        </td>
-                        <td>
-                          <div className="btn-group btn-group-sm">
-                            <Link
-                              href={`/admin/prizes/${prize.id}/edit`}
-                              className="btn btn-outline-primary"
-                              title={t('COMMON.edit', 'Editar')}
-                            >
-                              <i className="fas fa-edit"></i>
-                            </Link>
-                            <button
-                              type="button"
-                              className="btn btn-outline-danger"
-                              onClick={() => handleDelete(prize.id, prize.name)}
-                              disabled={isDeleting}
-                              title={t('COMMON.delete', 'Eliminar')}
-                            >
-                              <i className="fas fa-trash"></i>
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              <>
+                <Table columns={columns} data={tableData} />
+                <div className="p-3 border-top">{renderPagination()}</div>
+              </>
             ) : (
               <div className="text-center py-5">
                 <i className="fas fa-gift fa-3x text-muted mb-3"></i>

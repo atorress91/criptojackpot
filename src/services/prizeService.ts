@@ -22,8 +22,8 @@ class PrizeService extends BaseService {
       if (pagination?.pageNumber) params.pageNumber = pagination.pageNumber.toString();
       if (pagination?.pageSize) params.pageSize = pagination.pageSize.toString();
 
-      const response = await this.apiClient.get<Response<PaginatedResponse<Prize>>>(this.endpoint, { params });
-      return this.handleResponse(response);
+      const response = await this.apiClient.get<PaginatedResponse<Prize>>(this.endpoint, { params });
+      return response.data;
     } catch (error) {
       return this.handleError(error as any);
     }

@@ -1,26 +1,59 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { useCreatePrizeForm } from '@/features/admin-panel/hooks';
+import { PrizeType } from '@/interfaces/prize';
 import Image from 'next/image';
 
 const CreatePrize: React.FC = () => {
-  const { formData, imagePreview, isSubmitting, handleInputChange, handleImageChange, handleSubmit } =
-    useCreatePrizeForm();
+  const {
+    formData,
+    isSubmitting,
+    handleInputChange,
+    handleTypeChange,
+    handleMainImageUrlChange,
+    handleAddAdditionalImage,
+    handleRemoveAdditionalImage,
+    handleSpecificationChange,
+    handleRemoveSpecification,
+    handleSubmit,
+  } = useCreatePrizeForm();
 
   const { t } = useTranslation();
 
-  const categories = [
-    { value: 'electronics', label: t('PRIZES_ADMIN.categories.electronics', 'Electrónicos') },
-    { value: 'jewelry', label: t('PRIZES_ADMIN.categories.jewelry', 'Joyería') },
-    { value: 'vehicles', label: t('PRIZES_ADMIN.categories.vehicles', 'Vehículos') },
-    { value: 'real-estate', label: t('PRIZES_ADMIN.categories.realEstate', 'Bienes Raíces') },
-    { value: 'luxury', label: t('PRIZES_ADMIN.categories.luxury', 'Artículos de Lujo') },
-    { value: 'cash', label: t('PRIZES_ADMIN.categories.cash', 'Efectivo') },
-    { value: 'other', label: t('PRIZES_ADMIN.categories.other', 'Otro') },
+  const [newSpecKey, setNewSpecKey] = useState('');
+  const [newSpecValue, setNewSpecValue] = useState('');
+  const [newAdditionalImageUrl, setNewAdditionalImageUrl] = useState('');
+  const [newAdditionalImageCaption, setNewAdditionalImageCaption] = useState('');
+
+  const prizeTypes = [
+    { value: PrizeType.Cash, label: t('PRIZES_ADMIN.types.cash', 'Efectivo') },
+    { value: PrizeType.Physical, label: t('PRIZES_ADMIN.types.physical', 'Físico') },
+    { value: PrizeType.Digital, label: t('PRIZES_ADMIN.types.digital', 'Digital') },
+    { value: PrizeType.Experience, label: t('PRIZES_ADMIN.types.experience', 'Experiencia') },
   ];
+
+  const handleAddSpecification = () => {
+    if (newSpecKey.trim() && newSpecValue.trim()) {
+      handleSpecificationChange(newSpecKey.trim(), newSpecValue.trim());
+      setNewSpecKey('');
+      setNewSpecValue('');
+    }
+  };
+
+  const handleAddImage = () => {
+    if (newAdditionalImageUrl.trim()) {
+      handleAddAdditionalImage({
+        imageUrl: newAdditionalImageUrl.trim(),
+        caption: newAdditionalImageCaption.trim(),
+        displayOrder: formData.additionalImages.length,
+      });
+      setNewAdditionalImageUrl('');
+      setNewAdditionalImageCaption('');
+    }
+  };
 
   return (
     <div className="col-lg-9">
@@ -37,7 +70,7 @@ const CreatePrize: React.FC = () => {
           <div className="card-body">
             <form onSubmit={handleSubmit} className="row g-4">
               {/* Nombre del Premio */}
-              <div className="col-md-12">
+              <div className="col-md-8">
                 <label className="form-label fw-semibold">
                   {t('PRIZES_ADMIN.fields.name', 'Nombre del Premio')} <span className="text-danger">*</span>
                 </label>
@@ -52,9 +85,27 @@ const CreatePrize: React.FC = () => {
                 />
               </div>
 
+              {/* Tier */}
+              <div className="col-md-4">
+                <label className="form-label fw-semibold">
+                  {t('PRIZES_ADMIN.fields.tier', 'Nivel/Tier')} <span className="text-danger">*</span>
+                </label>
+                <input
+                  type="number"
+                  name="tier"
+                  className="form-control"
+                  value={formData.tier}
+                  onChange={handleInputChange}
+                  min="1"
+                  required
+                />
+              </div>
+
               {/* Descripción */}
               <div className="col-md-12">
-                <label className="form-label fw-semibold">{t('PRIZES_ADMIN.fields.description', 'Descripción')}</label>
+                <label className="form-label fw-semibold">
+                  {t('PRIZES_ADMIN.fields.description', 'Descripción')} <span className="text-danger">*</span>
+                </label>
                 <textarea
                   name="description"
                   className="form-control"
@@ -62,21 +113,22 @@ const CreatePrize: React.FC = () => {
                   value={formData.description}
                   onChange={handleInputChange}
                   placeholder={t('PRIZES_ADMIN.placeholders.description', 'Descripción detallada del premio')}
+                  required
                 />
               </div>
 
-              {/* Valor y Categoría */}
+              {/* Valor Estimado y Alternativa en Efectivo */}
               <div className="col-md-6">
                 <label className="form-label fw-semibold">
-                  {t('PRIZES_ADMIN.fields.value', 'Valor del Premio')} <span className="text-danger">*</span>
+                  {t('PRIZES_ADMIN.fields.estimatedValue', 'Valor Estimado')} <span className="text-danger">*</span>
                 </label>
                 <div className="input-group">
                   <span className="input-group-text">$</span>
                   <input
                     type="number"
-                    name="value"
+                    name="estimatedValue"
                     className="form-control"
-                    value={formData.value}
+                    value={formData.estimatedValue}
                     onChange={handleInputChange}
                     placeholder="0.00"
                     min="0"
@@ -84,102 +136,263 @@ const CreatePrize: React.FC = () => {
                     required
                   />
                 </div>
-                <div className="form-text">{t('PRIZES_ADMIN.help.value', 'Valor comercial del premio')}</div>
               </div>
 
               <div className="col-md-6">
                 <label className="form-label fw-semibold">
-                  {t('PRIZES_ADMIN.fields.category', 'Categoría')} <span className="text-danger">*</span>
+                  {t('PRIZES_ADMIN.fields.cashAlternative', 'Alternativa en Efectivo')}
+                </label>
+                <div className="input-group">
+                  <span className="input-group-text">$</span>
+                  <input
+                    type="number"
+                    name="cashAlternative"
+                    className="form-control"
+                    value={formData.cashAlternative}
+                    onChange={handleInputChange}
+                    placeholder="0.00"
+                    min="0"
+                    step="0.01"
+                  />
+                </div>
+                <div className="form-text">
+                  {t(
+                    'PRIZES_ADMIN.help.cashAlternative',
+                    'Valor en efectivo que el ganador puede elegir en lugar del premio'
+                  )}
+                </div>
+              </div>
+
+              {/* Tipo de Premio */}
+              <div className="col-md-6">
+                <label className="form-label fw-semibold">
+                  {t('PRIZES_ADMIN.fields.type', 'Tipo de Premio')} <span className="text-danger">*</span>
                 </label>
                 <select
-                  name="category"
+                  name="type"
                   className="form-select"
-                  value={formData.category}
-                  onChange={handleInputChange}
+                  value={formData.type}
+                  onChange={e => handleTypeChange(Number(e.target.value) as PrizeType)}
                   required
                 >
-                  {categories.map(cat => (
-                    <option key={cat.value} value={cat.value}>
-                      {cat.label}
+                  {prizeTypes.map(type => (
+                    <option key={type.value} value={type.value}>
+                      {type.label}
                     </option>
                   ))}
                 </select>
               </div>
 
-              {/* Marca y Modelo (opcional) */}
+              {/* Lottery ID (opcional) */}
               <div className="col-md-6">
-                <label className="form-label fw-semibold">{t('PRIZES_ADMIN.fields.brand', 'Marca')}</label>
+                <label className="form-label fw-semibold">{t('PRIZES_ADMIN.fields.lotteryId', 'ID de Lotería')}</label>
                 <input
                   type="text"
-                  name="brand"
+                  name="lotteryId"
                   className="form-control"
-                  value={formData.brand}
+                  value={formData.lotteryId}
                   onChange={handleInputChange}
-                  placeholder={t('PRIZES_ADMIN.placeholders.brand', 'Ej: Apple, Samsung, BMW')}
+                  placeholder={t('PRIZES_ADMIN.placeholders.lotteryId', 'UUID de la lotería (opcional)')}
                 />
-                <div className="form-text">{t('PRIZES_ADMIN.help.brand', 'Opcional: Marca del producto')}</div>
               </div>
 
+              {/* Opciones de Entrega */}
               <div className="col-md-6">
-                <label className="form-label fw-semibold">{t('PRIZES_ADMIN.fields.model', 'Modelo')}</label>
-                <input
-                  type="text"
-                  name="model"
-                  className="form-control"
-                  value={formData.model}
-                  onChange={handleInputChange}
-                  placeholder={t('PRIZES_ADMIN.placeholders.model', 'Ej: Pro Max, S24 Ultra')}
-                />
-                <div className="form-text">{t('PRIZES_ADMIN.help.model', 'Opcional: Modelo específico')}</div>
-              </div>
-
-              {/* Imagen del Premio */}
-              <div className="col-md-12">
-                <label className="form-label fw-semibold">
-                  {t('PRIZES_ADMIN.fields.image', 'Imagen del Premio')} <span className="text-danger">*</span>
-                </label>
-                <input
-                  type="file"
-                  name="image"
-                  className="form-control"
-                  onChange={handleImageChange}
-                  accept="image/*"
-                  required
-                />
-                <div className="form-text">
-                  {t('PRIZES_ADMIN.help.image', 'Tamaño recomendado: 800x800 píxeles. Formatos: JPG, PNG, WEBP')}
+                <div className="form-check form-switch">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    name="isDeliverable"
+                    id="isDeliverable"
+                    checked={formData.isDeliverable}
+                    onChange={handleInputChange}
+                  />
+                  <label className="form-check-label" htmlFor="isDeliverable">
+                    {t('PRIZES_ADMIN.fields.isDeliverable', 'Es entregable físicamente')}
+                  </label>
                 </div>
               </div>
 
-              {/* Preview de Imagen */}
-              {imagePreview && (
+              <div className="col-md-6">
+                <div className="form-check form-switch">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    name="isDigital"
+                    id="isDigital"
+                    checked={formData.isDigital}
+                    onChange={handleInputChange}
+                  />
+                  <label className="form-check-label" htmlFor="isDigital">
+                    {t('PRIZES_ADMIN.fields.isDigital', 'Es un producto digital')}
+                  </label>
+                </div>
+              </div>
+
+              {/* URL de Imagen Principal */}
+              <div className="col-md-12">
+                <label className="form-label fw-semibold">
+                  {t('PRIZES_ADMIN.fields.mainImageUrl', 'URL de Imagen Principal')}{' '}
+                  <span className="text-danger">*</span>
+                </label>
+                <input
+                  type="url"
+                  name="mainImageUrl"
+                  className="form-control"
+                  value={formData.mainImageUrl}
+                  onChange={e => handleMainImageUrlChange(e.target.value)}
+                  placeholder="https://example.com/image.jpg"
+                  required
+                />
+              </div>
+
+              {/* Preview de Imagen Principal */}
+              {formData.mainImageUrl && (
                 <div className="col-md-12">
                   <label className="form-label fw-semibold">{t('PRIZES_ADMIN.fields.preview', 'Vista Previa')}</label>
                   <div className="border rounded p-4 bg-light text-center">
                     <Image
-                      src={imagePreview}
+                      src={formData.mainImageUrl}
                       alt="Preview"
                       width={300}
                       height={300}
                       className="img-fluid rounded shadow-sm"
                       style={{ maxHeight: '300px', objectFit: 'contain' }}
+                      onError={e => {
+                        (e.target as HTMLImageElement).src = '/images/placeholder.jpg';
+                      }}
                     />
                     <div className="mt-3">
                       <h5 className="mb-1">{formData.name || 'Nombre del Premio'}</h5>
                       <p className="text-muted mb-2">{formData.description || 'Descripción'}</p>
                       <div className="d-flex gap-2 justify-content-center">
-                        <span className="badge bg-success fs-6 px-3 py-2">${formData.value.toLocaleString()}</span>
-                        <span className="badge bg-info fs-6 px-3 py-2">{formData.category}</span>
+                        <span className="badge bg-success fs-6 px-3 py-2">
+                          ${formData.estimatedValue.toLocaleString()}
+                        </span>
+                        <span className="badge bg-info fs-6 px-3 py-2">Tier {formData.tier}</span>
                       </div>
-                      {(formData.brand || formData.model) && (
-                        <div className="mt-2 text-muted small">
-                          {formData.brand} {formData.model}
-                        </div>
-                      )}
                     </div>
                   </div>
                 </div>
               )}
+
+              {/* Imágenes Adicionales */}
+              <div className="col-md-12">
+                <label className="form-label fw-semibold">
+                  {t('PRIZES_ADMIN.fields.additionalImages', 'Imágenes Adicionales')}
+                </label>
+                <div className="row g-2 mb-3">
+                  <div className="col-md-5">
+                    <input
+                      type="url"
+                      className="form-control"
+                      value={newAdditionalImageUrl}
+                      onChange={e => setNewAdditionalImageUrl(e.target.value)}
+                      placeholder="URL de imagen"
+                    />
+                  </div>
+                  <div className="col-md-5">
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={newAdditionalImageCaption}
+                      onChange={e => setNewAdditionalImageCaption(e.target.value)}
+                      placeholder="Descripción (opcional)"
+                    />
+                  </div>
+                  <div className="col-md-2">
+                    <button type="button" className="btn btn-outline-primary w-100" onClick={handleAddImage}>
+                      <i className="fas fa-plus"></i>
+                    </button>
+                  </div>
+                </div>
+                {formData.additionalImages.length > 0 && (
+                  <div className="d-flex flex-wrap gap-2">
+                    {formData.additionalImages.map((img, index) => (
+                      <div key={index} className="position-relative">
+                        <Image
+                          src={img.imageUrl}
+                          alt={img.caption || `Image ${index + 1}`}
+                          width={80}
+                          height={80}
+                          className="rounded"
+                          style={{ objectFit: 'cover' }}
+                        />
+                        <button
+                          type="button"
+                          className="btn btn-danger btn-sm position-absolute top-0 end-0"
+                          onClick={() => handleRemoveAdditionalImage(index)}
+                          style={{ transform: 'translate(25%, -25%)' }}
+                        >
+                          <i className="fas fa-times"></i>
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Especificaciones */}
+              <div className="col-md-12">
+                <label className="form-label fw-semibold">
+                  {t('PRIZES_ADMIN.fields.specifications', 'Especificaciones')}
+                </label>
+                <div className="row g-2 mb-3">
+                  <div className="col-md-5">
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={newSpecKey}
+                      onChange={e => setNewSpecKey(e.target.value)}
+                      placeholder="Nombre (ej: Color)"
+                    />
+                  </div>
+                  <div className="col-md-5">
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={newSpecValue}
+                      onChange={e => setNewSpecValue(e.target.value)}
+                      placeholder="Valor (ej: Negro)"
+                    />
+                  </div>
+                  <div className="col-md-2">
+                    <button type="button" className="btn btn-outline-primary w-100" onClick={handleAddSpecification}>
+                      <i className="fas fa-plus"></i>
+                    </button>
+                  </div>
+                </div>
+                {Object.keys(formData.specifications).length > 0 && (
+                  <div className="table-responsive">
+                    <table className="table table-sm table-bordered">
+                      <thead className="table-light">
+                        <tr>
+                          <th>{t('PRIZES_ADMIN.spec.name', 'Especificación')}</th>
+                          <th>{t('PRIZES_ADMIN.spec.value', 'Valor')}</th>
+                          <th style={{ width: '50px' }}></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {Object.entries(formData.specifications).map(([key, value]) => (
+                          <tr key={key}>
+                            <td>{key}</td>
+                            <td>{value}</td>
+                            <td>
+                              <button
+                                type="button"
+                                className="btn btn-sm btn-outline-danger"
+                                onClick={() => handleRemoveSpecification(key)}
+                              >
+                                <i className="fas fa-trash"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
 
               {/* Botones de Acción */}
               <div className="col-12">

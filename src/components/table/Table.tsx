@@ -15,8 +15,8 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map(row => (
-            <tr key={JSON.stringify(row)}>
+          {data.map((row, rowIndex) => (
+            <tr key={row.id ?? rowIndex}>
               {columns.map(col => (
                 <td key={col.key}>
                   <span className="n3-clr">{row[col.key]}</span>

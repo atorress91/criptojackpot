@@ -8,6 +8,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useNotificationStore } from '@/store/notificationStore';
 import { CreateTicketData } from '@/interfaces/ticket';
 import { Prize } from '@/interfaces/prize';
+import { PaginatedResponse } from '@/interfaces/paginatedResponse';
 import { getTicketService, getPrizeService } from '@/di/serviceLocator';
 
 export const useCreateTicketForm = () => {
@@ -16,13 +17,15 @@ export const useCreateTicketForm = () => {
   const showNotification = useNotificationStore(state => state.show);
 
   // Obtener lista de premios disponibles
-  const { data: prizes = [] } = useQuery<Prize[], Error>({
+  const { data: prizesResponse } = useQuery<PaginatedResponse<Prize>, Error>({
     queryKey: ['prizes'],
     queryFn: async () => {
       const prizeService = getPrizeService();
-      return prizeService.getPrizes();
+      return prizeService.getAllPrizes({ pageNumber: 1, pageSize: 100 });
     },
   });
+
+  const prizes = prizesResponse?.data || [];
 
   const [formData, setFormData] = useState<CreateTicketData>({
     name: '',

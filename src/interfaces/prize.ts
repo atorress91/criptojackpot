@@ -5,9 +5,22 @@ export enum PrizeType {
   Experience = 3,
 }
 
+export interface PrizeImage {
+  id: string;
+  imageUrl: string;
+  caption: string;
+  displayOrder: number;
+}
+
+export interface PrizeImageRequest {
+  imageUrl: string;
+  caption: string;
+  displayOrder: number;
+}
+
 export interface Prize {
   id: string;
-  lotteryId?: string;
+  lotteryId: string;
   tier: number;
   name: string;
   description: string;
@@ -19,13 +32,8 @@ export interface Prize {
   cashAlternative?: number;
   isDeliverable: boolean;
   isDigital: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface PrizeImage {
-  url: string;
-  description?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CreatePrizeRequest {
@@ -36,7 +44,7 @@ export interface CreatePrizeRequest {
   estimatedValue: number;
   type: PrizeType;
   mainImageUrl: string;
-  additionalImages: PrizeImage[];
+  additionalImages: PrizeImageRequest[];
   specifications: Record<string, string>;
   cashAlternative?: number;
   isDeliverable: boolean;

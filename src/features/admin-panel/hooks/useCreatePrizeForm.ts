@@ -3,32 +3,37 @@
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { useNotificationStore } from '@/store/notificationStore';
-import { CreatePrizeData } from '@/interfaces/prize';
+import { CreatePrizeRequest, PrizeType, PrizeImageRequest } from '@/interfaces/prize';
 import { getPrizeService } from '@/di/serviceLocator';
+import { CreatePrizeFormData } from '../types/createPrizeFormData';
+import { validateCreatePrizeForm } from '../validators/prizeValidations';
 
 export const useCreatePrizeForm = () => {
   const { t } = useTranslation();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const showNotification = useNotificationStore(state => state.show);
 
-  const [formData, setFormData] = useState<CreatePrizeData>({
+  const [formData, setFormData] = useState<CreatePrizeFormData>({
+    lotteryId: '',
+    tier: 1,
     name: '',
     description: '',
-    value: 0,
-    image: null,
-    category: 'electronics',
-    brand: '',
-    model: '',
+    estimatedValue: 0,
+    type: PrizeType.Physical,
+    mainImageUrl: '',
+    additionalImages: [],
     specifications: {},
+    cashAlternative: 0,
+    isDeliverable: true,
+    isDigital: false,
   });
 
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-
   const createPrizeMutation = useMutation({
-    mutationFn: async (data: FormData) => {
+    mutationFn: async (data: CreatePrizeRequest) => {
       const prizeService = getPrizeService();
       return prizeService.createPrize(data);
     },
@@ -38,6 +43,7 @@ export const useCreatePrizeForm = () => {
         t('PRIZES_ADMIN.create.success', 'Premio creado exitosamente'),
         t('PRIZES_ADMIN.create.successMessage', 'El premio se ha creado y está disponible')
       );
+      queryClient.invalidateQueries({ queryKey: ['prizes'] });
       setTimeout(() => {
         router.push('/admin/prizes');
       }, 1000);
@@ -55,111 +61,88 @@ export const useCreatePrizeForm = () => {
 
     if (type === 'number') {
       setFormData(prev => ({ ...prev, [name]: Number.parseFloat(value) || 0 }));
+    } else if (type === 'checkbox') {
+      const checked = (e.target as HTMLInputElement).checked;
+      setFormData(prev => ({ ...prev, [name]: checked }));
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      // Validar tipo de archivo
-      const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
-      if (!validTypes.includes(file.type)) {
-        showNotification(
-          'error',
-          t('COMMON.error', 'Error'),
-          t('PRIZES_ADMIN.errors.invalidImageType', 'Formato de imagen no válido. Use JPG, PNG o WEBP')
-        );
-        return;
-      }
+  const handleTypeChange = (type: PrizeType) => {
+    setFormData(prev => ({ ...prev, type }));
+  };
 
-      // Validar tamaño de archivo (max 5MB)
-      const maxSize = 5 * 1024 * 1024; // 5MB
-      if (file.size > maxSize) {
-        showNotification(
-          'error',
-          t('COMMON.error', 'Error'),
-          t('PRIZES_ADMIN.errors.imageTooLarge', 'La imagen es demasiado grande. Máximo 5MB')
-        );
-        return;
-      }
+  const handleMainImageUrlChange = (url: string) => {
+    setFormData(prev => ({ ...prev, mainImageUrl: url }));
+  };
 
-      setFormData(prev => ({ ...prev, image: file }));
+  const handleAddAdditionalImage = (image: PrizeImageRequest) => {
+    setFormData(prev => ({
+      ...prev,
+      additionalImages: [...prev.additionalImages, image],
+    }));
+  };
 
-      // Crear preview
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
+  const handleRemoveAdditionalImage = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      additionalImages: prev.additionalImages.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleSpecificationChange = (key: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      specifications: { ...prev.specifications, [key]: value },
+    }));
+  };
+
+  const handleRemoveSpecification = (key: string) => {
+    setFormData(prev => {
+      const newSpecs = { ...prev.specifications };
+      delete newSpecs[key];
+      return { ...prev, specifications: newSpecs };
+    });
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    // Validaciones
-    if (!formData.name.trim()) {
-      showNotification(
-        'error',
-        t('COMMON.error', 'Error'),
-        t('PRIZES_ADMIN.errors.nameRequired', 'El nombre es requerido')
-      );
+    if (!validateCreatePrizeForm(formData, t, showNotification)) {
       return;
     }
 
-    if (formData.value <= 0) {
-      showNotification(
-        'error',
-        t('COMMON.error', 'Error'),
-        t('PRIZES_ADMIN.errors.valueInvalid', 'El valor debe ser mayor a 0')
-      );
-      return;
-    }
+    // Preparar datos para enviar
+    const submitData: CreatePrizeRequest = {
+      lotteryId: formData.lotteryId || undefined,
+      tier: formData.tier,
+      name: formData.name,
+      description: formData.description,
+      estimatedValue: formData.estimatedValue,
+      type: formData.type,
+      mainImageUrl: formData.mainImageUrl,
+      additionalImages: formData.additionalImages,
+      specifications: formData.specifications,
+      cashAlternative: formData.cashAlternative || undefined,
+      isDeliverable: formData.isDeliverable,
+      isDigital: formData.isDigital,
+    };
 
-    if (!formData.image) {
-      showNotification(
-        'error',
-        t('COMMON.error', 'Error'),
-        t('PRIZES_ADMIN.errors.imageRequired', 'La imagen es requerida')
-      );
-      return;
-    }
-
-    // Preparar FormData para enviar
-    const submitData = new FormData();
-    submitData.append('name', formData.name);
-    submitData.append('description', formData.description);
-    submitData.append('value', formData.value.toString());
-    submitData.append('category', formData.category);
-
-    if (formData.brand) {
-      submitData.append('brand', formData.brand);
-    }
-
-    if (formData.model) {
-      submitData.append('model', formData.model);
-    }
-
-    if (formData.specifications && Object.keys(formData.specifications).length > 0) {
-      submitData.append('specifications', JSON.stringify(formData.specifications));
-    }
-
-    if (formData.image) {
-      submitData.append('image', formData.image);
-    }
-
-    // Enviar al servidor
     createPrizeMutation.mutate(submitData);
   };
 
   return {
     formData,
-    imagePreview,
     isSubmitting: createPrizeMutation.isPending,
     handleInputChange,
-    handleImageChange,
+    handleTypeChange,
+    handleMainImageUrlChange,
+    handleAddAdditionalImage,
+    handleRemoveAdditionalImage,
+    handleSpecificationChange,
+    handleRemoveSpecification,
     handleSubmit,
+    prizeTypes: PrizeType,
   };
 };
