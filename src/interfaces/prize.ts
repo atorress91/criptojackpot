@@ -1,37 +1,44 @@
+export enum PrizeType {
+  Cash = 0,
+  Physical = 1,
+  Digital = 2,
+  Experience = 3,
+}
+
 export interface Prize {
   id: string;
+  lotteryId?: string;
+  tier: number;
   name: string;
   description: string;
-  value: number;
-  imageUrl: string;
-  category: 'electronics' | 'jewelry' | 'vehicles' | 'real-estate' | 'luxury' | 'cash' | 'other';
-  brand?: string;
-  model?: string;
-  specifications?: Record<string, string>;
+  estimatedValue: number;
+  type: PrizeType;
+  mainImageUrl: string;
+  additionalImages: PrizeImage[];
+  specifications: Record<string, string>;
+  cashAlternative?: number;
+  isDeliverable: boolean;
+  isDigital: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface CreatePrizeData {
+export interface PrizeImage {
+  url: string;
+  description?: string;
+}
+
+export interface CreatePrizeRequest {
+  lotteryId?: string;
+  tier: number;
   name: string;
   description: string;
-  value: number;
-  image: File | null;
-  category: string;
-  brand?: string;
-  model?: string;
-  specifications?: Record<string, string>;
-}
-
-export interface UpdatePrizeData extends Partial<CreatePrizeData> {
-  id: string;
-}
-
-export interface PrizeFilters {
-  category?: string;
-  minValue?: number;
-  maxValue?: number;
-  page?: number;
-  limit?: number;
-  search?: string;
+  estimatedValue: number;
+  type: PrizeType;
+  mainImageUrl: string;
+  additionalImages: PrizeImage[];
+  specifications: Record<string, string>;
+  cashAlternative?: number;
+  isDeliverable: boolean;
+  isDigital: boolean;
 }
