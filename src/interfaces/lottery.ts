@@ -1,0 +1,68 @@
+export enum LotteryStatus {
+  Draft = 0,
+  Active = 1,
+  Paused = 2,
+  Completed = 3,
+  Cancelled = 4,
+}
+
+export enum LotteryType {
+  Standard = 0,
+  Instant = 1,
+  Daily = 2,
+  Weekly = 3,
+  Monthly = 4,
+}
+
+export interface Lottery {
+  id: string;
+  lotteryNo: string;
+  title: string;
+  description: string;
+  minNumber: number;
+  maxNumber: number;
+  totalSeries: number;
+  ticketPrice: number;
+  maxTickets: number;
+  soldTickets: number;
+  startDate: string;
+  endDate: string;
+  status: LotteryStatus;
+  type: LotteryType;
+  terms: string;
+  hasAgeRestriction: boolean;
+  minimumAge?: number;
+  restrictedCountries: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateLotteryRequest {
+  title: string;
+  description: string;
+  minNumber: number;
+  maxNumber: number;
+  totalSeries: number;
+  ticketPrice: number;
+  maxTickets: number;
+  startDate: string;
+  endDate: string;
+  status: number;
+  type: number;
+  terms: string;
+  hasAgeRestriction: boolean;
+  minimumAge?: number;
+  restrictedCountries: string[];
+}
+
+export interface UpdateLotteryRequest extends Partial<CreateLotteryRequest> {
+  id: string;
+}
+
+export interface LotteryFilters {
+  status?: LotteryStatus;
+  type?: LotteryType;
+  page?: number;
+  limit?: number;
+  search?: string;
+}

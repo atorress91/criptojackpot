@@ -10,6 +10,7 @@ import { DigitalOceanStorageService } from '@/services/digitalOceanStorageServic
 import { RoleService } from '@/services/roleService';
 import { TicketService } from '@/services/ticketService';
 import { PrizeService } from '@/services/prizeService';
+import { LotteryService } from '@/services/lotteryService';
 
 // Tipos de servicio para inyección
 export type ServiceType =
@@ -21,7 +22,8 @@ export type ServiceType =
   | 'DigitalOceanStorageService'
   | 'RoleService'
   | 'TicketService'
-  | 'PrizeService';
+  | 'PrizeService'
+  | 'LotteryService';
 
 /**
  * Función helper para obtener servicios del contenedor de DI
@@ -48,3 +50,4 @@ export const getDigitalOceanStorageService = (): DigitalOceanStorageService =>
 export const getRoleService = (): RoleService => container.resolve<RoleService>('RoleService');
 export const getTicketService = (): TicketService => container.resolve<TicketService>('TicketService');
 export const getPrizeService = (): PrizeService => container.resolve<PrizeService>('PrizeService');
+export const getLotteryService = (): LotteryService => container.resolve<LotteryService>('LotteryService');

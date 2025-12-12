@@ -6,10 +6,31 @@ import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { useNotificationStore } from '@/store/notificationStore';
-import { CreateTicketData } from '@/interfaces/ticket';
 import { Prize } from '@/interfaces/prize';
 import { PaginatedResponse } from '@/interfaces/paginatedResponse';
-import { getTicketService, getPrizeService } from '@/di/serviceLocator';
+import { getLotteryService, getPrizeService } from '@/di/serviceLocator';
+import { CreateLotteryRequest, LotteryStatus, LotteryType } from '@/interfaces/lottery';
+
+// Interface para el formulario del frontend (mantiene compatibilidad con UI existente)
+export interface CreateTicketFormData {
+  name: string;
+  description: string;
+  price: number;
+  drawDate: string;
+  drawTime: string;
+  totalTickets: number;
+  status: 'active' | 'upcoming';
+  prizeId?: string;
+  // Campos adicionales para lottery
+  minNumber: number;
+  maxNumber: number;
+  totalSeries: number;
+  terms: string;
+  type: LotteryType;
+  hasAgeRestriction: boolean;
+  minimumAge?: number;
+  restrictedCountries: string[];
+}
 
 export const useCreateTicketForm = () => {
   const { t } = useTranslation();
@@ -27,7 +48,7 @@ export const useCreateTicketForm = () => {
 
   const prizes = prizesResponse?.data || [];
 
-  const [formData, setFormData] = useState<CreateTicketData>({
+  const [formData, setFormData] = useState<CreateTicketFormData>({
     name: '',
     description: '',
     price: 0,
@@ -36,18 +57,27 @@ export const useCreateTicketForm = () => {
     totalTickets: 0,
     status: 'active',
     prizeId: undefined,
+    // Valores por defecto para campos de lottery
+    minNumber: 1,
+    maxNumber: 49,
+    totalSeries: 1,
+    terms: 'Términos y condiciones estándar del sorteo.',
+    type: LotteryType.Standard,
+    hasAgeRestriction: true,
+    minimumAge: 18,
+    restrictedCountries: [],
   });
 
-  const createTicketMutation = useMutation({
-    mutationFn: async (data: FormData) => {
-      const ticketService = getTicketService();
-      return ticketService.createTicket(data);
+  const createLotteryMutation = useMutation({
+    mutationFn: async (data: CreateLotteryRequest) => {
+      const lotteryService = getLotteryService();
+      return lotteryService.createLottery(data);
     },
     onSuccess: () => {
       showNotification(
         'success',
-        t('TICKETS_ADMIN.create.success', 'Ticket creado exitosamente'),
-        t('TICKETS_ADMIN.create.successMessage', 'El ticket se ha creado y está disponible')
+        t('TICKETS_ADMIN.create.success', 'Lotería creada exitosamente'),
+        t('TICKETS_ADMIN.create.successMessage', 'La lotería se ha creado y está disponible')
       );
       setTimeout(() => {
         router.push('/admin/tickets');
@@ -55,16 +85,18 @@ export const useCreateTicketForm = () => {
     },
     onError: (error: any) => {
       const errorMessage =
-        error?.response?.data?.message ||
-        t('TICKETS_ADMIN.create.error', 'Error al crear el ticket. Intente nuevamente.');
+        error?.message || t('TICKETS_ADMIN.create.error', 'Error al crear la lotería. Intente nuevamente.');
       showNotification('error', t('COMMON.error', 'Error'), errorMessage);
     },
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
+    const checked = (e.target as HTMLInputElement).checked;
 
-    if (type === 'number') {
+    if (type === 'checkbox') {
+      setFormData(prev => ({ ...prev, [name]: checked }));
+    } else if (type === 'number') {
       setFormData(prev => ({ ...prev, [name]: Number.parseFloat(value) || 0 }));
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
@@ -80,6 +112,15 @@ export const useCreateTicketForm = () => {
         'error',
         t('COMMON.error', 'Error'),
         t('TICKETS_ADMIN.errors.nameRequired', 'El nombre es requerido')
+      );
+      return;
+    }
+
+    if (!formData.description.trim()) {
+      showNotification(
+        'error',
+        t('COMMON.error', 'Error'),
+        t('TICKETS_ADMIN.errors.descriptionRequired', 'La descripción es requerida')
       );
       return;
     }
@@ -132,38 +173,45 @@ export const useCreateTicketForm = () => {
       return;
     }
 
-    if (!formData.prizeId) {
-      showNotification(
-        'error',
-        t('COMMON.error', 'Error'),
-        t('TICKETS_ADMIN.errors.prizeRequired', 'El premio es requerido')
-      );
-      return;
-    }
+    // Calcular fecha de inicio (10 minutos en el futuro para asegurar que pase validación UTC)
+    const startDate = new Date(Date.now() + 10 * 60 * 1000);
+    const endDate = drawDateTime;
 
-    // Preparar FormData para enviar
-    const submitData = new FormData();
-    submitData.append('name', formData.name);
-    submitData.append('description', formData.description);
-    submitData.append('price', formData.price.toString());
-    submitData.append('totalTickets', formData.totalTickets.toString());
-    submitData.append('drawDate', formData.drawDate);
-    submitData.append('drawTime', formData.drawTime);
-    submitData.append('status', formData.status);
+    // Mapear status del frontend al enum del backend
+    // 0 = Draft, 1 = Active, 2 = Paused, 3 = Completed, 4 = Cancelled
+    // Probamos con Draft (0) ya que Active (1) puede tener restricciones adicionales
+    const lotteryStatus = 0; // Draft - para probar
 
-    if (formData.prizeId) {
-      submitData.append('prizeId', formData.prizeId);
-    }
+    // Preparar datos para el backend de Lottery
+    const submitData: CreateLotteryRequest = {
+      title: formData.name,
+      description: formData.description,
+      minNumber: formData.minNumber,
+      maxNumber: formData.maxNumber,
+      totalSeries: formData.totalSeries,
+      ticketPrice: formData.price,
+      maxTickets: formData.totalTickets,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+      status: lotteryStatus,
+      type: 0, // Standard
+      terms: formData.terms,
+      hasAgeRestriction: formData.hasAgeRestriction,
+      minimumAge: formData.hasAgeRestriction ? formData.minimumAge : undefined,
+      restrictedCountries: formData.restrictedCountries,
+    };
+
+    console.log('Submitting lottery data:', JSON.stringify(submitData, null, 2));
 
     // Enviar al servidor
-    createTicketMutation.mutate(submitData);
+    createLotteryMutation.mutate(submitData);
   };
 
   return {
     formData,
     prizes,
     selectedPrize: prizes.find(p => p.id === formData.prizeId),
-    isSubmitting: createTicketMutation.isPending,
+    isSubmitting: createLotteryMutation.isPending,
     handleInputChange,
     handleSubmit,
   };
