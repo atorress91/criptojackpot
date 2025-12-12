@@ -58,7 +58,7 @@ const LotteriesList: React.FC = () => {
   };
 
   const handleDelete = (id: string) => {
-    if (window.confirm(t('LOTTERY_ADMIN.delete.confirm', '¿Estás seguro de eliminar esta lotería?'))) {
+    if (globalThis.confirm(t('LOTTERY_ADMIN.delete.confirm', '¿Estás seguro de eliminar esta lotería?'))) {
       deleteLottery(id);
     }
   };
