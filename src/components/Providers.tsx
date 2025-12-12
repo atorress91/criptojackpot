@@ -9,7 +9,7 @@ import { NotificationProvider } from '@/components/notification/NotificationProv
 import { DIProvider } from '@/components/DIProvider';
 import { ProvidersProps } from '@/interfaces/providersProps';
 
-export default function Providers({ children }: ProvidersProps) {
+export default function Providers({ children }: Readonly<ProvidersProps>) {
   const [queryClient] = useState(
     () =>
       new QueryClient({
