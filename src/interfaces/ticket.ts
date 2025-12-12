@@ -5,7 +5,6 @@ export interface Ticket {
   name: string;
   description: string;
   price: number;
-  imageUrl: string;
   drawDate: Date;
   drawTime: string;
   totalTickets: number;
@@ -14,7 +13,7 @@ export interface Ticket {
   percentageSold: number;
   status: 'active' | 'closed' | 'upcoming' | 'completed';
   prizeId?: string;
-  prize?: Prize; // Información del premio asociado
+  prize?: Prize; // Información del premio asociado (incluye mainImageUrl)
   createdAt: Date;
   updatedAt: Date;
 }
@@ -23,12 +22,11 @@ export interface CreateTicketData {
   name: string;
   description: string;
   price: number;
-  image: File | null;
   drawDate: string;
   drawTime: string;
   totalTickets: number;
   status: 'active' | 'upcoming';
-  prizeId?: string; // ID del premio asociado
+  prizeId?: string; // ID del premio asociado (la imagen se hereda del premio)
 }
 
 export interface UpdateTicketData extends Partial<CreateTicketData> {

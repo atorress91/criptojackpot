@@ -31,15 +31,12 @@ export const useCreateTicketForm = () => {
     name: '',
     description: '',
     price: 0,
-    image: null,
     drawDate: '',
     drawTime: '',
     totalTickets: 0,
     status: 'active',
     prizeId: undefined,
   });
-
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const createTicketMutation = useMutation({
     mutationFn: async (data: FormData) => {
@@ -71,42 +68,6 @@ export const useCreateTicketForm = () => {
       setFormData(prev => ({ ...prev, [name]: Number.parseFloat(value) || 0 }));
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
-    }
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      // Validar tipo de archivo
-      const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
-      if (!validTypes.includes(file.type)) {
-        showNotification(
-          'error',
-          t('COMMON.error', 'Error'),
-          t('TICKETS_ADMIN.errors.invalidImageType', 'Formato de imagen no válido. Use JPG, PNG o WEBP')
-        );
-        return;
-      }
-
-      // Validar tamaño de archivo (max 5MB)
-      const maxSize = 5 * 1024 * 1024; // 5MB
-      if (file.size > maxSize) {
-        showNotification(
-          'error',
-          t('COMMON.error', 'Error'),
-          t('TICKETS_ADMIN.errors.imageTooLarge', 'La imagen es demasiado grande. Máximo 5MB')
-        );
-        return;
-      }
-
-      setFormData(prev => ({ ...prev, image: file }));
-
-      // Crear preview
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
     }
   };
 
@@ -171,11 +132,11 @@ export const useCreateTicketForm = () => {
       return;
     }
 
-    if (!formData.image) {
+    if (!formData.prizeId) {
       showNotification(
         'error',
         t('COMMON.error', 'Error'),
-        t('TICKETS_ADMIN.errors.imageRequired', 'La imagen es requerida')
+        t('TICKETS_ADMIN.errors.prizeRequired', 'El premio es requerido')
       );
       return;
     }
@@ -194,10 +155,6 @@ export const useCreateTicketForm = () => {
       submitData.append('prizeId', formData.prizeId);
     }
 
-    if (formData.image) {
-      submitData.append('image', formData.image);
-    }
-
     // Enviar al servidor
     createTicketMutation.mutate(submitData);
   };
@@ -205,10 +162,9 @@ export const useCreateTicketForm = () => {
   return {
     formData,
     prizes,
-    imagePreview,
+    selectedPrize: prizes.find(p => p.id === formData.prizeId),
     isSubmitting: createTicketMutation.isPending,
     handleInputChange,
-    handleImageChange,
     handleSubmit,
   };
 };

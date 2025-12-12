@@ -8,13 +8,9 @@ import Image from 'next/image';
 import { AlertTriangle, Clock, Ticket } from 'lucide-react';
 
 const CreateTicket: React.FC = () => {
-  const { formData, prizes, imagePreview, isSubmitting, handleInputChange, handleImageChange, handleSubmit } =
-    useCreateTicketForm();
+  const { formData, prizes, selectedPrize, isSubmitting, handleInputChange, handleSubmit } = useCreateTicketForm();
 
   const { t } = useTranslation();
-
-  // Encontrar el premio seleccionado para mostrar info
-  const selectedPrize = prizes?.find(p => p.id === formData.prizeId);
 
   return (
     <div className="col-lg-9">
@@ -201,39 +197,30 @@ const CreateTicket: React.FC = () => {
                 </div>
               </div>
 
-              {/* Imagen del Ticket */}
-              <div className="col-md-12">
-                <label className="form-label fw-semibold">
-                  {t('TICKETS_ADMIN.fields.image', 'Imagen del Ticket')} <span className="text-danger">*</span>
-                </label>
-                <input
-                  type="file"
-                  name="image"
-                  className="form-control"
-                  onChange={handleImageChange}
-                  accept="image/*"
-                  required
-                />
-                <div className="form-text">
-                  {t('TICKETS_ADMIN.help.image', 'Tamaño recomendado: 368x383 píxeles. Formatos: JPG, PNG, WEBP')}
-                </div>
-              </div>
-
-              {/* Preview de Imagen */}
-              {imagePreview && (
+              {/* Preview del Ticket (usando imagen del premio) */}
+              {selectedPrize && (
                 <div className="col-md-12">
                   <label className="form-label fw-semibold">{t('TICKETS_ADMIN.fields.preview', 'Vista Previa')}</label>
                   <div className="border rounded p-3 bg-light">
                     <div className="row align-items-center">
                       <div className="col-md-4">
-                        <Image
-                          src={imagePreview}
-                          alt="Preview"
-                          width={368}
-                          height={383}
-                          className="img-fluid rounded"
-                          style={{ maxHeight: '300px', objectFit: 'cover' }}
-                        />
+                        {selectedPrize.mainImageUrl ? (
+                          <Image
+                            src={selectedPrize.mainImageUrl}
+                            alt={selectedPrize.name}
+                            width={368}
+                            height={383}
+                            className="img-fluid rounded"
+                            style={{ maxHeight: '300px', objectFit: 'cover' }}
+                          />
+                        ) : (
+                          <div
+                            className="bg-secondary rounded d-flex align-items-center justify-content-center"
+                            style={{ height: '200px' }}
+                          >
+                            <span className="text-white">{t('TICKETS_ADMIN.noImage', 'Sin imagen')}</span>
+                          </div>
+                        )}
                       </div>
                       <div className="col-md-8">
                         <div className="ticket-preview-info">
@@ -259,6 +246,11 @@ const CreateTicket: React.FC = () => {
                           </div>
                           <div className="badge bg-info">
                             {formData.status === 'active' ? 'Activo' : 'Próximamente'}
+                          </div>
+                          <div className="mt-2">
+                            <small className="text-muted">
+                              {t('TICKETS_ADMIN.help.imageFromPrize', 'La imagen se hereda del premio seleccionado')}
+                            </small>
                           </div>
                         </div>
                       </div>
