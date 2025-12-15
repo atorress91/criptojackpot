@@ -9,7 +9,6 @@ import { TokenService } from '@/services/tokenService';
 import { UserReferralService } from '@/services/userReferralService';
 import { DigitalOceanStorageService } from '@/services/digitalOceanStorageService';
 import { RoleService } from '@/services/roleService';
-import { TicketService } from '@/services/ticketService';
 import { PrizeService } from '@/services/prizeService';
 import { LotteryService } from '@/services/lotteryService';
 
@@ -23,7 +22,6 @@ export function initializeContainer() {
   container.registerSingleton<UserReferralService>('UserReferralService', UserReferralService);
   container.registerSingleton<DigitalOceanStorageService>('DigitalOceanStorageService', DigitalOceanStorageService);
   container.registerSingleton<RoleService>('RoleService', RoleService);
-  container.registerSingleton<TicketService>('TicketService', TicketService);
   container.registerSingleton<PrizeService>('PrizeService', PrizeService);
   container.registerSingleton<LotteryService>('LotteryService', LotteryService);
 }

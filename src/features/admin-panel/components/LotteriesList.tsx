@@ -3,39 +3,49 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
-import { useTickets } from '@/features/admin-panel/hooks';
-import { Lottery } from '@/interfaces/lottery';
+import { useLotteries } from '@/features/admin-panel/hooks';
+import { Lottery, LotteryStatus } from '@/interfaces/lottery';
 import Image from 'next/image';
 import { Plus, Pencil, Trash2, Ticket as TicketIcon, Calendar, Clock } from 'lucide-react';
 
 const LotteriesList: React.FC = () => {
   const { t } = useTranslation();
-  const { tickets, isLoading, deleteTicket, isDeleting } = useTickets();
+  const { lotteries, isLoading, deleteLottery, isDeleting } = useLotteries();
 
-  const handleDelete = async (id: string, name: string) => {
-    if (globalThis.confirm(t('TICKETS_ADMIN.confirmDelete', `¿Estás seguro de eliminar el ticket "${name}"?`))) {
-      deleteTicket(id);
+  const handleDelete = async (id: string, title: string) => {
+    if (globalThis.confirm(t('TICKETS_ADMIN.confirmDelete', `¿Estás seguro de eliminar la lotería "${title}"?`))) {
+      deleteLottery(id);
     }
   };
 
-  const getStatusBadge = (status: string) => {
-    const badges: Record<string, string> = {
-      active: 'badge bg-success',
-      closed: 'badge bg-secondary',
-      upcoming: 'badge bg-info',
-      completed: 'badge bg-primary',
+  const getStatusBadge = (status: LotteryStatus) => {
+    const badges: Record<LotteryStatus, string> = {
+      [LotteryStatus.Draft]: 'badge bg-secondary',
+      [LotteryStatus.Active]: 'badge bg-success',
+      [LotteryStatus.Paused]: 'badge bg-warning',
+      [LotteryStatus.Completed]: 'badge bg-primary',
+      [LotteryStatus.Cancelled]: 'badge bg-danger',
     };
     return badges[status] || 'badge bg-secondary';
   };
 
-  const getStatusText = (status: string) => {
-    const texts: Record<string, string> = {
-      active: t('TICKETS_ADMIN.status.active', 'Activo'),
-      closed: t('TICKETS_ADMIN.status.closed', 'Cerrado'),
-      upcoming: t('TICKETS_ADMIN.status.upcoming', 'Próximamente'),
-      completed: t('TICKETS_ADMIN.status.completed', 'Completado'),
+  const getStatusText = (status: LotteryStatus) => {
+    const texts: Record<LotteryStatus, string> = {
+      [LotteryStatus.Draft]: t('TICKETS_ADMIN.status.draft', 'Borrador'),
+      [LotteryStatus.Active]: t('TICKETS_ADMIN.status.active', 'Activo'),
+      [LotteryStatus.Paused]: t('TICKETS_ADMIN.status.paused', 'Pausado'),
+      [LotteryStatus.Completed]: t('TICKETS_ADMIN.status.completed', 'Completado'),
+      [LotteryStatus.Cancelled]: t('TICKETS_ADMIN.status.cancelled', 'Cancelado'),
     };
-    return texts[status] || status;
+    return texts[status] || String(status);
+  };
+
+  // Obtener la imagen del primer premio o placeholder
+  const getPrizeImage = (lottery: Lottery): string => {
+    if (lottery.prizes && lottery.prizes.length > 0 && lottery.prizes[0].mainImageUrl) {
+      return lottery.prizes[0].mainImageUrl;
+    }
+    return '/images/placeholder.jpg';
   };
 
   if (isLoading) {
@@ -68,7 +78,7 @@ const LotteriesList: React.FC = () => {
             <h5 className="mb-0">{t('TICKETS_ADMIN.list.title', 'Lista de Tickets de Sorteo')}</h5>
           </div>
           <div className="card-body p-0">
-            {tickets && tickets.length > 0 ? (
+            {lotteries && lotteries.length > 0 ? (
               <div className="table-responsive">
                 <table className="table table-hover mb-0">
                   <thead className="table-light">
@@ -85,91 +95,97 @@ const LotteriesList: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {tickets.map((ticket: Lottery) => (
-                      <tr key={ticket.id}>
-                        <td>
-                          <Image
-                            src={ticket.imageUrl || '/images/placeholder.jpg'}
-                            alt={ticket.name}
-                            width={80}
-                            height={80}
-                            className="rounded"
-                            style={{ objectFit: 'cover' }}
-                          />
-                        </td>
-                        <td>
-                          <div className="fw-semibold">{ticket.name}</div>
-                          <small className="text-muted">{ticket.description?.substring(0, 50)}...</small>
-                        </td>
-                        <td>
-                          {ticket.prize ? (
+                    {lotteries.map((lottery: Lottery) => {
+                      const percentageSold =
+                        lottery.maxTickets > 0 ? Math.round((lottery.soldTickets / lottery.maxTickets) * 100) : 0;
+                      const mainPrize = lottery.prizes?.[0];
+
+                      return (
+                        <tr key={lottery.id}>
+                          <td>
+                            <Image
+                              src={getPrizeImage(lottery)}
+                              alt={lottery.title}
+                              width={80}
+                              height={80}
+                              className="rounded"
+                              style={{ objectFit: 'cover' }}
+                            />
+                          </td>
+                          <td>
+                            <div className="fw-semibold">{lottery.title}</div>
+                            <small className="text-muted">{lottery.description?.substring(0, 50)}...</small>
+                          </td>
+                          <td>
+                            {mainPrize ? (
+                              <div>
+                                <div className="fw-semibold text-primary">{mainPrize.name}</div>
+                                <small className="text-muted">${mainPrize.cashAlternative?.toLocaleString()}</small>
+                              </div>
+                            ) : (
+                              <span className="text-muted">-</span>
+                            )}
+                          </td>
+                          <td>
+                            <span className="fw-bold text-success">${lottery.ticketPrice.toFixed(2)}</span>
+                            <br />
+                            <small className="text-muted">por entrada</small>
+                          </td>
+                          <td>
                             <div>
-                              <div className="fw-semibold text-primary">{ticket.prize.name}</div>
-                              <small className="text-muted">${ticket.prize.value.toLocaleString()}</small>
+                              <Calendar size={14} className="me-1" />
+                              {new Date(lottery.endDate).toLocaleDateString()}
                             </div>
-                          ) : (
-                            <span className="text-muted">-</span>
-                          )}
-                        </td>
-                        <td>
-                          <span className="fw-bold text-success">${ticket.price.toFixed(2)}</span>
-                          <br />
-                          <small className="text-muted">por entrada</small>
-                        </td>
-                        <td>
-                          <div>
-                            <Calendar size={14} className="me-1" />
-                            {new Date(ticket.drawDate).toLocaleDateString()}
-                          </div>
-                          <small className="text-muted">
-                            <Clock size={12} className="me-1" />
-                            {ticket.drawTime}
-                          </small>
-                        </td>
-                        <td>
-                          <span className="badge bg-light text-dark">{ticket.totalTickets}</span>
-                        </td>
-                        <td>
-                          <div className="d-flex flex-column gap-1">
-                            <div>
-                              <span className="fw-semibold">{ticket.soldTickets}</span>
-                              <small className="text-muted"> / {ticket.totalTickets}</small>
+                            <small className="text-muted">
+                              <Clock size={12} className="me-1" />
+                              {new Date(lottery.endDate).toLocaleTimeString()}
+                            </small>
+                          </td>
+                          <td>
+                            <span className="badge bg-light text-dark">{lottery.maxTickets}</span>
+                          </td>
+                          <td>
+                            <div className="d-flex flex-column gap-1">
+                              <div>
+                                <span className="fw-semibold">{lottery.soldTickets}</span>
+                                <small className="text-muted"> / {lottery.maxTickets}</small>
+                              </div>
+                              <div className="progress" style={{ height: '8px' }}>
+                                <div
+                                  className="progress-bar"
+                                  style={{ width: `${percentageSold}%` }}
+                                  aria-label={`${percentageSold}% vendido`}
+                                />
+                              </div>
+                              <small className="text-muted">{percentageSold}%</small>
                             </div>
-                            <div className="progress" style={{ height: '8px' }}>
-                              <div
-                                className="progress-bar"
-                                style={{ width: `${ticket.percentageSold}%` }}
-                                aria-label={`${ticket.percentageSold}% vendido`}
-                              />
+                          </td>
+                          <td>
+                            <span className={getStatusBadge(lottery.status)}>{getStatusText(lottery.status)}</span>
+                          </td>
+                          <td>
+                            <div className="btn-group btn-group-sm">
+                              <Link
+                                href={`/admin/lotteries/${lottery.id}/edit`}
+                                className="btn btn-outline-primary"
+                                title={t('COMMON.edit', 'Editar')}
+                              >
+                                <Pencil size={14} />
+                              </Link>
+                              <button
+                                type="button"
+                                className="btn btn-outline-danger"
+                                onClick={() => handleDelete(lottery.id, lottery.title)}
+                                disabled={isDeleting}
+                                title={t('COMMON.delete', 'Eliminar')}
+                              >
+                                <Trash2 size={14} />
+                              </button>
                             </div>
-                            <small className="text-muted">{ticket.percentageSold}%</small>
-                          </div>
-                        </td>
-                        <td>
-                          <span className={getStatusBadge(ticket.status)}>{getStatusText(ticket.status)}</span>
-                        </td>
-                        <td>
-                          <div className="btn-group btn-group-sm">
-                            <Link
-                              href={`/admin/tickets/${ticket.id}/edit`}
-                              className="btn btn-outline-primary"
-                              title={t('COMMON.edit', 'Editar')}
-                            >
-                              <Pencil size={14} />
-                            </Link>
-                            <button
-                              type="button"
-                              className="btn btn-outline-danger"
-                              onClick={() => handleDelete(ticket.id, ticket.name)}
-                              disabled={isDeleting}
-                              title={t('COMMON.delete', 'Eliminar')}
-                            >
-                              <Trash2 size={14} />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>

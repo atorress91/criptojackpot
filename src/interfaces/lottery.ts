@@ -2,20 +2,26 @@ import { Prize } from './prize';
 
 export interface Lottery {
   id: string;
-  name: string;
+  lotteryNo: string;
+  title: string;
   description: string;
-  price: number;
-  drawDate: Date;
-  drawTime: string;
-  totalTickets: number;
+  minNumber: number;
+  maxNumber: number;
+  totalSeries: number;
+  ticketPrice: number;
+  maxTickets: number;
   soldTickets: number;
-  remainingTickets: number;
-  percentageSold: number;
-  status: 'active' | 'closed' | 'upcoming' | 'completed';
-  prizeId?: string;
-  prize?: Prize; // Información del premio asociado (incluye mainImageUrl)
-  createdAt: Date;
-  updatedAt: Date;
+  startDate: string;
+  endDate: string;
+  status: LotteryStatus;
+  type: LotteryType;
+  terms: string;
+  hasAgeRestriction: boolean;
+  minimumAge?: number;
+  restrictedCountries: string[];
+  prizes: Prize[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export enum LotteryType {
