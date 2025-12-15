@@ -3,7 +3,7 @@
 import LotteriesList from '@/features/admin-panel/components/LotteriesList';
 import { AuthGuard } from '@/components/AuthGuard';
 
-const LotteriesPage = () => {
+const TicketsPage = () => {
   return (
     <AuthGuard requireAuth={true} requiredRole="admin">
       <LotteriesList />
@@ -11,4 +11,4 @@ const LotteriesPage = () => {
   );
 };
 
-export default LotteriesPage;
+export default TicketsPage;

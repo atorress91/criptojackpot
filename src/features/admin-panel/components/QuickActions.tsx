@@ -19,9 +19,9 @@ const QuickActions = () => {
             </Link>
           </div>
           <div className="col-md-3">
-            <Link href="/admin/tickets" className="btn btn-outline-success w-100">
+            <Link href="/admin/lotteries" className="btn btn-outline-success w-100">
               <Ticket className="me-2" size={20} />
-              Ver Tickets
+              Ver Loterías
             </Link>
           </div>
           <div className="col-md-3">

@@ -47,7 +47,7 @@ export const useLotteries = (initialPagination?: PaginationRequest) => {
         t('LOTTERY_ADMIN.delete.success', 'Lotería eliminada'),
         t('LOTTERY_ADMIN.delete.successMessage', 'La lotería se ha eliminado correctamente')
       );
-      queryClient.invalidateQueries({ queryKey: ['lotteries'] });
+      queryClient.invalidateQueries({ queryKey: ['lotteries'] }).then();
     },
     onError: (error: any) => {
       const errorMessage =
@@ -68,7 +68,7 @@ export const useLotteries = (initialPagination?: PaginationRequest) => {
         t('LOTTERY_ADMIN.updateStatus.success', 'Estado actualizado'),
         t('LOTTERY_ADMIN.updateStatus.successMessage', 'El estado de la lotería se ha actualizado')
       );
-      queryClient.invalidateQueries({ queryKey: ['lotteries'] });
+      queryClient.invalidateQueries({ queryKey: ['lotteries'] }).then();
     },
     onError: (error: any) => {
       const errorMessage =

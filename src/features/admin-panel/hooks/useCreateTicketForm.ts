@@ -6,33 +6,13 @@ import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { useNotificationStore } from '@/store/notificationStore';
+import { LotteryType, CreateLotteryRequest } from '@/interfaces/lottery';
 import { Prize } from '@/interfaces/prize';
 import { PaginatedResponse } from '@/interfaces/paginatedResponse';
 import { getLotteryService, getPrizeService } from '@/di/serviceLocator';
-import { CreateLotteryRequest, LotteryStatus, LotteryType } from '@/interfaces/lottery';
+import { CreateTicketFormData, UseCreateTicketFormReturn } from '../types/createTicketForm';
 
-// Interface para el formulario del frontend (mantiene compatibilidad con UI existente)
-export interface CreateTicketFormData {
-  name: string;
-  description: string;
-  price: number;
-  drawDate: string;
-  drawTime: string;
-  totalTickets: number;
-  status: 'active' | 'upcoming';
-  prizeId?: string;
-  // Campos adicionales para lottery
-  minNumber: number;
-  maxNumber: number;
-  totalSeries: number;
-  terms: string;
-  type: LotteryType;
-  hasAgeRestriction: boolean;
-  minimumAge?: number;
-  restrictedCountries: string[];
-}
-
-export const useCreateTicketForm = () => {
+export const useCreateTicketForm = (): UseCreateTicketFormReturn => {
   const { t } = useTranslation();
   const router = useRouter();
   const showNotification = useNotificationStore(state => state.show);
@@ -178,11 +158,9 @@ export const useCreateTicketForm = () => {
     const endDate = drawDateTime;
 
     // Mapear status del frontend al enum del backend
-    // 0 = Draft, 1 = Active, 2 = Paused, 3 = Completed, 4 = Cancelled
-    // Probamos con Draft (0) ya que Active (1) puede tener restricciones adicionales
-    const lotteryStatus = 0; // Draft - para probar
+    const lotteryStatus = 0;
 
-    // Preparar datos para el backend de Lottery
+    // Preparar datos
     const submitData: CreateLotteryRequest = {
       title: formData.name,
       description: formData.description,

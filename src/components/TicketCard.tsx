@@ -1,10 +1,10 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Ticket } from '@/interfaces/ticket';
+import { Lottery } from '@/interfaces/lottery';
 
 interface TicketCardProps {
-  ticket: Ticket;
+  ticket: Lottery;
   onAddToCart?: (ticketId: string) => void;
   onBookmark?: (ticketId: string) => void;
 }

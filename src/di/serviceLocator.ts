@@ -8,7 +8,6 @@ import { TokenService } from '@/services/tokenService';
 import { UserReferralService } from '@/services/userReferralService';
 import { DigitalOceanStorageService } from '@/services/digitalOceanStorageService';
 import { RoleService } from '@/services/roleService';
-import { TicketService } from '@/services/ticketService';
 import { PrizeService } from '@/services/prizeService';
 import { LotteryService } from '@/services/lotteryService';
 
@@ -21,7 +20,6 @@ export type ServiceType =
   | 'UserReferralService'
   | 'DigitalOceanStorageService'
   | 'RoleService'
-  | 'TicketService'
   | 'PrizeService'
   | 'LotteryService';
 
@@ -48,6 +46,5 @@ export const getUserReferralService = (): UserReferralService =>
 export const getDigitalOceanStorageService = (): DigitalOceanStorageService =>
   container.resolve<DigitalOceanStorageService>('DigitalOceanStorageService');
 export const getRoleService = (): RoleService => container.resolve<RoleService>('RoleService');
-export const getTicketService = (): TicketService => container.resolve<TicketService>('TicketService');
 export const getPrizeService = (): PrizeService => container.resolve<PrizeService>('PrizeService');
 export const getLotteryService = (): LotteryService => container.resolve<LotteryService>('LotteryService');

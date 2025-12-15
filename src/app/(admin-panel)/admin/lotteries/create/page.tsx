@@ -3,7 +3,7 @@
 import CreateLottery from '@/features/admin-panel/components/CreateLottery';
 import { AuthGuard } from '@/components/AuthGuard';
 
-const CreateLotteryPage = () => {
+const CreateTicketPage = () => {
   return (
     <AuthGuard requireAuth={true} requiredRole="admin">
       <CreateLottery />
@@ -11,4 +11,4 @@ const CreateLotteryPage = () => {
   );
 };
 
-export default CreateLotteryPage;
+export default CreateTicketPage;
