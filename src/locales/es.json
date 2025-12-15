@@ -231,22 +231,22 @@
     "delete": "Eliminar",
     "error": "Error"
   },
-  "TICKETS_ADMIN": {
-    "title": "Gestión de Tickets",
+  "LOTTERIES_ADMIN": {
+    "title": "Gestión de Loterías",
     "create": {
-      "title": "Crear Ticket",
-      "formTitle": "Nuevo Ticket de Sorteo",
-      "button": "Crear Ticket",
-      "submit": "Crear Ticket",
-      "success": "Ticket creado exitosamente",
-      "successMessage": "El ticket se ha creado y está disponible",
-      "error": "Error al crear el ticket. Intente nuevamente."
+      "title": "Crear Lotería",
+      "formTitle": "Nueva Lotería",
+      "button": "Crear Lotería",
+      "submit": "Crear Lotería",
+      "success": "Lotería creada exitosamente",
+      "successMessage": "La lotería se ha creado y está disponible",
+      "error": "Error al crear la lotería. Intente nuevamente."
     },
     "list": {
-      "title": "Lista de Tickets de Sorteo"
+      "title": "Lista de Loterías"
     },
     "fields": {
-      "name": "Nombre del Ticket",
+      "name": "Nombre de la Lotería",
       "description": "Descripción",
       "price": "Precio por Entrada",
       "totalTickets": "Total de Tickets",
@@ -254,7 +254,7 @@
       "drawDate": "Fecha del Sorteo",
       "drawTime": "Hora del Sorteo",
       "status": "Estado",
-      "image": "Imagen del Ticket",
+      "image": "Imagen de la Lotería",
       "preview": "Vista Previa"
     },
     "placeholders": {
@@ -263,16 +263,19 @@
       "selectPrize": "Seleccione un premio"
     },
     "help": {
-      "status": "Los tickets activos estarán disponibles para compra inmediata",
+      "status": "Las loterías activas estarán disponibles para compra inmediata",
       "image": "Tamaño recomendado: 368x383 píxeles. Formatos: JPG, PNG, WEBP",
       "noPrizes": "No hay premios disponibles.",
-      "createPrize": "Crear uno ahora"
+      "createPrize": "Crear uno ahora",
+      "imageFromPrize": "La imagen se hereda del premio seleccionado"
     },
     "status": {
+      "draft": "Borrador",
       "active": "Activo",
-      "closed": "Cerrado",
+      "paused": "Pausado",
       "upcoming": "Próximamente",
-      "completed": "Completado"
+      "completed": "Completado",
+      "cancelled": "Cancelado"
     },
     "columns": {
       "image": "Imagen",
@@ -285,21 +288,23 @@
       "status": "Estado",
       "actions": "Acciones"
     },
-    "empty": "No hay tickets creados",
-    "emptyMessage": "Comienza creando tu primer ticket de sorteo",
-    "confirmDelete": "¿Estás seguro de eliminar el ticket?",
+    "empty": "No hay loterías creadas",
+    "emptyMessage": "Comienza creando tu primera lotería",
+    "confirmDelete": "¿Estás seguro de eliminar la lotería?",
+    "noImage": "Sin imagen",
     "delete": {
-      "success": "Ticket eliminado",
-      "successMessage": "El ticket se ha eliminado correctamente",
-      "error": "Error al eliminar el ticket"
+      "success": "Lotería eliminada",
+      "successMessage": "La lotería se ha eliminado correctamente",
+      "error": "Error al eliminar la lotería"
     },
     "updateStatus": {
       "success": "Estado actualizado",
-      "successMessage": "El estado del ticket se ha actualizado",
+      "successMessage": "El estado de la lotería se ha actualizado",
       "error": "Error al actualizar el estado"
     },
     "errors": {
       "nameRequired": "El nombre es requerido",
+      "descriptionRequired": "La descripción es requerida",
       "priceInvalid": "El precio debe ser mayor a 0",
       "totalTicketsInvalid": "El total de tickets debe ser mayor a 0",
       "prizeRequired": "Debe seleccionar un premio",

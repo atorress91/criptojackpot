@@ -13,7 +13,7 @@ const LotteriesList: React.FC = () => {
   const { lotteries, isLoading, deleteLottery, isDeleting } = useLotteries();
 
   const handleDelete = async (id: string, title: string) => {
-    if (globalThis.confirm(t('TICKETS_ADMIN.confirmDelete', `¿Estás seguro de eliminar la lotería "${title}"?`))) {
+    if (globalThis.confirm(t('LOTTERIES_ADMIN.confirmDelete', `¿Estás seguro de eliminar la lotería "${title}"?`))) {
       deleteLottery(id);
     }
   };
@@ -31,11 +31,11 @@ const LotteriesList: React.FC = () => {
 
   const getStatusText = (status: LotteryStatus) => {
     const texts: Record<LotteryStatus, string> = {
-      [LotteryStatus.Draft]: t('TICKETS_ADMIN.status.draft', 'Borrador'),
-      [LotteryStatus.Active]: t('TICKETS_ADMIN.status.active', 'Activo'),
-      [LotteryStatus.Paused]: t('TICKETS_ADMIN.status.paused', 'Pausado'),
-      [LotteryStatus.Completed]: t('TICKETS_ADMIN.status.completed', 'Completado'),
-      [LotteryStatus.Cancelled]: t('TICKETS_ADMIN.status.cancelled', 'Cancelado'),
+      [LotteryStatus.Draft]: t('LOTTERIES_ADMIN.status.draft', 'Borrador'),
+      [LotteryStatus.Active]: t('LOTTERIES_ADMIN.status.active', 'Activo'),
+      [LotteryStatus.Paused]: t('LOTTERIES_ADMIN.status.paused', 'Pausado'),
+      [LotteryStatus.Completed]: t('LOTTERIES_ADMIN.status.completed', 'Completado'),
+      [LotteryStatus.Cancelled]: t('LOTTERIES_ADMIN.status.cancelled', 'Cancelado'),
     };
     return texts[status] || String(status);
   };
@@ -66,16 +66,16 @@ const LotteriesList: React.FC = () => {
     <div className="col-lg-9">
       <div className="user-panel-wrapper">
         <div className="d-flex justify-content-between align-items-center mb-xxl-10 mb-6">
-          <h3 className="n4-clr fw_700 mb-0">{t('TICKETS_ADMIN.title', 'Gestión de Tickets')}</h3>
+          <h3 className="n4-clr fw_700 mb-0">{t('LOTTERIES_ADMIN.title', 'Gestión de Loterías')}</h3>
           <Link href="/admin/lotteries/create" className="btn btn-primary">
             <Plus size={18} className="me-2" />
-            {t('TICKETS_ADMIN.create.button', 'Crear Ticket')}
+            {t('LOTTERIES_ADMIN.create.button', 'Crear Lotería')}
           </Link>
         </div>
 
         <div className="card border-0 shadow-sm">
           <div className="card-header bg-white py-3">
-            <h5 className="mb-0">{t('TICKETS_ADMIN.list.title', 'Lista de Tickets de Sorteo')}</h5>
+            <h5 className="mb-0">{t('LOTTERIES_ADMIN.list.title', 'Lista de Loterías')}</h5>
           </div>
           <div className="card-body p-0">
             {lotteries && lotteries.length > 0 ? (
@@ -83,15 +83,15 @@ const LotteriesList: React.FC = () => {
                 <table className="table table-hover mb-0">
                   <thead className="table-light">
                     <tr>
-                      <th style={{ width: '100px' }}>{t('TICKETS_ADMIN.columns.image', 'Imagen')}</th>
-                      <th>{t('TICKETS_ADMIN.columns.name', 'Nombre')}</th>
-                      <th>{t('TICKETS_ADMIN.columns.prize', 'Premio')}</th>
-                      <th>{t('TICKETS_ADMIN.columns.price', 'Precio')}</th>
-                      <th>{t('TICKETS_ADMIN.columns.drawDate', 'Sorteo')}</th>
-                      <th>{t('TICKETS_ADMIN.columns.tickets', 'Tickets')}</th>
-                      <th>{t('TICKETS_ADMIN.columns.sold', 'Vendidos')}</th>
-                      <th>{t('TICKETS_ADMIN.columns.status', 'Estado')}</th>
-                      <th style={{ width: '150px' }}>{t('TICKETS_ADMIN.columns.actions', 'Acciones')}</th>
+                      <th style={{ width: '100px' }}>{t('LOTTERIES_ADMIN.columns.image', 'Imagen')}</th>
+                      <th>{t('LOTTERIES_ADMIN.columns.name', 'Nombre')}</th>
+                      <th>{t('LOTTERIES_ADMIN.columns.prize', 'Premio')}</th>
+                      <th>{t('LOTTERIES_ADMIN.columns.price', 'Precio')}</th>
+                      <th>{t('LOTTERIES_ADMIN.columns.drawDate', 'Sorteo')}</th>
+                      <th>{t('LOTTERIES_ADMIN.columns.tickets', 'Tickets')}</th>
+                      <th>{t('LOTTERIES_ADMIN.columns.sold', 'Vendidos')}</th>
+                      <th>{t('LOTTERIES_ADMIN.columns.status', 'Estado')}</th>
+                      <th style={{ width: '150px' }}>{t('LOTTERIES_ADMIN.columns.actions', 'Acciones')}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -192,13 +192,13 @@ const LotteriesList: React.FC = () => {
             ) : (
               <div className="text-center py-5">
                 <TicketIcon size={48} className="text-muted mb-3" />
-                <h5 className="text-muted">{t('TICKETS_ADMIN.empty', 'No hay tickets creados')}</h5>
+                <h5 className="text-muted">{t('LOTTERIES_ADMIN.empty', 'No hay loterías creadas')}</h5>
                 <p className="text-muted mb-4">
-                  {t('TICKETS_ADMIN.emptyMessage', 'Comienza creando tu primer ticket de sorteo')}
+                  {t('LOTTERIES_ADMIN.emptyMessage', 'Comienza creando tu primera lotería')}
                 </p>
                 <Link href="/admin/lotteries/create" className="btn btn-primary">
                   <Plus size={18} className="me-2" />
-                  {t('TICKETS_ADMIN.create.button', 'Crear Ticket')}
+                  {t('LOTTERIES_ADMIN.create.button', 'Crear Lotería')}
                 </Link>
               </div>
             )}

@@ -15,21 +15,21 @@ const CreateLottery: React.FC = () => {
   return (
     <div className="col-lg-9">
       <div className="user-panel-wrapper">
-        <h3 className="n4-clr fw_700 mb-xxl-10 mb-6">{t('TICKETS_ADMIN.create.title', 'Crear Ticket')}</h3>
+        <h3 className="n4-clr fw_700 mb-xxl-10 mb-6">{t('LOTTERIES_ADMIN.create.title', 'Crear Lotería')}</h3>
 
         <div className="card border-0 shadow-sm mb-6">
           <div className="card-header bg-white py-4 d-flex justify-content-between align-items-center">
-            <h5 className="mb-0">{t('TICKETS_ADMIN.create.formTitle', 'Nuevo Ticket de Sorteo')}</h5>
+            <h5 className="mb-0">{t('LOTTERIES_ADMIN.create.formTitle', 'Nueva Lotería')}</h5>
             <Link href="/admin/lotteries" className="btn btn-outline-secondary">
               {t('COMMON.cancel', 'Cancelar')}
             </Link>
           </div>
           <div className="card-body">
             <form onSubmit={handleSubmit} className="row g-4">
-              {/* Nombre del Ticket */}
+              {/* Nombre de la Lotería */}
               <div className="col-md-12">
                 <label className="form-label fw-semibold">
-                  {t('TICKETS_ADMIN.fields.name', 'Nombre del Ticket')} <span className="text-danger">*</span>
+                  {t('LOTTERIES_ADMIN.fields.name', 'Nombre de la Lotería')} <span className="text-danger">*</span>
                 </label>
                 <input
                   type="text"
@@ -37,28 +37,30 @@ const CreateLottery: React.FC = () => {
                   className="form-control"
                   value={formData.name}
                   onChange={handleInputChange}
-                  placeholder={t('TICKETS_ADMIN.placeholders.name', 'Ej: Digital Dreamscapes')}
+                  placeholder={t('LOTTERIES_ADMIN.placeholders.name', 'Ej: Digital Dreamscapes')}
                   required
                 />
               </div>
 
               {/* Descripción */}
               <div className="col-md-12">
-                <label className="form-label fw-semibold">{t('TICKETS_ADMIN.fields.description', 'Descripción')}</label>
+                <label className="form-label fw-semibold">
+                  {t('LOTTERIES_ADMIN.fields.description', 'Descripción')}
+                </label>
                 <textarea
                   name="description"
                   className="form-control"
                   rows={4}
                   value={formData.description}
                   onChange={handleInputChange}
-                  placeholder={t('TICKETS_ADMIN.placeholders.description', 'Descripción del sorteo')}
+                  placeholder={t('LOTTERIES_ADMIN.placeholders.description', 'Descripción del sorteo')}
                 />
               </div>
 
               {/* Precio y Total de Tickets */}
               <div className="col-md-6">
                 <label className="form-label fw-semibold">
-                  {t('TICKETS_ADMIN.fields.price', 'Precio por Entrada')} <span className="text-danger">*</span>
+                  {t('LOTTERIES_ADMIN.fields.price', 'Precio por Entrada')} <span className="text-danger">*</span>
                 </label>
                 <div className="input-group">
                   <span className="input-group-text">$</span>
@@ -78,7 +80,7 @@ const CreateLottery: React.FC = () => {
 
               <div className="col-md-6">
                 <label className="form-label fw-semibold">
-                  {t('TICKETS_ADMIN.fields.totalTickets', 'Total de Tickets')} <span className="text-danger">*</span>
+                  {t('LOTTERIES_ADMIN.fields.totalTickets', 'Total de Tickets')} <span className="text-danger">*</span>
                 </label>
                 <input
                   type="number"
@@ -95,7 +97,7 @@ const CreateLottery: React.FC = () => {
               {/* Premio Asociado */}
               <div className="col-md-12">
                 <label className="form-label fw-semibold">
-                  {t('TICKETS_ADMIN.fields.prize', 'Premio del Sorteo')} <span className="text-danger">*</span>
+                  {t('LOTTERIES_ADMIN.fields.prize', 'Premio del Sorteo')} <span className="text-danger">*</span>
                 </label>
                 <select
                   name="prizeId"
@@ -104,7 +106,7 @@ const CreateLottery: React.FC = () => {
                   onChange={handleInputChange}
                   required
                 >
-                  <option value="">{t('TICKETS_ADMIN.placeholders.selectPrize', 'Seleccione un premio')}</option>
+                  <option value="">{t('LOTTERIES_ADMIN.placeholders.selectPrize', 'Seleccione un premio')}</option>
                   {prizes?.map(prize => (
                     <option key={prize.id} value={prize.id}>
                       {prize.name} - ${prize.estimatedValue.toLocaleString()}
@@ -114,9 +116,9 @@ const CreateLottery: React.FC = () => {
                 {!prizes || prizes.length === 0 ? (
                   <div className="form-text text-warning">
                     <AlertTriangle size={16} className="me-2" />
-                    {t('TICKETS_ADMIN.help.noPrizes', 'No hay premios disponibles.')}{' '}
+                    {t('LOTTERIES_ADMIN.help.noPrizes', 'No hay premios disponibles.')}{' '}
                     <Link href="/admin/prizes/create" className="text-primary">
-                      {t('TICKETS_ADMIN.help.createPrize', 'Crear uno ahora')}
+                      {t('LOTTERIES_ADMIN.help.createPrize', 'Crear uno ahora')}
                     </Link>
                   </div>
                 ) : null}
@@ -151,7 +153,7 @@ const CreateLottery: React.FC = () => {
               {/* Fecha y Hora del Sorteo */}
               <div className="col-md-6">
                 <label className="form-label fw-semibold">
-                  {t('TICKETS_ADMIN.fields.drawDate', 'Fecha del Sorteo')} <span className="text-danger">*</span>
+                  {t('LOTTERIES_ADMIN.fields.drawDate', 'Fecha del Sorteo')} <span className="text-danger">*</span>
                 </label>
                 <input
                   type="date"
@@ -165,7 +167,7 @@ const CreateLottery: React.FC = () => {
 
               <div className="col-md-6">
                 <label className="form-label fw-semibold">
-                  {t('TICKETS_ADMIN.fields.drawTime', 'Hora del Sorteo')} <span className="text-danger">*</span>
+                  {t('LOTTERIES_ADMIN.fields.drawTime', 'Hora del Sorteo')} <span className="text-danger">*</span>
                 </label>
                 <input
                   type="time"
@@ -180,7 +182,7 @@ const CreateLottery: React.FC = () => {
               {/* Estado */}
               <div className="col-md-6">
                 <label className="form-label fw-semibold">
-                  {t('TICKETS_ADMIN.fields.status', 'Estado')} <span className="text-danger">*</span>
+                  {t('LOTTERIES_ADMIN.fields.status', 'Estado')} <span className="text-danger">*</span>
                 </label>
                 <select
                   name="status"
@@ -189,18 +191,20 @@ const CreateLottery: React.FC = () => {
                   onChange={handleInputChange}
                   required
                 >
-                  <option value="upcoming">{t('TICKETS_ADMIN.status.upcoming', 'Próximamente')}</option>
-                  <option value="active">{t('TICKETS_ADMIN.status.active', 'Activo')}</option>
+                  <option value="upcoming">{t('LOTTERIES_ADMIN.status.upcoming', 'Próximamente')}</option>
+                  <option value="active">{t('LOTTERIES_ADMIN.status.active', 'Activo')}</option>
                 </select>
                 <div className="form-text">
-                  {t('TICKETS_ADMIN.help.status', 'Los tickets activos estarán disponibles para compra inmediata')}
+                  {t('LOTTERIES_ADMIN.help.status', 'Las loterías activas estarán disponibles para compra inmediata')}
                 </div>
               </div>
 
-              {/* Preview del Ticket (usando imagen del premio) */}
+              {/* Preview de la Lotería (usando imagen del premio) */}
               {selectedPrize && (
                 <div className="col-md-12">
-                  <label className="form-label fw-semibold">{t('TICKETS_ADMIN.fields.preview', 'Vista Previa')}</label>
+                  <label className="form-label fw-semibold">
+                    {t('LOTTERIES_ADMIN.fields.preview', 'Vista Previa')}
+                  </label>
                   <div className="border rounded p-3 bg-light">
                     <div className="row align-items-center">
                       <div className="col-md-4">
@@ -218,7 +222,7 @@ const CreateLottery: React.FC = () => {
                             className="bg-secondary rounded d-flex align-items-center justify-content-center"
                             style={{ height: '200px' }}
                           >
-                            <span className="text-white">{t('TICKETS_ADMIN.noImage', 'Sin imagen')}</span>
+                            <span className="text-white">{t('LOTTERIES_ADMIN.noImage', 'Sin imagen')}</span>
                           </div>
                         )}
                       </div>
@@ -230,7 +234,7 @@ const CreateLottery: React.FC = () => {
                               new Date(formData.drawDate).toLocaleDateString('en-US', { weekday: 'long' })}{' '}
                             {formData.drawTime}
                           </div>
-                          <h4 className="mb-2">{formData.name || 'Nombre del Ticket'}</h4>
+                          <h4 className="mb-2">{formData.name || 'Nombre de la Lotería'}</h4>
                           <h5 className="text-danger mb-3">
                             ${formData.price || '0.00'} <small className="text-muted">PER ENTRY</small>
                           </h5>
@@ -249,7 +253,7 @@ const CreateLottery: React.FC = () => {
                           </div>
                           <div className="mt-2">
                             <small className="text-muted">
-                              {t('TICKETS_ADMIN.help.imageFromPrize', 'La imagen se hereda del premio seleccionado')}
+                              {t('LOTTERIES_ADMIN.help.imageFromPrize', 'La imagen se hereda del premio seleccionado')}
                             </small>
                           </div>
                         </div>
@@ -272,7 +276,7 @@ const CreateLottery: React.FC = () => {
                         {t('COMMON.saving', 'Guardando...')}
                       </>
                     ) : (
-                      t('TICKETS_ADMIN.create.submit', 'Crear Ticket')
+                      t('LOTTERIES_ADMIN.create.submit', 'Crear Lotería')
                     )}
                   </button>
                 </div>

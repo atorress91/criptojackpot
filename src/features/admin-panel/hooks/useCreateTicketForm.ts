@@ -56,16 +56,16 @@ export const useCreateTicketForm = (): UseCreateTicketFormReturn => {
     onSuccess: () => {
       showNotification(
         'success',
-        t('TICKETS_ADMIN.create.success', 'Lotería creada exitosamente'),
-        t('TICKETS_ADMIN.create.successMessage', 'La lotería se ha creado y está disponible')
+        t('LOTTERIES_ADMIN.create.success', 'Lotería creada exitosamente'),
+        t('LOTTERIES_ADMIN.create.successMessage', 'La lotería se ha creado y está disponible')
       );
       setTimeout(() => {
-        router.push('/admin/tickets');
+        router.push('/admin/lotteries');
       }, 1000);
     },
     onError: (error: any) => {
       const errorMessage =
-        error?.message || t('TICKETS_ADMIN.create.error', 'Error al crear la lotería. Intente nuevamente.');
+        error?.message || t('LOTTERIES_ADMIN.create.error', 'Error al crear la lotería. Intente nuevamente.');
       showNotification('error', t('COMMON.error', 'Error'), errorMessage);
     },
   });
@@ -91,7 +91,7 @@ export const useCreateTicketForm = (): UseCreateTicketFormReturn => {
       showNotification(
         'error',
         t('COMMON.error', 'Error'),
-        t('TICKETS_ADMIN.errors.nameRequired', 'El nombre es requerido')
+        t('LOTTERIES_ADMIN.errors.nameRequired', 'El nombre es requerido')
       );
       return;
     }
@@ -100,7 +100,7 @@ export const useCreateTicketForm = (): UseCreateTicketFormReturn => {
       showNotification(
         'error',
         t('COMMON.error', 'Error'),
-        t('TICKETS_ADMIN.errors.descriptionRequired', 'La descripción es requerida')
+        t('LOTTERIES_ADMIN.errors.descriptionRequired', 'La descripción es requerida')
       );
       return;
     }
@@ -109,7 +109,7 @@ export const useCreateTicketForm = (): UseCreateTicketFormReturn => {
       showNotification(
         'error',
         t('COMMON.error', 'Error'),
-        t('TICKETS_ADMIN.errors.priceInvalid', 'El precio debe ser mayor a 0')
+        t('LOTTERIES_ADMIN.errors.priceInvalid', 'El precio debe ser mayor a 0')
       );
       return;
     }
@@ -118,7 +118,7 @@ export const useCreateTicketForm = (): UseCreateTicketFormReturn => {
       showNotification(
         'error',
         t('COMMON.error', 'Error'),
-        t('TICKETS_ADMIN.errors.totalTicketsInvalid', 'El total de tickets debe ser mayor a 0')
+        t('LOTTERIES_ADMIN.errors.totalTicketsInvalid', 'El total de tickets debe ser mayor a 0')
       );
       return;
     }
@@ -127,7 +127,7 @@ export const useCreateTicketForm = (): UseCreateTicketFormReturn => {
       showNotification(
         'error',
         t('COMMON.error', 'Error'),
-        t('TICKETS_ADMIN.errors.drawDateRequired', 'La fecha del sorteo es requerida')
+        t('LOTTERIES_ADMIN.errors.drawDateRequired', 'La fecha del sorteo es requerida')
       );
       return;
     }
@@ -136,7 +136,7 @@ export const useCreateTicketForm = (): UseCreateTicketFormReturn => {
       showNotification(
         'error',
         t('COMMON.error', 'Error'),
-        t('TICKETS_ADMIN.errors.drawTimeRequired', 'La hora del sorteo es requerida')
+        t('LOTTERIES_ADMIN.errors.drawTimeRequired', 'La hora del sorteo es requerida')
       );
       return;
     }
@@ -148,7 +148,7 @@ export const useCreateTicketForm = (): UseCreateTicketFormReturn => {
       showNotification(
         'error',
         t('COMMON.error', 'Error'),
-        t('TICKETS_ADMIN.errors.drawDatePast', 'La fecha del sorteo debe ser en el futuro')
+        t('LOTTERIES_ADMIN.errors.drawDatePast', 'La fecha del sorteo debe ser en el futuro')
       );
       return;
     }
