@@ -1,5 +1,6 @@
 import { TFunction } from 'i18next';
 import { CreatePrizeFormData } from '../types/createPrizeFormData';
+import { EditPrizeFormData } from '../types/editPrizeFormData';
 
 type ShowNotification = (type: 'error' | 'success', title: string, message: string) => void;
 
@@ -38,6 +39,44 @@ export const validatePrizeMainImageUrl = (url: string): PrizeValidationResult =>
 
 export const validateCreatePrizeForm = (
   formData: CreatePrizeFormData,
+  t: TFunction,
+  showNotification: ShowNotification
+): boolean => {
+  const validations = [
+    {
+      result: validatePrizeName(formData.name),
+      messageKey: 'PRIZES_ADMIN.errors.nameRequired',
+      defaultMessage: 'El nombre es requerido',
+    },
+    {
+      result: validatePrizeDescription(formData.description),
+      messageKey: 'PRIZES_ADMIN.errors.descriptionRequired',
+      defaultMessage: 'La descripción es requerida',
+    },
+    {
+      result: validatePrizeEstimatedValue(formData.estimatedValue),
+      messageKey: 'PRIZES_ADMIN.errors.valueInvalid',
+      defaultMessage: 'El valor debe ser mayor a 0',
+    },
+    {
+      result: validatePrizeMainImageUrl(formData.mainImageUrl),
+      messageKey: 'PRIZES_ADMIN.errors.imageRequired',
+      defaultMessage: 'La URL de imagen principal es requerida',
+    },
+  ];
+
+  for (const validation of validations) {
+    if (!validation.result.isValid) {
+      showNotification('error', t('COMMON.error', 'Error'), t(validation.messageKey, validation.defaultMessage));
+      return false;
+    }
+  }
+
+  return true;
+};
+
+export const validateEditPrizeForm = (
+  formData: EditPrizeFormData,
   t: TFunction,
   showNotification: ShowNotification
 ): boolean => {

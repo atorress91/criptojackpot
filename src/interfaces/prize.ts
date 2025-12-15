@@ -50,3 +50,15 @@ export interface CreatePrizeRequest {
   isDeliverable: boolean;
   isDigital: boolean;
 }
+
+export interface UpdatePrizeRequest {
+  name: string;
+  description: string;
+  estimatedValue: number;
+  mainImageUrl: string;
+  additionalImages: PrizeImage[];
+  specifications: Record<string, string>;
+  cashAlternative?: number;
+  isDeliverable: boolean;
+  isDigital: boolean;
+}

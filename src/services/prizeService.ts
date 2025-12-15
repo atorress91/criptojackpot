@@ -1,6 +1,6 @@
 import { PaginationRequest } from '@/interfaces/pagination';
 import { BaseService } from './baseService';
-import { Prize, CreatePrizeRequest } from '@/interfaces/prize';
+import { Prize, CreatePrizeRequest, UpdatePrizeRequest } from '@/interfaces/prize';
 import { Response } from '@/interfaces/response';
 import { PaginatedResponse } from '@/interfaces/paginatedResponse';
 
@@ -24,6 +24,15 @@ class PrizeService extends BaseService {
 
       const response = await this.apiClient.get<PaginatedResponse<Prize>>(this.endpoint, { params });
       return response.data;
+    } catch (error) {
+      return this.handleError(error as any);
+    }
+  }
+
+  async updatePrize(id: string, request: UpdatePrizeRequest): Promise<Prize> {
+    try {
+      const response = await this.apiClient.put<Response<Prize>>(`${this.endpoint}/${id}`, request);
+      return this.handleResponse(response);
     } catch (error) {
       return this.handleError(error as any);
     }
