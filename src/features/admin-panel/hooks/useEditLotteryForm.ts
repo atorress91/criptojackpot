@@ -88,6 +88,7 @@ export const useEditLotteryForm = (lotteryId: string) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['lotteries'] });
       queryClient.invalidateQueries({ queryKey: ['lottery', lotteryId] });
+      queryClient.invalidateQueries({ queryKey: ['prizes'] });
       showNotification(
         'success',
         t('LOTTERIES_ADMIN.edit.success', 'Lotería actualizada'),

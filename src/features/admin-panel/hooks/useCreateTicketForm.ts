@@ -3,7 +3,7 @@
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useNotificationStore } from '@/store/notificationStore';
 import { LotteryType, CreateLotteryRequest } from '@/interfaces/lottery';
@@ -15,6 +15,7 @@ import { CreateTicketFormData, UseCreateTicketFormReturn } from '../types/create
 export const useCreateTicketForm = (): UseCreateTicketFormReturn => {
   const { t } = useTranslation();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const showNotification = useNotificationStore(state => state.show);
 
   // Obtener lista de premios disponibles
@@ -54,6 +55,8 @@ export const useCreateTicketForm = (): UseCreateTicketFormReturn => {
       return lotteryService.createLottery(data);
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['lotteries'] });
+      queryClient.invalidateQueries({ queryKey: ['prizes'] });
       showNotification(
         'success',
         t('LOTTERIES_ADMIN.create.success', 'Lotería creada exitosamente'),
