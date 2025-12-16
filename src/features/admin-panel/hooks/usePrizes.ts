@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Prize } from '@/interfaces/prize';
 import { PaginatedResponse } from '@/interfaces/paginatedResponse';
@@ -8,6 +8,7 @@ import { PaginationRequest } from '@/interfaces/pagination';
 import { getPrizeService } from '@/di/serviceLocator';
 
 export const usePrizes = (initialPagination?: PaginationRequest) => {
+  const queryClient = useQueryClient();
   const [pagination, setPagination] = useState<PaginationRequest>({
     pageNumber: initialPagination?.pageNumber || 1,
     pageSize: initialPagination?.pageSize || 10,
@@ -21,6 +22,16 @@ export const usePrizes = (initialPagination?: PaginationRequest) => {
     },
   });
 
+  const deleteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      const prizeService = getPrizeService();
+      return await prizeService.deletePrize(id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['prizes'] });
+    },
+  });
+
   const goToPage = (pageNumber: number) => {
     setPagination(prev => ({ ...prev, pageNumber }));
   };
@@ -29,11 +40,17 @@ export const usePrizes = (initialPagination?: PaginationRequest) => {
     setPagination(prev => ({ ...prev, pageSize, pageNumber: 1 }));
   };
 
+  const deletePrize = async (id: number) => {
+    return deleteMutation.mutateAsync(id);
+  };
+
   return {
     prizes: data?.data || [],
     isLoading,
+    isDeleting: deleteMutation.isPending,
     error,
     refetch,
+    deletePrize,
     pagination: {
       pageNumber: data?.pageNumber || 1,
       pageSize: data?.pageSize || 10,

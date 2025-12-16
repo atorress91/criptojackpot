@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { usePrizes } from '@/features/admin-panel/hooks';
@@ -8,11 +8,17 @@ import { Prize, PrizeType } from '@/interfaces/prize';
 import Table from '@/components/table/Table';
 import { TableColumn } from '@/components/table';
 import Image from 'next/image';
-import { Plus, Truck, Download, Pencil, Eye, Gift } from 'lucide-react';
+import { Plus, Truck, Download, Pencil, Eye, Gift, Trash2 } from 'lucide-react';
+import { useNotificationStore } from '@/store/notificationStore';
 
 const PrizesList: React.FC = () => {
   const { t } = useTranslation();
-  const { prizes, isLoading, pagination, goToPage } = usePrizes({ pageNumber: 1, pageSize: 10 });
+  const { prizes, isLoading, isDeleting, pagination, goToPage, deletePrize } = usePrizes({
+    pageNumber: 1,
+    pageSize: 10,
+  });
+  const [prizeToDelete, setPrizeToDelete] = useState<Prize | null>(null);
+  const { showNotification } = useNotificationStore();
 
   const getPrizeTypeBadge = (type: PrizeType) => {
     const badges: Record<PrizeType, string> = {
@@ -32,6 +38,18 @@ const PrizesList: React.FC = () => {
       [PrizeType.Experience]: t('PRIZES_ADMIN.types.experience', 'Experiencia'),
     };
     return texts[type] || String(type);
+  };
+
+  const handleDeletePrize = async () => {
+    if (!prizeToDelete) return;
+
+    try {
+      await deletePrize(Number(prizeToDelete.id));
+      showNotification(t('PRIZES_ADMIN.delete.success', 'Premio eliminado correctamente'), 'success');
+      setPrizeToDelete(null);
+    } catch (error) {
+      showNotification(t('PRIZES_ADMIN.delete.error', 'Error al eliminar el premio'), 'error');
+    }
   };
 
   const columns: TableColumn[] = [
@@ -102,6 +120,13 @@ const PrizesList: React.FC = () => {
         <Link href={`/admin/prizes/${prize.id}`} className="btn btn-outline-secondary" title={t('COMMON.view', 'Ver')}>
           <Eye size={14} />
         </Link>
+        <button
+          onClick={() => setPrizeToDelete(prize)}
+          className="btn btn-outline-danger"
+          title={t('COMMON.delete', 'Eliminar')}
+        >
+          <Trash2 size={14} />
+        </button>
       </div>
     ),
   }));
@@ -207,6 +232,57 @@ const PrizesList: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal de confirmación de eliminación */}
+      {prizeToDelete && (
+        <div className="modal fade show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">{t('PRIZES_ADMIN.delete.title', 'Eliminar Premio')}</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={() => setPrizeToDelete(null)}
+                  disabled={isDeleting}
+                ></button>
+              </div>
+              <div className="modal-body">
+                <p>
+                  {t('PRIZES_ADMIN.delete.confirm', '¿Estás seguro de que deseas eliminar el premio')}{' '}
+                  <strong>{prizeToDelete.name}</strong>?
+                </p>
+                <p className="text-muted small">
+                  {t('PRIZES_ADMIN.delete.warning', 'Esta acción no se puede deshacer.')}
+                </p>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setPrizeToDelete(null)}
+                  disabled={isDeleting}
+                >
+                  {t('COMMON.cancel', 'Cancelar')}
+                </button>
+                <button type="button" className="btn btn-danger" onClick={handleDeletePrize} disabled={isDeleting}>
+                  {isDeleting ? (
+                    <>
+                      <span className="spinner-border spinner-border-sm me-2"></span>
+                      {t('COMMON.deleting', 'Eliminando...')}
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 size={16} className="me-2" />
+                      {t('COMMON.delete', 'Eliminar')}
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
