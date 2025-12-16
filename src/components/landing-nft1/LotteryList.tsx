@@ -163,8 +163,27 @@ const LotteryList = () => {
                   <div className="border-top" />
                   <div className="cmn-prrice-range mt-xxl-4 mt-3 d-grid align-items-center gap-2">
                     <span className="n4-clr soldout fw_700 fs-eight mb-1">{soldPercent}% Vendido</span>
-                    <div className="range-custom position-relative">
-                      <span className="curs-range" style={{ width: `${soldPercent}%` }} />
+                    <div
+                      className="position-relative"
+                      style={{
+                        background: 'rgba(85, 74, 255, 0.2)',
+                        height: '4px',
+                        borderRadius: '4px',
+                        width: '100%',
+                        maxWidth: '296px',
+                      }}
+                    >
+                      <span
+                        style={{
+                          position: 'absolute',
+                          left: 0,
+                          top: 0,
+                          height: '100%',
+                          width: `${soldPercent}%`,
+                          background: 'var(--s1)',
+                          borderRadius: '4px',
+                        }}
+                      />
                     </div>
                   </div>
                 </div>
