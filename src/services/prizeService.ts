@@ -1,41 +1,32 @@
 import { PaginationRequest } from '@/interfaces/pagination';
 import { BaseService } from './baseService';
 import { Prize, CreatePrizeRequest, UpdatePrizeRequest } from '@/interfaces/prize';
-import { Response } from '@/interfaces/response';
-import { PaginatedResponse } from '@/interfaces/paginatedResponse';
 
 class PrizeService extends BaseService {
   protected endpoint = 'prize';
 
   async createPrize(request: CreatePrizeRequest): Promise<Prize> {
-    try {
-      const response = await this.apiClient.post<Response<Prize>>(this.endpoint, request);
-      return this.handleResponse(response);
-    } catch (error) {
-      return this.handleError(error as any);
-    }
+    return this.create<CreatePrizeRequest, Prize>(request);
   }
 
-  async getAllPrizes(pagination?: PaginationRequest): Promise<PaginatedResponse<Prize>> {
-    try {
-      const params: Record<string, string> = {};
-      if (pagination?.pageNumber) params.pageNumber = pagination.pageNumber.toString();
-      if (pagination?.pageSize) params.pageSize = pagination.pageSize.toString();
+  async getAllPrizes(pagination?: PaginationRequest): Promise<Prize[]> {
+    const params: Record<string, string> = {};
+    if (pagination?.pageNumber) params.pageNumber = pagination.pageNumber.toString();
+    if (pagination?.pageSize) params.pageSize = pagination.pageSize.toString();
 
-      const response = await this.apiClient.get<PaginatedResponse<Prize>>(this.endpoint, { params });
-      return response.data;
-    } catch (error) {
-      return this.handleError(error as any);
-    }
+    return this.getAll<Prize>({ params });
   }
 
-  async updatePrize(id: string, request: UpdatePrizeRequest): Promise<Prize> {
-    try {
-      const response = await this.apiClient.put<Response<Prize>>(`${this.endpoint}/${id}`, request);
-      return this.handleResponse(response);
-    } catch (error) {
-      return this.handleError(error as any);
-    }
+  async getPrizeById(id: string): Promise<Prize> {
+    return this.getById<Prize>(id);
+  }
+
+  async updatePrize(id: number, request: UpdatePrizeRequest): Promise<Prize> {
+    return this.update<UpdatePrizeRequest, Prize>(id, request);
+  }
+
+  async deletePrize(id: number): Promise<void> {
+    return this.delete(id);
   }
 }
 

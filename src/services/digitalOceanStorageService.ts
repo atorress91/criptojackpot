@@ -1,4 +1,4 @@
-import {BaseService} from './baseService';
+import { BaseService } from './baseService';
 import { injectable } from 'tsyringe';
 
 interface UploadRequest {
@@ -22,44 +22,44 @@ export class DigitalOceanStorageService extends BaseService {
    * Sube un archivo usando presigned URL del backend
    */
   async uploadFile(file: File, userId: number): Promise<UploadResponse> {
+    if (!file.type.startsWith('image/')) {
+      throw new Error('Solo se permiten archivos de imagen');
+    }
 
-      if (!file.type.startsWith('image/')) {
-          throw new Error('Solo se permiten archivos de imagen');
-      }
+    if (file.size > 10 * 1024 * 1024) {
+      // 10MB
+      throw new Error('El archivo es demasiado grande (máximo 10MB)');
+    }
 
-      if (file.size > 10 * 1024 * 1024) { // 10MB
-          throw new Error('El archivo es demasiado grande (máximo 10MB)');
-      }
+    // Usar solo el nombre original - el backend generará el nombre único
+    const originalFileName = file.name;
 
-      // Usar solo el nombre original - el backend generará el nombre único
-      const originalFileName = file.name;
+    // Solicitar presigned URL al backend (incluye userId)
+    const presignedUrl = await this.getPresignedUploadUrl({
+      fileName: originalFileName,
+      contentType: file.type,
+      expirationMinutes: 15,
+      userId: userId,
+    });
 
-      // Solicitar presigned URL al backend (incluye userId)
-      const presignedUrl = await this.getPresignedUploadUrl({
-          fileName: originalFileName,
-          contentType: file.type,
-          expirationMinutes: 15,
-          userId: userId,
-      });
+    // Subir archivo directamente a Digital Ocean
+    await this.uploadToDigitalOcean(presignedUrl, file);
 
-      // Subir archivo directamente a Digital Ocean
-      await this.uploadToDigitalOcean(presignedUrl, file);
+    // Construir URLs de respuesta
+    const fileUrl = presignedUrl.split('?')[0];
+    const cdnUrl = fileUrl.replace(
+      'cryptojackpot.nyc3.digitaloceanspaces.com',
+      'cryptojackpot.nyc3.cdn.digitaloceanspaces.com'
+    );
 
-      // Construir URLs de respuesta
-      const fileUrl = presignedUrl.split('?')[0];
-      const cdnUrl = fileUrl.replace(
-          'cryptojackpot.nyc3.digitaloceanspaces.com',
-          'cryptojackpot.nyc3.cdn.digitaloceanspaces.com'
-      );
+    // Extraer el fileName del presigned URL
+    const fileName = fileUrl.split('/').slice(-2).join('/'); // profile-photos/user-123-...
 
-      // Extraer el fileName del presigned URL
-      const fileName = fileUrl.split('/').slice(-2).join('/'); // profile-photos/user-123-...
-
-      return {
-          fileName,
-          fileUrl,
-          cdnUrl,
-      };
+    return {
+      fileName,
+      fileUrl,
+      cdnUrl,
+    };
   }
 
   /**
@@ -82,7 +82,7 @@ export class DigitalOceanStorageService extends BaseService {
    * Obtener presigned URL del backend
    */
   async getPresignedUploadUrl(request: UploadRequest): Promise<string> {
-    return await this.createWithParams<UploadRequest, string>(request, 'presign');
+    return this.create<UploadRequest, string>(request, 'presign');
   }
 
   /**

@@ -1,23 +1,16 @@
 import { BaseService } from './baseService';
 import { Lottery, CreateLotteryRequest, UpdateLotteryRequest } from '@/interfaces/lottery';
-import { Response } from '@/interfaces/response';
-import { PaginatedResponse } from '@/interfaces/paginatedResponse';
 import { PaginationRequest } from '@/interfaces/pagination';
 
 class LotteryService extends BaseService {
   protected endpoint = 'Lottery';
 
-  async getAllLotteries(pagination?: PaginationRequest): Promise<PaginatedResponse<Lottery>> {
-    try {
-      const params: Record<string, string> = {};
-      if (pagination?.pageNumber) params.pageNumber = pagination.pageNumber.toString();
-      if (pagination?.pageSize) params.pageSize = pagination.pageSize.toString();
+  async getAllLotteries(pagination?: PaginationRequest): Promise<Lottery[]> {
+    const params: Record<string, string> = {};
+    if (pagination?.pageNumber) params.pageNumber = pagination.pageNumber.toString();
+    if (pagination?.pageSize) params.pageSize = pagination.pageSize.toString();
 
-      const response = await this.apiClient.get<PaginatedResponse<Lottery>>(this.endpoint, { params });
-      return response.data;
-    } catch (error) {
-      return this.handleError(error as any);
-    }
+    return this.getAll<Lottery>({ params });
   }
 
   async getLotteryById(id: string): Promise<Lottery> {
@@ -25,29 +18,15 @@ class LotteryService extends BaseService {
   }
 
   async createLottery(data: CreateLotteryRequest): Promise<Lottery> {
-    try {
-      const response = await this.apiClient.post<Response<Lottery>>(this.endpoint, data);
-      return this.handleResponse(response);
-    } catch (error) {
-      return this.handleError(error as any);
-    }
+    return this.create<CreateLotteryRequest, Lottery>(data);
   }
 
-  async updateLottery(id: string, data: Partial<UpdateLotteryRequest>): Promise<Lottery> {
-    try {
-      const response = await this.apiClient.put<Response<Lottery>>(`${this.endpoint}/${id}`, data);
-      return this.handleResponse(response);
-    } catch (error) {
-      return this.handleError(error as any);
-    }
+  async updateLottery(id: number, data: Partial<UpdateLotteryRequest>): Promise<Lottery> {
+    return this.update<Partial<UpdateLotteryRequest>, Lottery>(id, data);
   }
 
-  async deleteLottery(id: string): Promise<void> {
-    try {
-      await this.apiClient.delete(`${this.endpoint}/${id}`);
-    } catch (error) {
-      return this.handleError(error as any);
-    }
+  async deleteLottery(id: number): Promise<void> {
+    return this.delete(id);
   }
 
   async updateLotteryStatus(id: string, status: number): Promise<Lottery> {

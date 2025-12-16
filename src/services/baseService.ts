@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 
 import { Response } from '@/interfaces/response';
 import { useAuthStore } from '@/store/authStore';
-import {GetAllOptions} from "@/interfaces/getAllOptions";
+import { GetAllOptions } from '@/interfaces/getAllOptions';
 
 export abstract class BaseService {
   protected apiClient: AxiosInstance;
@@ -26,7 +26,7 @@ export abstract class BaseService {
       config => {
         let token = useAuthStore.getState().token;
 
-        if (!token && typeof window !== 'undefined') {
+        if (!token && globalThis.window !== undefined) {
           const authStorage = localStorage.getItem('auth-storage');
           if (authStorage) {
             try {
@@ -42,7 +42,7 @@ export abstract class BaseService {
           config.headers.set('Authorization', `Bearer ${token}`);
         }
 
-        if (typeof window !== 'undefined') {
+        if (globalThis.window !== undefined) {
           const language = localStorage.getItem('i18nextLng') || 'en';
           config.headers.set('Accept-Language', language.split('-')[0]);
         }
@@ -55,18 +55,18 @@ export abstract class BaseService {
     );
 
     this.apiClient.interceptors.response.use(
-        response => response,
-        async error => {
-          const originalRequest = error.config;
+      response => response,
+      async error => {
+        const originalRequest = error.config;
 
-          if (error.response?.status === 401 && originalRequest.url !== 'auth') {
-            useAuthStore.getState().logout();
-            if (typeof window !== 'undefined') {
-              window.location.href = '/login?error=session_expired';
-            }
+        if (error.response?.status === 401 && originalRequest.url !== 'auth') {
+          useAuthStore.getState().logout();
+          if (globalThis.window !== undefined) {
+            globalThis.window.location.href = '/login?error=session_expired';
           }
-          return Promise.reject(error instanceof Error ? error : new Error(String(error)));
         }
+        throw error instanceof Error ? error : new Error(String(error));
+      }
     );
   }
 
@@ -117,27 +117,24 @@ export abstract class BaseService {
     }
   }
 
-  protected async create<T>(data: Partial<T>): Promise<T> {
+  protected async create<TRequest, TResponse = TRequest>(data: TRequest, route?: string): Promise<TResponse> {
     try {
-      const response = await this.apiClient.post<Response<T>>(`${this.endpoint}`, data);
+      const url = route ? `${this.endpoint}/${route}` : this.endpoint;
+      const response = await this.apiClient.post<Response<TResponse>>(url, data);
       return this.handleResponse(response);
     } catch (error) {
       throw this.handleError(error as AxiosError<Response<any>>);
     }
   }
 
-  protected async createWithParams<T, TResponse>(data: Partial<T>, route: string): Promise<TResponse> {
+  protected async update<TRequest, TResponse = TRequest>(
+    id: number,
+    data: TRequest,
+    route?: string
+  ): Promise<TResponse> {
     try {
-      const response = await this.apiClient.post<Response<TResponse>>(`${this.endpoint}/${route}`, data);
-      return this.handleResponse(response);
-    } catch (error) {
-      throw this.handleError(error as AxiosError<Response<any>>);
-    }
-  }
-
-  protected async update<T>(id: number, data: Partial<T>): Promise<T> {
-    try {
-      const response = await this.apiClient.put<Response<T>>(`${this.endpoint}/${id}`, data);
+      const url = route ? `${this.endpoint}/${route}/${id}` : `${this.endpoint}/${id}`;
+      const response = await this.apiClient.put<Response<TResponse>>(url, data);
       return this.handleResponse(response);
     } catch (error) {
       throw this.handleError(error as AxiosError<Response<any>>);
