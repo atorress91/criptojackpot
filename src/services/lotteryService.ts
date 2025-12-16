@@ -1,16 +1,17 @@
 import { BaseService } from './baseService';
 import { Lottery, CreateLotteryRequest, UpdateLotteryRequest } from '@/interfaces/lottery';
 import { PaginationRequest } from '@/interfaces/pagination';
+import { PaginatedResponse } from '@/interfaces/paginatedResponse';
 
 class LotteryService extends BaseService {
   protected endpoint = 'Lottery';
 
-  async getAllLotteries(pagination?: PaginationRequest): Promise<Lottery[]> {
+  async getAllLotteries(pagination?: PaginationRequest): Promise<PaginatedResponse<Lottery>> {
     const params: Record<string, string> = {};
     if (pagination?.pageNumber) params.pageNumber = pagination.pageNumber.toString();
     if (pagination?.pageSize) params.pageSize = pagination.pageSize.toString();
 
-    return this.getAll<Lottery>({ params });
+    return this.getAllPaginated<Lottery>({ params });
   }
 
   async getLotteryById(id: string): Promise<Lottery> {

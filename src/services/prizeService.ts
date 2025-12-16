@@ -1,6 +1,7 @@
 import { PaginationRequest } from '@/interfaces/pagination';
 import { BaseService } from './baseService';
 import { Prize, CreatePrizeRequest, UpdatePrizeRequest } from '@/interfaces/prize';
+import { PaginatedResponse } from '@/interfaces/paginatedResponse';
 
 class PrizeService extends BaseService {
   protected endpoint = 'prize';
@@ -9,12 +10,12 @@ class PrizeService extends BaseService {
     return this.create<CreatePrizeRequest, Prize>(request);
   }
 
-  async getAllPrizes(pagination?: PaginationRequest): Promise<Prize[]> {
+  async getAllPrizes(pagination?: PaginationRequest): Promise<PaginatedResponse<Prize>> {
     const params: Record<string, string> = {};
     if (pagination?.pageNumber) params.pageNumber = pagination.pageNumber.toString();
     if (pagination?.pageSize) params.pageSize = pagination.pageSize.toString();
 
-    return this.getAll<Prize>({ params });
+    return this.getAllPaginated<Prize>({ params });
   }
 
   async getPrizeById(id: string): Promise<Prize> {

@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 
 import { Response } from '@/interfaces/response';
+import { PaginatedResponse } from '@/interfaces/paginatedResponse';
 import { useAuthStore } from '@/store/authStore';
 import { GetAllOptions } from '@/interfaces/getAllOptions';
 
@@ -103,6 +104,20 @@ export abstract class BaseService {
       const response = await this.apiClient.get<Response<T[]>>(finalUrl, { params });
 
       return this.handleResponse(response);
+    } catch (error) {
+      throw this.handleError(error as AxiosError<Response<any>>);
+    }
+  }
+
+  protected async getAllPaginated<T>(options: GetAllOptions = {}): Promise<PaginatedResponse<T>> {
+    const { path = '', params } = options;
+    try {
+      let finalUrl = this.endpoint;
+      if (path) {
+        finalUrl = finalUrl + '/' + path;
+      }
+      const response = await this.apiClient.get<PaginatedResponse<T>>(finalUrl, { params });
+      return response.data;
     } catch (error) {
       throw this.handleError(error as AxiosError<Response<any>>);
     }
