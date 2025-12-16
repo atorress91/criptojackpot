@@ -22,11 +22,11 @@ class PrizeService extends BaseService {
     return this.getById<Prize>(id);
   }
 
-  async updatePrize(id: number, request: UpdatePrizeRequest): Promise<Prize> {
+  async updatePrize(id: string | number, request: UpdatePrizeRequest): Promise<Prize> {
     return this.update<UpdatePrizeRequest, Prize>(id, request);
   }
 
-  async deletePrize(id: number): Promise<void> {
+  async deletePrize(id: string | number): Promise<void> {
     return this.delete(id);
   }
 }

@@ -143,7 +143,7 @@ export abstract class BaseService {
   }
 
   protected async update<TRequest, TResponse = TRequest>(
-    id: number,
+    id: string | number,
     data: TRequest,
     route?: string
   ): Promise<TResponse> {
@@ -156,7 +156,7 @@ export abstract class BaseService {
     }
   }
 
-  protected async delete(id: number): Promise<void> {
+  protected async delete(id: string | number): Promise<void> {
     try {
       await this.apiClient.delete(`${this.endpoint}/${id}`);
     } catch (error) {

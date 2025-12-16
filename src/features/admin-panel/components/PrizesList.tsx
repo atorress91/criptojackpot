@@ -18,7 +18,7 @@ const PrizesList: React.FC = () => {
     pageSize: 10,
   });
   const [prizeToDelete, setPrizeToDelete] = useState<Prize | null>(null);
-  const { showNotification } = useNotificationStore();
+  const { show } = useNotificationStore();
 
   const getPrizeTypeBadge = (type: PrizeType) => {
     const badges: Record<PrizeType, string> = {
@@ -44,11 +44,11 @@ const PrizesList: React.FC = () => {
     if (!prizeToDelete) return;
 
     try {
-      await deletePrize(Number(prizeToDelete.id));
-      showNotification(t('PRIZES_ADMIN.delete.success', 'Premio eliminado correctamente'), 'success');
+      await deletePrize(prizeToDelete.id);
+      show('success', t('COMMON.success', 'Éxito'), t('PRIZES_ADMIN.delete.success', 'Premio eliminado correctamente'));
       setPrizeToDelete(null);
     } catch (error) {
-      showNotification(t('PRIZES_ADMIN.delete.error', 'Error al eliminar el premio'), 'error');
+      show('error', t('COMMON.error', 'Error'), t('PRIZES_ADMIN.delete.error', 'Error al eliminar el premio'));
     }
   };
 

@@ -23,7 +23,7 @@ export const usePrizes = (initialPagination?: PaginationRequest) => {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: number) => {
+    mutationFn: async (id: string) => {
       const prizeService = getPrizeService();
       return await prizeService.deletePrize(id);
     },
@@ -40,7 +40,7 @@ export const usePrizes = (initialPagination?: PaginationRequest) => {
     setPagination(prev => ({ ...prev, pageSize, pageNumber: 1 }));
   };
 
-  const deletePrize = async (id: number) => {
+  const deletePrize = async (id: string) => {
     return deleteMutation.mutateAsync(id);
   };
 
