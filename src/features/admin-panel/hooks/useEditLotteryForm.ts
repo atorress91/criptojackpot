@@ -63,12 +63,15 @@ export const useEditLotteryForm = (lotteryId: string) => {
   useEffect(() => {
     if (lottery) {
       const endDate = new Date(lottery.endDate);
+      // Extraer hora en UTC para mantener consistencia con la fecha
+      const hours = endDate.getUTCHours().toString().padStart(2, '0');
+      const minutes = endDate.getUTCMinutes().toString().padStart(2, '0');
       setFormData({
         name: lottery.title,
         description: lottery.description || '',
         price: lottery.ticketPrice,
         drawDate: endDate.toISOString().split('T')[0],
-        drawTime: endDate.toTimeString().slice(0, 5),
+        drawTime: `${hours}:${minutes}`,
         totalTickets: lottery.maxTickets,
         status: lottery.status,
         prizeId: lottery.prizes?.[0]?.id,
@@ -127,7 +130,8 @@ export const useEditLotteryForm = (lotteryId: string) => {
       return;
     }
 
-    const drawDateTime = new Date(`${formData.drawDate}T${formData.drawTime}`);
+    // Crear fecha en UTC para evitar desfases de zona horaria
+    const endDateISO = `${formData.drawDate}T${formData.drawTime}:00.000Z`;
 
     const submitData: UpdateLotteryRequest = {
       id: lotteryId,
@@ -139,9 +143,10 @@ export const useEditLotteryForm = (lotteryId: string) => {
       ticketPrice: formData.price,
       maxTickets: formData.totalTickets,
       startDate: lottery?.startDate,
-      endDate: drawDateTime.toISOString(),
+      endDate: endDateISO,
       status: formData.status,
       terms: formData.terms,
+      prizeId: formData.prizeId,
     };
 
     updateLotteryMutation.mutate(submitData);

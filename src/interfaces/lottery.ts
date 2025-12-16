@@ -48,6 +48,7 @@ export interface CreateLotteryRequest {
   hasAgeRestriction: boolean;
   minimumAge?: number;
   restrictedCountries: string[];
+  prizeId?: string;
 }
 
 export interface UpdateLotteryRequest extends Partial<CreateLotteryRequest> {

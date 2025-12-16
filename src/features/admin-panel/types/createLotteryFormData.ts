@@ -16,4 +16,5 @@ export const initialFormData: CreateLotteryRequest = {
   hasAgeRestriction: false,
   minimumAge: undefined,
   restrictedCountries: [],
+  prizeId: undefined,
 };
