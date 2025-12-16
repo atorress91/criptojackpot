@@ -5,4 +5,5 @@ export { useCreatePrizeForm } from './useCreatePrizeForm';
 export { useEditPrizeForm } from './useEditPrizeForm';
 export { usePrizes } from './usePrizes';
 export { useCreateLotteryForm } from './useCreateLotteryForm';
+export { useEditLotteryForm } from './useEditLotteryForm';
 export { useLotteries } from './useLotteries';

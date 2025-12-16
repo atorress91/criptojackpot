@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { useLotteries } from '@/features/admin-panel/hooks';
@@ -10,12 +10,13 @@ import { Plus, Pencil, Trash2, Ticket as TicketIcon, Calendar, Clock } from 'luc
 
 const LotteriesList: React.FC = () => {
   const { t } = useTranslation();
-  const { lotteries, isLoading, deleteLottery, isDeleting } = useLotteries();
+  const { lotteries, isLoading, deleteLottery, isDeleting, pagination, goToPage } = useLotteries();
+  const [lotteryToDelete, setLotteryToDelete] = useState<Lottery | null>(null);
 
-  const handleDelete = async (id: string, title: string) => {
-    if (globalThis.confirm(t('LOTTERIES_ADMIN.confirmDelete', `¿Estás seguro de eliminar la lotería "${title}"?`))) {
-      deleteLottery(id);
-    }
+  const handleDelete = async () => {
+    if (!lotteryToDelete) return;
+    deleteLottery(lotteryToDelete.id);
+    setLotteryToDelete(null);
   };
 
   const getStatusBadge = (status: LotteryStatus) => {
@@ -175,7 +176,7 @@ const LotteriesList: React.FC = () => {
                               <button
                                 type="button"
                                 className="btn btn-outline-danger"
-                                onClick={() => handleDelete(lottery.id, lottery.title)}
+                                onClick={() => setLotteryToDelete(lottery)}
                                 disabled={isDeleting}
                                 title={t('COMMON.delete', 'Eliminar')}
                               >
@@ -203,8 +204,101 @@ const LotteriesList: React.FC = () => {
               </div>
             )}
           </div>
+
+          {/* Paginación */}
+          {pagination.totalPages > 1 && (
+            <div className="card-footer bg-white py-3">
+              <div className="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                <div className="text-muted">
+                  {t('COMMON.showing', 'Mostrando')}{' '}
+                  <strong>{(pagination.pageNumber - 1) * pagination.pageSize + 1}</strong> -{' '}
+                  <strong>{Math.min(pagination.pageNumber * pagination.pageSize, pagination.totalCount)}</strong>{' '}
+                  {t('COMMON.of', 'de')} <strong>{pagination.totalCount}</strong> {t('COMMON.results', 'resultados')}
+                </div>
+                <div className="btn-group" aria-label="Paginación">
+                  <button
+                    className="btn btn-outline-secondary"
+                    onClick={() => goToPage(pagination.pageNumber - 1)}
+                    disabled={pagination.pageNumber === 1}
+                  >
+                    ←
+                  </button>
+                  {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(page => (
+                    <button
+                      key={page}
+                      onClick={() => goToPage(page)}
+                      className={`btn ${pagination.pageNumber === page ? 'btn-primary' : 'btn-outline-secondary'}`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                  <button
+                    className="btn btn-outline-secondary"
+                    onClick={() => goToPage(pagination.pageNumber + 1)}
+                    disabled={pagination.pageNumber === pagination.totalPages}
+                  >
+                    →
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Modal de confirmación de eliminación */}
+      {lotteryToDelete && (
+        <div className="modal fade show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">{t('LOTTERIES_ADMIN.delete.title', 'Eliminar Lotería')}</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={() => setLotteryToDelete(null)}
+                  disabled={isDeleting}
+                ></button>
+              </div>
+              <div className="modal-body">
+                <p>
+                  {t('LOTTERIES_ADMIN.delete.confirm', '¿Estás seguro de que deseas eliminar la lotería')}{' '}
+                  <strong>{lotteryToDelete.title}</strong>?
+                </p>
+                <p className="text-muted small">
+                  {t(
+                    'LOTTERIES_ADMIN.delete.warning',
+                    'Esta acción no se puede deshacer. Se eliminarán todos los tickets asociados.'
+                  )}
+                </p>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setLotteryToDelete(null)}
+                  disabled={isDeleting}
+                >
+                  {t('COMMON.cancel', 'Cancelar')}
+                </button>
+                <button type="button" className="btn btn-danger" onClick={handleDelete} disabled={isDeleting}>
+                  {isDeleting ? (
+                    <>
+                      <span className="spinner-border spinner-border-sm me-2"></span>
+                      {t('COMMON.deleting', 'Eliminando...')}
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 size={16} className="me-2" />
+                      {t('COMMON.delete', 'Eliminar')}
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

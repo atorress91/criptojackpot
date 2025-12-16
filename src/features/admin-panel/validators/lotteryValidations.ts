@@ -160,3 +160,54 @@ export const validateCreateLotteryForm = (
 
   return true;
 };
+
+export const validateLotteryDrawDateTime = (drawDate: string, drawTime: string): LotteryValidationResult => {
+  if (!drawDate || !drawTime) {
+    return { isValid: false, errorKey: 'drawDateTimeRequired' };
+  }
+  return { isValid: true };
+};
+
+export const validateEditLotteryForm = (
+  formData: {
+    name: string;
+    price: number;
+    totalTickets: number;
+    drawDate: string;
+    drawTime: string;
+  },
+  t: TFunction,
+  showNotification: ShowNotification
+): boolean => {
+  const validations = [
+    {
+      result: validateLotteryTitle(formData.name),
+      messageKey: 'LOTTERIES_ADMIN.errors.nameRequired',
+      defaultMessage: 'El nombre es requerido',
+    },
+    {
+      result: validateLotteryTicketPrice(formData.price),
+      messageKey: 'LOTTERIES_ADMIN.errors.priceInvalid',
+      defaultMessage: 'El precio debe ser mayor a 0',
+    },
+    {
+      result: validateLotteryMaxTickets(formData.totalTickets),
+      messageKey: 'LOTTERIES_ADMIN.errors.totalTicketsInvalid',
+      defaultMessage: 'El total de tickets debe ser mayor a 0',
+    },
+    {
+      result: validateLotteryDrawDateTime(formData.drawDate, formData.drawTime),
+      messageKey: 'LOTTERIES_ADMIN.errors.drawDateRequired',
+      defaultMessage: 'La fecha y hora del sorteo son requeridas',
+    },
+  ];
+
+  for (const validation of validations) {
+    if (!validation.result.isValid) {
+      showNotification('error', t('COMMON.error', 'Error'), t(validation.messageKey, validation.defaultMessage));
+      return false;
+    }
+  }
+
+  return true;
+};

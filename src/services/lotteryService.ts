@@ -22,16 +22,12 @@ class LotteryService extends BaseService {
     return this.create<CreateLotteryRequest, Lottery>(data);
   }
 
-  async updateLottery(id: number, data: Partial<UpdateLotteryRequest>): Promise<Lottery> {
+  async updateLottery(id: string | number, data: Partial<UpdateLotteryRequest>): Promise<Lottery> {
     return this.update<Partial<UpdateLotteryRequest>, Lottery>(id, data);
   }
 
-  async deleteLottery(id: number): Promise<void> {
+  async deleteLottery(id: string | number): Promise<void> {
     return this.delete(id);
-  }
-
-  async updateLotteryStatus(id: string, status: number): Promise<Lottery> {
-    return this.patch<Lottery>(`${this.endpoint}/${id}/status`, { status });
   }
 }
 
