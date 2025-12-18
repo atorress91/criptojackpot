@@ -626,7 +626,7 @@ const LotteryDetailsPage = () => {
                           </span>
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                             {selectedEntries
-                              .sort(([a], [b]) => Number(a) - Number(b))
+                              .toSorted(([a], [b]) => Number(a) - Number(b))
                               .map(([num, qty]) => (
                                 <div
                                   key={num}
