@@ -13,8 +13,6 @@ import {
   BarbellIcon,
   CalendarIcon,
   ClockIcon,
-  MinusIcon,
-  PlusIcon,
   ShoppingCartIcon,
   StarIcon,
   TagIcon,
@@ -47,7 +45,8 @@ const LotteryDetailsPage = () => {
   const params = useParams();
   const lotteryId = params.id as string;
 
-  const [ticketQuantity, setTicketQuantity] = useState(1);
+  // Estado: { número: cantidad }
+  const [selectedNumbers, setSelectedNumbers] = useState<Record<number, number>>({});
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
 
   const {
@@ -109,16 +108,57 @@ const LotteryDetailsPage = () => {
     }
   };
 
-  // Manejar cantidad de tickets
-  const handleQuantityChange = (action: 'increase' | 'decrease') => {
-    if (action === 'increase') {
-      const maxAvailable = lottery ? lottery.maxTickets - lottery.soldTickets : 10;
-      if (ticketQuantity < maxAvailable) {
-        setTicketQuantity(prev => prev + 1);
+  // Manejar click en número (toggle selección)
+  const handleNumberClick = (num: number) => {
+    setSelectedNumbers(prev => {
+      const newState = { ...prev };
+      if (newState[num]) {
+        delete newState[num];
+      } else {
+        newState[num] = 1;
       }
-    } else if (ticketQuantity > 1) {
-      setTicketQuantity(prev => prev - 1);
-    }
+      return newState;
+    });
+  };
+
+  // Aumentar cantidad de un número
+  const increaseQuantity = (num: number) => {
+    setSelectedNumbers(prev => ({
+      ...prev,
+      [num]: (prev[num] || 0) + 1,
+    }));
+  };
+
+  // Disminuir cantidad de un número
+  const decreaseQuantity = (num: number) => {
+    setSelectedNumbers(prev => {
+      const current = prev[num] || 0;
+      if (current <= 1) {
+        const newState = { ...prev };
+        delete newState[num];
+        return newState;
+      }
+      return { ...prev, [num]: current - 1 };
+    });
+  };
+
+  // Eliminar número completamente
+  const removeNumber = (num: number) => {
+    setSelectedNumbers(prev => {
+      const newState = { ...prev };
+      delete newState[num];
+      return newState;
+    });
+  };
+
+  // Limpiar selección
+  const clearSelection = () => {
+    setSelectedNumbers({});
+  };
+
+  // Formatear número con dos dígitos
+  const formatNumber = (num: number): string => {
+    return num.toString().padStart(2, '0');
   };
 
   // Validar si una URL de imagen es válida
@@ -197,7 +237,14 @@ const LotteryDetailsPage = () => {
   const soldPercent = getSoldPercentage(lottery.soldTickets, lottery.maxTickets);
   const remaining = lottery.maxTickets - lottery.soldTickets;
   const drawInfo = formatDrawDate(lottery.endDate);
+
+  // Calcular totales desde el objeto de selección
+  const selectedEntries = Object.entries(selectedNumbers);
+  const ticketQuantity = selectedEntries.reduce((sum, [, qty]) => sum + qty, 0);
   const totalPrice = (lottery.ticketPrice * ticketQuantity).toFixed(2);
+
+  // Generar números del 00 al 99
+  const allNumbers = Array.from({ length: 100 }, (_, i) => i);
 
   return (
     <div>
@@ -501,61 +548,132 @@ const LotteryDetailsPage = () => {
                   </div>
 
                   <div className="p-xxl-5 p-4">
-                    {/* Quantity Selector */}
+                    {/* Number Selection Grid */}
                     <div className="mb-4">
-                      <label className="d-block n4-clr fw_600 mb-3">
-                        {t('LOTTERY_DETAILS.selectQuantity', 'Selecciona cantidad')}
-                      </label>
-                      <div className="quantity-basket">
-                        <div className="quantity-body d-flex align-items-center justify-content-center gap-3">
+                      <div className="d-flex justify-content-between align-items-center mb-2">
+                        <label className="n4-clr fw_600" style={{ fontSize: '13px' }}>
+                          {t('LOTTERY_DETAILS.selectNumbers', 'Selecciona tus números')}
+                        </label>
+                        {selectedEntries.length > 0 && (
                           <button
-                            className="qtyminus cmn-60 d-center radius12 n0-bg border"
-                            onClick={() => handleQuantityChange('decrease')}
-                            disabled={ticketQuantity <= 1}
+                            className="btn btn-sm n3-clr p-0"
+                            onClick={clearSelection}
+                            style={{ fontSize: '11px' }}
                           >
-                            <MinusIcon className="fs-four n4-clr" weight="bold" />
+                            {t('LOTTERY_DETAILS.clearAll', 'Limpiar')}
                           </button>
-                          <input
-                            type="text"
-                            className="qty text-center fs-four fw_700 n4-clr"
-                            value={ticketQuantity}
-                            readOnly
-                            style={{ width: '80px', border: 'none', background: 'transparent' }}
-                          />
-                          <button
-                            className="qtyplus cmn-60 d-center radius12 n0-bg border"
-                            onClick={() => handleQuantityChange('increase')}
-                            disabled={ticketQuantity >= remaining}
-                          >
-                            <PlusIcon className="fs-four n4-clr" weight="bold" />
-                          </button>
-                        </div>
+                        )}
                       </div>
-                    </div>
 
-                    {/* Quick Select Buttons */}
-                    <div className="mb-4">
-                      <div className="d-flex flex-wrap gap-2 justify-content-center">
-                        {[1, 5, 10, 25].map(qty => (
-                          <button
-                            key={qty}
-                            className={`btn ${
-                              ticketQuantity === qty ? 'act4-bg n0-clr' : 'n0-bg n4-clr border'
-                            } radius8 px-4 py-2`}
-                            onClick={() => setTicketQuantity(Math.min(qty, remaining))}
-                            disabled={qty > remaining}
-                          >
-                            {qty}
-                          </button>
-                        ))}
+                      {/* Numbers Grid - Compacto sin scroll */}
+                      <div
+                        className="number-grid"
+                        style={{
+                          display: 'grid',
+                          gridTemplateColumns: 'repeat(10, 1fr)',
+                          gap: '2px',
+                        }}
+                      >
+                        {allNumbers.map(num => {
+                          const qty = selectedNumbers[num] || 0;
+                          const isSelected = qty > 0;
+                          return (
+                            <button
+                              key={num}
+                              onClick={() => handleNumberClick(num)}
+                              className={`btn p-0 ${isSelected ? 'act4-bg n0-clr' : 'n0-bg n4-clr border'}`}
+                              style={{
+                                width: '100%',
+                                height: '28px',
+                                fontSize: '10px',
+                                fontWeight: 600,
+                                borderRadius: '4px',
+                                position: 'relative',
+                              }}
+                            >
+                              {formatNumber(num)}
+                              {qty > 1 && (
+                                <span
+                                  style={{
+                                    position: 'absolute',
+                                    top: '-4px',
+                                    right: '-4px',
+                                    background: '#ff4757',
+                                    color: '#fff',
+                                    fontSize: '8px',
+                                    fontWeight: 700,
+                                    borderRadius: '50%',
+                                    width: '14px',
+                                    height: '14px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                  }}
+                                >
+                                  {qty}
+                                </span>
+                              )}
+                            </button>
+                          );
+                        })}
                       </div>
+
+                      {/* Selected Numbers with Quantity Control */}
+                      {selectedEntries.length > 0 && (
+                        <div className="mt-3 p-2 n0-bg radius8">
+                          <span className="fs-nine n3-clr d-block mb-2">
+                            {t('LOTTERY_DETAILS.selectedNumbers', 'Seleccionados')}:
+                          </span>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                            {selectedEntries
+                              .sort(([a], [b]) => Number(a) - Number(b))
+                              .map(([num, qty]) => (
+                                <div
+                                  key={num}
+                                  className="d-flex align-items-center justify-content-between"
+                                  style={{ fontSize: '12px' }}
+                                >
+                                  <span className="fw_700 act4-clr">{formatNumber(Number(num))}</span>
+                                  <div className="d-flex align-items-center gap-1">
+                                    <button
+                                      className="btn p-0 n4-clr"
+                                      onClick={() => decreaseQuantity(Number(num))}
+                                      style={{ width: '20px', height: '20px', fontSize: '14px', lineHeight: 1 }}
+                                    >
+                                      −
+                                    </button>
+                                    <span className="fw_600 n4-clr" style={{ minWidth: '20px', textAlign: 'center' }}>
+                                      {qty}
+                                    </span>
+                                    <button
+                                      className="btn p-0 n4-clr"
+                                      onClick={() => increaseQuantity(Number(num))}
+                                      style={{ width: '20px', height: '20px', fontSize: '14px', lineHeight: 1 }}
+                                    >
+                                      +
+                                    </button>
+                                    <button
+                                      className="btn p-0 n3-clr ms-1"
+                                      onClick={() => removeNumber(Number(num))}
+                                      style={{ width: '20px', height: '20px', fontSize: '12px', lineHeight: 1 }}
+                                    >
+                                      ✕
+                                    </button>
+                                  </div>
+                                </div>
+                              ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     {/* Total */}
                     <div className="n0-bg radius12 p-4 mb-4">
                       <div className="d-flex justify-content-between align-items-center mb-2">
                         <span className="n3-clr">{t('LOTTERY_DETAILS.quantity', 'Cantidad')}:</span>
-                        <span className="n4-clr fw_600">{ticketQuantity} tickets</span>
+                        <span className="n4-clr fw_600">
+                          {ticketQuantity} {ticketQuantity === 1 ? 'número' : 'números'}
+                        </span>
                       </div>
                       <div className="d-flex justify-content-between align-items-center mb-2">
                         <span className="n3-clr">{t('LOTTERY_DETAILS.unitPrice', 'Precio unitario')}:</span>
@@ -571,7 +689,7 @@ const LotteryDetailsPage = () => {
                     {/* Buy Button */}
                     <button
                       className="kewta-btn d-flex align-items-center justify-content-center w-100 mb-3"
-                      disabled={lottery.status !== LotteryStatus.Active || remaining === 0}
+                      disabled={lottery.status !== LotteryStatus.Active || remaining === 0 || ticketQuantity === 0}
                     >
                       <span className="kew-text act4-bg n0-clr d-flex align-items-center justify-content-center gap-2 w-100">
                         <ShoppingCartIcon className="fs-five" weight="bold" />
