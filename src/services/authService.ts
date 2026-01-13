@@ -7,6 +7,14 @@ import { BaseService } from './baseService';
 class AuthService extends BaseService {
   protected override endpoint = 'auth';
 
+  /**
+   * Constructor - Define el prefijo del microservicio de autenticación
+   * Apunta a la ruta definida en ingress.yaml para identity-api
+   */
+  constructor() {
+    super('/api/v1');
+  }
+
   async authenticate(credentials: AuthRequest): Promise<User> {
     return this.create<AuthRequest, User>(credentials);
   }

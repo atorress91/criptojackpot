@@ -1,14 +1,22 @@
-import {BaseService} from "@/services/baseService";
-import {UserReferralStats} from "@/features/user-panel/types";
+import { BaseService } from '@/services/baseService';
+import { UserReferralStats } from '@/features/user-panel/types';
 import { injectable } from 'tsyringe';
 
 @injectable()
 class UserReferralService extends BaseService {
-    protected endpoint: string = 'userReferral';
+  protected endpoint: string = 'userReferral';
 
-    async GetUserReferralsAsync(userId: number): Promise<UserReferralStats> {
-        return this.getById<UserReferralStats>(`${userId}`);
-    }
+  /**
+   * Constructor - Define el prefijo del microservicio de referidos
+   * Apunta a la ruta definida en ingress.yaml para user-api
+   */
+  constructor() {
+    super('/api/v1');
+  }
+
+  async GetUserReferralsAsync(userId: number): Promise<UserReferralStats> {
+    return this.getById<UserReferralStats>(`${userId}`);
+  }
 }
 
 export { UserReferralService };

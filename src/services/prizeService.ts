@@ -6,6 +6,14 @@ import { PaginatedResponse } from '@/interfaces/paginatedResponse';
 class PrizeService extends BaseService {
   protected endpoint = 'prize';
 
+  /**
+   * Constructor - Define el prefijo del microservicio de premios
+   * Apunta a la ruta definida en ingress.yaml para lottery-api o prize-api
+   */
+  constructor() {
+    super('/api/v1');
+  }
+
   async createPrize(request: CreatePrizeRequest): Promise<Prize> {
     return this.create<CreatePrizeRequest, Prize>(request);
   }

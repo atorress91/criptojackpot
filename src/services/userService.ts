@@ -11,6 +11,14 @@ import { injectable } from 'tsyringe';
 class UserService extends BaseService {
   protected endpoint: string = 'user';
 
+  /**
+   * Constructor - Define el prefijo del microservicio de usuarios
+   * Apunta a la ruta definida en ingress.yaml para identity-api o user-api
+   */
+  constructor() {
+    super('/api/v1');
+  }
+
   async createUser(user: User): Promise<User> {
     return this.create<User, User>(user);
   }

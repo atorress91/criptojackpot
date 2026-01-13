@@ -8,12 +8,17 @@ import { GetAllOptions } from '@/interfaces/getAllOptions';
 export abstract class BaseService {
   protected apiClient: AxiosInstance;
   protected abstract endpoint: string;
+  protected servicePrefix: string;
 
-  constructor() {
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
+  /**
+   * @param servicePrefix - El prefijo del microservicio (ej: "/api/v1/auth", "/api/v1/lotteries")
+   */
+  constructor(servicePrefix: string) {
+    this.servicePrefix = servicePrefix;
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || '';
 
     this.apiClient = axios.create({
-      baseURL: `${API_URL}/api/v1`,
+      baseURL: API_BASE_URL,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -97,7 +102,7 @@ export abstract class BaseService {
   protected async getAll<T>(options: GetAllOptions = {}): Promise<T[]> {
     const { path = '', params } = options;
     try {
-      let finalUrl = this.endpoint;
+      let finalUrl = `${this.servicePrefix}/${this.endpoint}`;
       if (path) {
         finalUrl = finalUrl + '/' + path;
       }
@@ -112,7 +117,7 @@ export abstract class BaseService {
   protected async getAllPaginated<T>(options: GetAllOptions = {}): Promise<PaginatedResponse<T>> {
     const { path = '', params } = options;
     try {
-      let finalUrl = this.endpoint;
+      let finalUrl = `${this.servicePrefix}/${this.endpoint}`;
       if (path) {
         finalUrl = finalUrl + '/' + path;
       }
@@ -125,7 +130,7 @@ export abstract class BaseService {
 
   protected async getById<T>(id: string | number): Promise<T> {
     try {
-      const response = await this.apiClient.get<Response<T>>(`${this.endpoint}/${id}`);
+      const response = await this.apiClient.get<Response<T>>(`${this.servicePrefix}/${this.endpoint}/${id}`);
       return this.handleResponse(response);
     } catch (error) {
       throw this.handleError(error as AxiosError<Response<any>>);
@@ -134,7 +139,7 @@ export abstract class BaseService {
 
   protected async create<TRequest, TResponse = TRequest>(data: TRequest, route?: string): Promise<TResponse> {
     try {
-      const url = route ? `${this.endpoint}/${route}` : this.endpoint;
+      const url = route ? `${this.servicePrefix}/${this.endpoint}/${route}` : `${this.servicePrefix}/${this.endpoint}`;
       const response = await this.apiClient.post<Response<TResponse>>(url, data);
       return this.handleResponse(response);
     } catch (error) {
@@ -148,7 +153,9 @@ export abstract class BaseService {
     route?: string
   ): Promise<TResponse> {
     try {
-      const url = route ? `${this.endpoint}/${route}/${id}` : `${this.endpoint}/${id}`;
+      const url = route
+        ? `${this.servicePrefix}/${this.endpoint}/${route}/${id}`
+        : `${this.servicePrefix}/${this.endpoint}/${id}`;
       const response = await this.apiClient.put<Response<TResponse>>(url, data);
       return this.handleResponse(response);
     } catch (error) {
@@ -158,7 +165,7 @@ export abstract class BaseService {
 
   protected async delete(id: string | number): Promise<void> {
     try {
-      await this.apiClient.delete(`${this.endpoint}/${id}`);
+      await this.apiClient.delete(`${this.servicePrefix}/${this.endpoint}/${id}`);
     } catch (error) {
       throw this.handleError(error as AxiosError<Response<any>>);
     }
@@ -166,7 +173,7 @@ export abstract class BaseService {
 
   protected async patch<T>(url: string, data: any): Promise<T> {
     try {
-      const response = await this.apiClient.patch<Response<T>>(url, data);
+      const response = await this.apiClient.patch<Response<T>>(`${this.servicePrefix}/${url}`, data);
       return this.handleResponse(response);
     } catch (error) {
       throw this.handleError(error as AxiosError<Response<any>>);

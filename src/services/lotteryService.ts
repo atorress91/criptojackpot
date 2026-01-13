@@ -6,6 +6,14 @@ import { PaginatedResponse } from '@/interfaces/paginatedResponse';
 class LotteryService extends BaseService {
   protected endpoint = 'Lottery';
 
+  /**
+   * Constructor - Define el prefijo del microservicio de loterías
+   * Apunta a la ruta definida en ingress.yaml para lottery-api
+   */
+  constructor() {
+    super('/api/v1');
+  }
+
   async getAllLotteries(pagination?: PaginationRequest): Promise<PaginatedResponse<Lottery>> {
     const params: Record<string, string> = {};
     if (pagination?.pageNumber) params.pageNumber = pagination.pageNumber.toString();
