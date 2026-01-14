@@ -4,11 +4,11 @@ import { injectable } from 'tsyringe';
 
 @injectable()
 class UserReferralService extends BaseService {
-  protected endpoint: string = 'userReferral';
+  protected endpoint: string = 'user-referrals';
 
   /**
    * Constructor - Define el prefijo del microservicio de referidos
-   * Apunta a la ruta definida en ingress.yaml para user-api
+   * Apunta a la ruta definida en ingress.yaml para identity-api (/api/v1/user-referrals)
    */
   constructor() {
     super('/api/v1');

@@ -4,11 +4,11 @@ import { PaginationRequest } from '@/interfaces/pagination';
 import { PaginatedResponse } from '@/interfaces/paginatedResponse';
 
 class LotteryService extends BaseService {
-  protected endpoint = 'Lottery';
+  protected endpoint = 'lotteries';
 
   /**
    * Constructor - Define el prefijo del microservicio de loterías
-   * Apunta a la ruta definida en ingress.yaml para lottery-api
+   * Apunta a la ruta definida en ingress.yaml para lottery-api (/api/v1/lotteries)
    */
   constructor() {
     super('/api/v1');

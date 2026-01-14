@@ -4,11 +4,11 @@ import { BaseService } from './baseService';
 
 @injectable()
 class CountryService extends BaseService {
-  protected override endpoint = 'country';
+  protected override endpoint = 'countries';
 
   /**
    * Constructor - Define el prefijo del microservicio de países
-   * Apunta a la ruta definida en ingress.yaml
+   * Apunta a la ruta definida en ingress.yaml para identity-api (/api/v1/countries)
    */
   constructor() {
     super('/api/v1');

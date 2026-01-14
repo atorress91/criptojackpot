@@ -9,11 +9,11 @@ import { injectable } from 'tsyringe';
 
 @injectable()
 class UserService extends BaseService {
-  protected endpoint: string = 'user';
+  protected endpoint: string = 'users';
 
   /**
    * Constructor - Define el prefijo del microservicio de usuarios
-   * Apunta a la ruta definida en ingress.yaml para identity-api o user-api
+   * Apunta a la ruta definida en ingress.yaml para identity-api (/api/v1/users)
    */
   constructor() {
     super('/api/v1');
@@ -24,11 +24,11 @@ class UserService extends BaseService {
   }
 
   async updateImageProfile(request: UpdateImageProfileRequest): Promise<User> {
-    return this.patch<User>(`${this.endpoint}/update-image-profile`, request);
+    return this.patch<User>(`users/update-image-profile`, request);
   }
 
   async generateNewSecurityCode(request: GenerateNewSecurityCodeRequest): Promise<User> {
-    return this.patch<User>(`${this.endpoint}/generate-new-security-code`, request);
+    return this.patch<User>(`users/generate-new-security-code`, request);
   }
 
   async updateUserAsync(userId: number, updateUser: UpdateUserRequest): Promise<User> {
