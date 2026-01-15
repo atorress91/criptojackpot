@@ -27,7 +27,7 @@ export const useCreateTicketForm = (): UseCreateTicketFormReturn => {
     },
   });
 
-  const prizes = prizesResponse?.data || [];
+  const prizes = prizesResponse?.data?.items || [];
 
   const [formData, setFormData] = useState<CreateTicketFormData>({
     name: '',

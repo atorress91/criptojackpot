@@ -33,7 +33,7 @@ export const useLotteries = (initialPagination?: PaginationRequest) => {
     },
   });
 
-  const lotteries = lotteriesResponse?.data || [];
+  const lotteries = lotteriesResponse?.data?.items || [];
 
   // Eliminar lotería
   const deleteMutation = useMutation({

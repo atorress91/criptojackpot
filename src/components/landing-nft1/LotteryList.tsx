@@ -29,7 +29,7 @@ const LotteryList = () => {
     },
   });
 
-  const lotteries = lotteriesResponse?.data || [];
+  const lotteries = lotteriesResponse?.data?.items || [];
 
   // Calcular días restantes
   const getDaysRemaining = (endDate: string) => {
@@ -94,7 +94,7 @@ const LotteryList = () => {
           const remaining = lottery.maxTickets - lottery.soldTickets;
 
           return (
-            <MotionFade key={lottery.id} className="col-lg-4 col-md-6">
+            <MotionFade key={lottery.lotteryGuid} className="col-lg-4 col-md-6">
               <div className="current-lottery-itemv13 current-lottery-v13before nw3-border position-relative radius24 n0-bg p-xxl-6 p-xl-4 p-3">
                 <div className="thumb cus-z1 position-relative radius24 overflow-hidden">
                   <div className="current-l-badge cus-z1 d-flex align-items-center justify-content-between pe-xxl-5 pe-4">
@@ -126,12 +126,12 @@ const LotteryList = () => {
                 <div className="content-middle pt-xxl-6 pt-sm-4 pt-4">
                   <div className="d-flex flex-wrap align-items-center justify-content-between pb-xxl-3 pb-sm-3 pb-2 gap-3">
                     <h4>
-                      <Link href={`/lottery/${lottery.id}`} className="n4-clr fw_700 act4-texthover">
+                      <Link href={`/lottery/${lottery.lotteryGuid}`} className="n4-clr fw_700 act4-texthover">
                         {lottery.title}
                       </Link>
                     </h4>
                     <Link
-                      href={`/lottery/${lottery.id}`}
+                      href={`/lottery/${lottery.lotteryGuid}`}
                       className="kewta-btn kewta-44 d-inline-flex align-items-center"
                     >
                       <div className="kew-arrow kew-rotate n4-bg">

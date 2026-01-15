@@ -1,7 +1,7 @@
 import { Prize } from './prize';
 
 export interface Lottery {
-  id: string;
+  lotteryGuid: string;
   lotteryNo: string;
   title: string;
   description: string;

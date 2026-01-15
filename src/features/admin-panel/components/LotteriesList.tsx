@@ -15,7 +15,7 @@ const LotteriesList: React.FC = () => {
 
   const handleDelete = async () => {
     if (!lotteryToDelete) return;
-    deleteLottery(lotteryToDelete.id);
+    deleteLottery(lotteryToDelete.lotteryGuid);
     setLotteryToDelete(null);
   };
 
@@ -102,7 +102,7 @@ const LotteriesList: React.FC = () => {
                       const mainPrize = lottery.prizes?.[0];
 
                       return (
-                        <tr key={lottery.id}>
+                        <tr key={lottery.lotteryGuid}>
                           <td>
                             <Image
                               src={getPrizeImage(lottery)}
@@ -167,7 +167,7 @@ const LotteriesList: React.FC = () => {
                           <td>
                             <div className="btn-group btn-group-sm">
                               <Link
-                                href={`/admin/lotteries/${lottery.id}/edit`}
+                                href={`/admin/lotteries/${lottery.lotteryGuid}/edit`}
                                 className="btn btn-outline-primary"
                                 title={t('COMMON.edit', 'Editar')}
                               >

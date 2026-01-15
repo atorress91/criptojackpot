@@ -45,7 +45,7 @@ export const usePrizes = (initialPagination?: PaginationRequest) => {
   };
 
   return {
-    prizes: data?.data || [],
+    prizes: data?.data?.items || [],
     isLoading,
     isDeleting: deleteMutation.isPending,
     error,

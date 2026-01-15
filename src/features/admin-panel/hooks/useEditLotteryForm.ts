@@ -57,7 +57,7 @@ export const useEditLotteryForm = (lotteryId: string) => {
     },
   });
 
-  const prizes = prizesResponse?.data || [];
+  const prizes = prizesResponse?.data?.items || [];
 
   // Cargar datos de la lotería en el formulario
   useEffect(() => {
