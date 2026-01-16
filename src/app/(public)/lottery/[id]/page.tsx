@@ -22,7 +22,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -34,6 +34,8 @@ import { Lottery, LotteryStatus } from '@/interfaces/lottery';
 import NavbarBlack from '@/components/navbar/NavbarBlack';
 import Jewellery1Footer from '@/components/landing-jewellery1/Jewellery1Footer';
 import MotionFade from '@/components/motionEffect/MotionFade';
+import { useLotteryHub } from '@/hooks/lottery-hub';
+import { useAuthStore } from '@/store/authStore';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -45,9 +47,45 @@ const LotteryDetailsPage = () => {
   const params = useParams();
   const lotteryId = params.id as string;
 
+  // Auth store para obtener el token
+  const token = useAuthStore(state => state.token);
+
   // Estado: { número: cantidad }
   const [selectedNumbers, setSelectedNumbers] = useState<Record<number, number>>({});
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
+
+  // Conexión WebSocket al LotteryHub (solo si hay token)
+  const {
+    availableNumbers,
+    reservations,
+    error: hubError,
+    isConnected,
+    reserveNumber: _reserveNumber, // Para uso futuro en el flujo de compra
+    clearError,
+    clearReservations: _clearReservations, // Para uso futuro
+  } = useLotteryHub(lotteryId, token || '');
+
+  // Log de conexión WebSocket para debug
+  useEffect(() => {
+    if (isConnected) {
+      console.log('✅ WebSocket conectado a la lotería:', lotteryId);
+      console.log('📊 Números disponibles:', availableNumbers.length);
+    }
+  }, [isConnected, lotteryId, availableNumbers.length]);
+
+  // Mostrar errores del hub
+  useEffect(() => {
+    if (hubError) {
+      console.error('❌ Error del hub:', hubError);
+    }
+  }, [hubError]);
+
+  // Log de reservas confirmadas
+  useEffect(() => {
+    if (reservations.length > 0) {
+      console.log('🎫 Reservas confirmadas:', reservations);
+    }
+  }, [reservations]);
 
   const {
     data: lottery,
@@ -551,9 +589,25 @@ const LotteryDetailsPage = () => {
                     {/* Number Selection Grid */}
                     <div className="mb-4">
                       <div className="d-flex justify-content-between align-items-center mb-2">
-                        <label className="n4-clr fw_600" style={{ fontSize: '13px' }}>
-                          {t('LOTTERY_DETAILS.selectNumbers', 'Selecciona tus números')}
-                        </label>
+                        <div className="d-flex align-items-center gap-2">
+                          <label className="n4-clr fw_600" style={{ fontSize: '13px' }}>
+                            {t('LOTTERY_DETAILS.selectNumbers', 'Selecciona tus números')}
+                          </label>
+                          {/* Indicador de conexión WebSocket */}
+                          {token && (
+                            <span
+                              title={isConnected ? 'Tiempo real activo' : 'Conectando...'}
+                              style={{
+                                width: '8px',
+                                height: '8px',
+                                borderRadius: '50%',
+                                backgroundColor: isConnected ? '#2ed573' : '#ffa502',
+                                display: 'inline-block',
+                                animation: isConnected ? 'none' : 'pulse 1.5s infinite',
+                              }}
+                            />
+                          )}
+                        </div>
                         {selectedEntries.length > 0 && (
                           <button
                             className="btn btn-sm n3-clr p-0"
@@ -564,6 +618,14 @@ const LotteryDetailsPage = () => {
                           </button>
                         )}
                       </div>
+
+                      {/* Error del hub */}
+                      {hubError && (
+                        <div className="alert alert-warning py-2 mb-2" style={{ fontSize: '11px' }}>
+                          {hubError}
+                          <button className="btn-close btn-sm ms-2" onClick={clearError} aria-label="Cerrar" />
+                        </div>
+                      )}
 
                       {/* Numbers Grid - Compacto sin scroll */}
                       <div
@@ -577,11 +639,27 @@ const LotteryDetailsPage = () => {
                         {allNumbers.map(num => {
                           const qty = selectedNumbers[num] || 0;
                           const isSelected = qty > 0;
+                          // Buscar info de disponibilidad del hub si está conectado
+                          const hubNumber = availableNumbers.find(n => n.number === num);
+                          const isExhausted = hubNumber?.isExhausted ?? false;
+                          const availableSeries = hubNumber?.availableSeries ?? lottery.totalSeries;
+
+                          // Determinar clase CSS del botón
+                          let buttonClass = 'n0-bg n4-clr border';
+                          if (isExhausted) buttonClass = 'n2-bg n3-clr';
+                          else if (isSelected) buttonClass = 'act4-bg n0-clr';
+
+                          // Determinar tooltip del botón
+                          let buttonTitle = '';
+                          if (isExhausted) buttonTitle = 'Agotado';
+                          else if (isConnected) buttonTitle = `${availableSeries} series disponibles`;
+
                           return (
                             <button
                               key={num}
-                              onClick={() => handleNumberClick(num)}
-                              className={`btn p-0 ${isSelected ? 'act4-bg n0-clr' : 'n0-bg n4-clr border'}`}
+                              onClick={() => !isExhausted && handleNumberClick(num)}
+                              disabled={isExhausted}
+                              className={`btn p-0 ${buttonClass}`}
                               style={{
                                 width: '100%',
                                 height: '28px',
@@ -589,7 +667,10 @@ const LotteryDetailsPage = () => {
                                 fontWeight: 600,
                                 borderRadius: '4px',
                                 position: 'relative',
+                                opacity: isExhausted ? 0.5 : 1,
+                                cursor: isExhausted ? 'not-allowed' : 'pointer',
                               }}
+                              title={buttonTitle}
                             >
                               {formatNumber(num)}
                               {qty > 1 && (

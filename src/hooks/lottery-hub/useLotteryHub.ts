@@ -13,6 +13,12 @@ export const useLotteryHub = (lotteryId: string, token: string): LotteryHubRetur
   const connectionRef = useRef<signalR.HubConnection | null>(null);
 
   useEffect(() => {
+    // No conectar si no hay token o lotteryId
+    if (!token || !lotteryId) {
+      console.log('⚠️ LotteryHub: No hay token o lotteryId, omitiendo conexión');
+      return;
+    }
+
     const connection = createHubConnection(token);
     connectionRef.current = connection;
 

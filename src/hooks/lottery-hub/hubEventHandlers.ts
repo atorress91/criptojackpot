@@ -27,8 +27,9 @@ export const registerHubEventHandlers = (connection: signalR.HubConnection, call
   });
 
   // Número reservado (individual)
-  connection.on('NumberReserved', (_lotId: string, _numberId: string, number: number) => {
+  connection.on('NumberReserved', (_lotId: string, _numberId: string, number: number, series: number) => {
     setAvailableNumbers(prev => updateNumberOnReserve(prev, number));
+    console.log(`El servidor asignó la serie ${series} para el número ${number}`);
   });
 
   // Número liberado (individual)
